@@ -32,7 +32,7 @@
             <a href="/admininspektorat" class="nav-link {{ ($active === 'beranda') ? 'active' : '' }}">
               <p>
               <i class="nav-icon fas fa-tachometer-alt"></i>
-                Dashboard
+                Home
               </p>
             </a>
           </li>
