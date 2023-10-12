@@ -136,9 +136,9 @@
           </section>
           <!-- right col -->
         </div>
-        <!-- <div class="row"> -->
+        <div class="row"> -->
 
-          <!-- <section class="col-lg-6 connectedSortable">
+          <section class="col-lg-6 connectedSortable">
             <div class="card">
                 <div class="card-header" style="background-color:#4030A3;">
                   <h3 class="card-title text-white">Rata-rata waktu OPD</h3>
@@ -177,7 +177,8 @@
                 </div>
                 </div>
               </div>
-          </section> -->
+          </section>
+    </div>
           <!-- /.Left col -->
           <!-- right col (We are only adding the ID to make the widgets sortable)-->
         <!-- <section class="col-lg-6 connectedSortable">
@@ -200,9 +201,9 @@
                         </div>
                     </div>
           </section>
-        </div> -->
+        </div>
 
-</div><!-- /.container-fluid -->
+</div>
 
 @endsection
 
