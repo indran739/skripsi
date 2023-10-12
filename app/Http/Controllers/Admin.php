@@ -23,9 +23,25 @@ class Admin extends Controller
         $opd = Opd::select('name')->where('id', $idOpd)->get();
         
         $count_users = User::where('role','pengadu')->get()->count();
-        $count_laporan_masuk = Pengaduan::where('disposisi_opd','P')->where('status_selesai',NULL)->where('validasi_laporan','P')->where('proses_tindak','P')->count();
-        $count_laporan_disposisi = Pengaduan::where('disposisi_opd','Y')->where('status_selesai',NULL)->where('validasi_laporan','P')->where('proses_tindak','P')->get()->count();
-        $count_laporan_selesai = Pengaduan::where('disposisi_opd','Y')->where('status_selesai','Y')->where('validasi_laporan','Y')->where('proses_tindak','Y')->get()->count();
+
+        $count_laporan_masuk = Pengaduan::where('disposisi_opd','P')
+        ->where('status_selesai',NULL)
+        ->where('validasi_laporan','P')
+        ->where('proses_tindak','P')
+        ->count();
+
+        $count_laporan_disposisi = Pengaduan::where('disposisi_opd','Y')
+        ->where('status_selesai',NULL)->where('validasi_laporan','P')
+        ->where('proses_tindak','P')
+        ->get()
+        ->count();
+
+        $count_laporan_selesai = Pengaduan::where('disposisi_opd','Y')
+        ->where('status_selesai','Y')
+        ->where('validasi_laporan','Y')
+        ->where('proses_tindak','Y')
+        ->get()
+        ->count();
     
         // Mengambil data Pengaduan dari model Pengaduan
          $pengaduans = Pengaduan::all();
@@ -43,7 +59,6 @@ class Admin extends Controller
                 $categoryNames[] = $category->name; // Mengambil nama kategori dari model Category
             }
 
-            
             // Mengambil OPD yang memiliki pengaduan berstatus selesai ('Y')
                 $opdsWithSelesaiPengaduan = Opd::has('pengaduan')
                 ->whereHas('pengaduan', function ($query) {
@@ -62,43 +77,38 @@ class Admin extends Controller
                 $data[] = ['opd' => $opd->name, 'total_selesai' => $totalSelesai];
                 }
 //<---------------------------------------------------------------Rata rata waktu----------------------------------------------------------------------------->//
+            $opds = OPD::all();
+            $opdAverages = [];
 
-$opds = OPD::all();
-$opdAverages = [];
+            foreach ($opds as $opd) {
+                $completedPengaduan = Pengaduan::where('status_selesai', 'Y')->where('id_opd_fk', $opd->id)->get();
 
-foreach ($opds as $opd) {
-    $completedPengaduan = Pengaduan::where('status_selesai', 'Y')->where('id_opd_fk', $opd->id)->get();
+                $totalDuration = 0;
+                $completedCount = $completedPengaduan->count();
 
-    $totalDuration = 0;
-    $completedCount = $completedPengaduan->count();
+                foreach ($completedPengaduan as $pengaduan) {
+                    $createdAt = Carbon::parse($pengaduan->created_at);
+                    $resolvedAt = Carbon::parse($pengaduan->updated_at);
+                    $duration = $resolvedAt->diffInHours($createdAt);
+                    $totalDuration += $duration;
+                }
 
-    foreach ($completedPengaduan as $pengaduan) {
-        $createdAt = Carbon::parse($pengaduan->created_at);
-        $resolvedAt = Carbon::parse($pengaduan->updated_at);
-        $duration = $resolvedAt->diffInHours($createdAt);
-        $totalDuration += $duration;
-    }
+                $averageDuration = ($completedCount > 0) ? ($totalDuration / $completedCount) : 0;
+                $averageDuration = number_format($averageDuration, 2);
 
-    $averageDuration = ($completedCount > 0) ? ($totalDuration / $completedCount) : 0;
-    $averageDuration = number_format($averageDuration, 2);
+                // Hanya simpan data jika rata-rata waktu penyelesaian lebih dari 0
+                if ($averageDuration > 0) {
+                    $opdAverages[] = [
+                        'opd_name' => $opd->name,
+                        'average_duration' => $averageDuration,
+                    ];
+                }
+            }
 
-    // Hanya simpan data jika rata-rata waktu penyelesaian lebih dari 0
-    if ($averageDuration > 0) {
-        $opdAverages[] = [
-            'opd_name' => $opd->name, // Ganti dengan nama kolom sesuai dengan struktur tabel OPD
-            'average_duration' => $averageDuration,
-        ];
-    }
-}
-
-
-// Urutkan array berdasarkan rata-rata waktu penyelesaian (dari yang terkecil)
-usort($opdAverages, function ($a, $b) {
-    return $a['average_duration'] <=> $b['average_duration'];
-});
-
-
-        // Kembalikan array yang sudah diurutkan
+            // Urutkan array berdasarkan rata-rata waktu penyelesaian (dari yang terkecil)
+            usort($opdAverages, function ($a, $b) {
+                return $a['average_duration'] <=> $b['average_duration'];
+            });
 
         return view('admininspektorat.dashboard', [
             'opd' => $opd,
