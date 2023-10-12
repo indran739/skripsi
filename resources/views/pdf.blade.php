@@ -19,15 +19,14 @@
             color: black;
             width: 100%;
             text-align: center;
-            margin-top: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
         .logo img {
-            height: 110px;
-            width: 90px;
+            height: 90px;
+            width: 75px;
         }
 
         .header h2,
@@ -40,7 +39,7 @@
         }
 
         .info p {
-            margin: 5px;
+            margin: 0px;
         }
 
         .title {
@@ -99,26 +98,31 @@
     </div>
     <div class="border"></div>
     <div class="title">
-        <h2>Data Pengadu</h2>
+        <h2>Data Laporan Pengaduan Selesai</h2>
     </div>
     <table>
         <thead>
-            <tr>
-                <th>No.</th>
-                <th>NIK</th>
-                <th>Nama Lengkap</th>
-                <th>Email</th>
-                <th>No. Handphone</th>
+            <tr> 
+                <th>No</th>
+                <th>NIK Pengadu</th>
+                <th style="width: 150px;">Nama Pengadu</th>
+                <th>Kategori</th>
+                <th>OPD Tujuan</th>
+                <th>Isi Laporan</th>
             </tr>
         </thead>
         <tbody>
+            @php $count = 1 @endphp
+            @foreach($data as $d)
             <tr>
-                <td>1</td>
-                <td>62100201011010004</td>
-                <td>Indra Nugraha</td>
-                <td>indra@gmail.com</td>
-                <td>085348657613</td>
+                <td>{{ $count++ }}</td>
+                <td>{{ $d->user->nik }}</td>
+                <td style="width: 150px;">{{ $d->user->name }}</td>
+                <td>{{ $d->category->name }}</td>
+                <td>{{ $d->opd->name }}</td>
+                <td>{{ $d->isi_laporan }}</td>
             </tr>
+            @endforeach
         </tbody>
     </table>
 </body>

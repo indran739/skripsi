@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin;
 use App\Http\Controllers\Pengadu;
 use App\Http\Controllers\OpdController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\PDFController;
 use App\Models\Kecamatan;
 use App\Models\Desa;
 
@@ -102,6 +103,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('hapuskategori/{id_categories}', [Admin::class, 'hapus_kategori']);
         Route::post('tambahadmin', [Admin::class, 'tambah_admin']);
         Route::get('laporanselesai/filter', [Admin::class, 'filterLaporanSelesai'])->name('laporanselesai.filter');
+        Route::get('/cetak-pdf', [PDFController::class, 'cetakPDF']);
+
 
         // Route::post('filter', [Admin::class, 'filterLaporan']);
     });

@@ -37,6 +37,9 @@
                             <button class="btn bg-gradient-info ml-3">
                                <a href="/laporanselesai"  style="text-decoration: none; color:white;"><i class="fas fa-reset"></i>Reset</a> 
                             </button>
+                            <button class="btn bg-gradient-primary ml-3">
+                                <a href="{{ url('/cetak-pdf') }}" style="text-decoration: none; color:white;" target="_blank" >Cetak Laporan</a>
+                            </button>
                         </div>
                         <div class="col-4">
                             <div class="input-group input-group-sm" style="width: 100%;">
@@ -204,7 +207,6 @@
                         } else {
                             tableBody += '<tr><td colspan="7" style="text-align: center;">No Data</td></tr>';
                         }
-
                         // Perbarui isi tabel
                         $('#laporanTable tbody').html(tableBody);
                     }
