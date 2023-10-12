@@ -106,6 +106,8 @@
                 <th>No</th>
                 <th>NIK Pengadu</th>
                 <th style="width: 150px;">Nama Pengadu</th>
+                <th style="width: 150px;">Tanggal Tindak</th>
+                <th style="width: 150px;">Tanggal Selesai</th>
                 <th>Kategori</th>
                 <th>OPD Tujuan</th>
                 <th>Isi Laporan</th>
@@ -118,6 +120,8 @@
                 <td>{{ $count++ }}</td>
                 <td>{{ $d->user->nik }}</td>
                 <td style="width: 150px;">{{ $d->user->name }}</td>
+                <td style="width: 150px;">{{ \Carbon\Carbon::parse($d->tanggal_tindak)->format('d F Y') }}</td>
+                <td style="width: 150px;">{{ \Carbon\Carbon::parse($d->updated_at)->format('d F Y') }}</td>
                 <td>{{ $d->category->name }}</td>
                 <td>{{ $d->opd->name }}</td>
                 <td>{{ $d->isi_laporan }}</td>

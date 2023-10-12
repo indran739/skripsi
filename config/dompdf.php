@@ -22,7 +22,7 @@ return array(
 
     'options' => array(
         'orientation' => 'landscape', // Mengatur orientasi kertas ke landscape
-        'paper' => 'a4', // Mengatur ukuran kertas ke A4
+        'paper' => 'a3',  // Mengatur ukuran kertas ke A4
         /**
          * The location of the DOMPDF font directory
          *

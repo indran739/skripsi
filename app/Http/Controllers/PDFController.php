@@ -20,7 +20,7 @@ class PDFController extends Controller
     {
         $data = Pengaduan::where('status_selesai','Y')->get(); // Ambil data dari database
         $pdf = PDF::loadView('pdf', compact('data')); // 'pdf.template' adalah nama view PDF
-        
-        return $pdf->setPaper('a4', 'landscape')->download('data.pdf'); // Nama file PDF yang akan diunduh
+
+        return $pdf->setPaper('legal', 'landscape')->download('data.pdf'); // Nama file PDF yang akan diunduh
     }
 }
