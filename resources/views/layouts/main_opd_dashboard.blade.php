@@ -132,7 +132,7 @@ $(function () {
     var barData = {
         labels: @json($categoryNames),
         datasets: [{
-            label: 'Jumlah Pengaduan',
+            label: 'Total Pengaduan',
             data: @json($categoryCounts),
             backgroundColor: 'rgba(54, 162, 235, 0.7)', // Warna latar belakang batang grafik dengan transparansi
             borderColor: 'rgba(54, 162, 235, 1)', // Warna garis batang grafik

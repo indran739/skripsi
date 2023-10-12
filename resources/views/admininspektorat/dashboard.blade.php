@@ -136,7 +136,7 @@
           </section>
           <!-- right col -->
         </div>
-        <div class="row"> -->
+        <div class="row">
 
           <section class="col-lg-6 connectedSortable">
             <div class="card">
@@ -178,6 +178,7 @@
                 </div>
               </div>
           </section>
+          
     </div>
           <!-- /.Left col -->
           <!-- right col (We are only adding the ID to make the widgets sortable)-->
