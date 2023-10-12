@@ -31,7 +31,7 @@
           <li class="nav-item">
             <a href="/admininspektorat" class="nav-link {{ ($active === 'beranda') ? 'active' : '' }}">
               <p>
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-home"></i>
                 Home
               </p>
             </a>
