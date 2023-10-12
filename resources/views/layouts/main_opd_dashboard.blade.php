@@ -189,7 +189,7 @@ $(function () {
                 datasets: [{
                     label: 'Total Pengaduan Selesai',
                     data: totalSelesai,
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)', // Warna isi grafik
+                    backgroundColor: 'rgba(144, 238, 144, 10)', // Warna isi grafik
                     borderColor: 'rgba(54, 162, 235, 1)', // Warna garis grafik
                     borderWidth: 1
                 }]

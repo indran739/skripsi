@@ -45,6 +45,10 @@
                                 <dd class="col-sm-8 mb-3"> <span>:</span> {{ auth()->user()->name }} </dd>
                                 <dt class="col-sm-4 mb-3">Alamat</dt>
                                 <dd class="col-sm-8 mb-3"> <span>:</span> {{ auth()->user()->alamat }} </dd>
+                                <dt class="col-sm-4 mb-3">Kecamatan </dt>
+                                <dd class="col-sm-8 mb-3"> <span>:</span> {{ auth()->user()->kecamatan->name }} </dd>
+                                <dt class="col-sm-4 mb-3">Kelurahan/Desa </dt>
+                                <dd class="col-sm-8 mb-3"> <span>:</span> {{ auth()->user()->desa->kelurahan->name }} </dd>
                                 <dt class="col-sm-4 mb-3">Tempat Lahir </dt>
                                 <dd class="col-sm-8 mb-3"> <span>:</span> {{ auth()->user()->tempat_lahir }} </dd>
                                 <dt class="col-sm-4 mb-3">Tanggal Lahir </dt>
