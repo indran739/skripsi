@@ -20,25 +20,23 @@
                         <div class="card-header">
                     <div class="row">
                         <div class="col-8">
-                            <form id="filterForm"> <!-- Menambahkan ID "filterForm" pada elemen form -->
-                                <select class="form-control select2 mr-2" style="width: 35%;" name="id_opd_fk" id="id_opd_fk" required> <!-- Menambahkan ID "id_opd_fk" -->
-                                    <option selected="selected">Pilih OPD</option>
-                                    @foreach($opds as $opd)
-                                        @if($opd->name != 'pengadu' && $opd->name != 'Inspektorat Kabupaten Gunung Mas')
-                                            <option value="{{ $opd->id }}">{{ $opd->name }}</option>
-                                        @endif
-                                    @endforeach
-                                </select>
-                                <select class="form-control select2" style="width: 35%;" name="id_category_fk" id="id_category_fk" required> <!-- Menambahkan ID "id_category_fk" -->
-                                    <option selected="selected">Pilih Kategori</option>
-                                    @foreach($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                    @endforeach
-                                </select>
-                                <button type="button" class="btn bg-gradient-olive ml-3" id="filterButton"> <!-- Menambahkan ID "filterButton" -->
-                                    <i class="fas fa-filter mr-2"></i>Filter
-                                </button>
-                            </form>
+                            <select class="form-control select2 mr-2" style="width: 35%;" name="id_opd_fk" id="id_opd_fk" required>
+                                <option selected="selected">Pilih OPD</option>
+                                @foreach($opds as $opd)
+                                    @if($opd->name != 'pengadu' && $opd->name != 'Inspektorat Kabupaten Gunung Mas')
+                                        <option value="{{ $opd->id }}">{{ $opd->name }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                            <select class="form-control select2" style="width: 35%;" name="id_category_fk" id="id_category_fk" required>
+                                <option selected="selected">Pilih Kategori</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                            <button class="btn bg-gradient-info ml-3">
+                               <a href="/laporanselesai"  style="text-decoration: none; color:white;"><i class="fas fa-reset"></i>Reset</a> 
+                            </button>
                         </div>
                         <div class="col-4">
                             <div class="input-group input-group-sm" style="width: 100%;">
@@ -152,60 +150,68 @@
 <!-- Memuat jQuery dari CDN -->
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
 <script>
     $(document).ready(function(){
-        $('#filterButton').click(function(){
+        // Inisialisasi Select2 untuk elemen select form
+        $('.select2').select2();
+
+        // Fungsi untuk memfilter data saat nilai select form berubah
+        $('.form-control').change(function(){
+            filterData();
+        });
+
+        // Fungsi untuk memfilter data dan memperbarui tabel
+        function filterData() {
             var idOpd = $('#id_opd_fk').val();
             var idCategory = $('#id_category_fk').val();
 
-            $.ajax({
-                url: '{{ route("laporanselesai.filter") }}',
-                method: 'GET',
-                data: {
-                    id_opd_fk: idOpd,
-                    id_category_fk: idCategory
-                },
-                success: function(data){
-                    // Perbarui tabel dengan data yang difilter
-                    var laporans = data.laporans;
-                    var tableBody = '';
-                    console.log(data); 
-                    if (laporans.data.length > 0) {
-                        $.each(laporans.data, function(index, laporan){
-                            // Mengonversi tanggal updated_at ke format 'd M Y'
-                            var formattedDate = laporan.updated_at ? new Date(laporan.updated_at).toLocaleDateString('en-GB', {
-                                day: 'numeric',
-                                month: 'long',
-                                year: 'numeric'
-                            }) : '';
+            // Lakukan filter hanya jika kedua nilai select form sudah dipilih
+            if(idOpd !== 'Pilih OPD' && idCategory !== 'Pilih Kategori'){
+                $.ajax({
+                    url: '{{ route("laporanselesai.filter") }}',
+                    method: 'GET',
+                    data: {
+                        id_opd_fk: idOpd,
+                        id_category_fk: idCategory
+                    },
+                    success: function(data){
+                        // Perbarui tabel dengan data yang difilter
+                        var laporans = data.laporans;
+                        var tableBody = '';
+                        if (laporans.data.length > 0) {
+                            $.each(laporans.data, function(index, laporan){
+                                // Format tanggal
+                                var formattedDate = laporan.updated_at ? new Date(laporan.updated_at).toLocaleDateString('en-GB', {
+                                    day: 'numeric',
+                                    month: 'long',
+                                    year: 'numeric'
+                                }) : '';
 
-                            // Membuat baris tabel untuk setiap laporan
-                            tableBody += '<tr>' +
-                                '<td>' + ((laporans.current_page - 1) * laporans.per_page + index + 1) + '</td>' + // Menggunakan formula untuk menghitung nomor urut pada setiap halaman
-                                '<td>' + (laporan.isi_laporan ? laporan.isi_laporan.substring(0, 50) : '') + '</td>' +
-                                '<td>' + formattedDate + '</td>' + // Menggunakan tanggal yang sudah di-format
-                                '<td>' + (laporan.category && laporan.category.name ? laporan.category.name : '') + '</td>' +
-                                '<td>' + (laporan.opd && laporan.opd.name ? laporan.opd.name : '') + '</td>' +
-                                '<td>' + getStatusBadge(laporan.status_selesai) + '</td>' +
-                                '<td>' + getKecepatanBadge(laporan.kecepatan) + '</td>' +
-                                '<td style="text-align: center;" colspan="2"><button type="button" class="btn bg-gradient-info"><a href="/detailpengaduanadmin/' + laporan.id + '" style="text-decoration: none; color:white;"><i class="fas fa-eye"></i></a></button></td>' +
-                                '</tr>';
-                        });
-                    } else {
-                        tableBody += '<tr><td colspan="7" style="text-align: center;">No Data</td></tr>';
+                                // Bangun baris tabel
+                                tableBody += '<tr>' +
+                                    '<td>' + ((laporans.current_page - 1) * laporans.per_page + index + 1) + '</td>' +
+                                    '<td>' + (laporan.isi_laporan ? laporan.isi_laporan.substring(0, 50) : '') + '</td>' +
+                                    '<td>' + formattedDate + '</td>' +
+                                    '<td>' + (laporan.category && laporan.category.name ? laporan.category.name : '') + '</td>' +
+                                    '<td>' + (laporan.opd && laporan.opd.name ? laporan.opd.name : '') + '</td>' +
+                                    '<td>' + getStatusBadge(laporan.status_selesai) + '</td>' +
+                                    '<td>' + getKecepatanBadge(laporan.kecepatan) + '</td>' +
+                                    '<td style="text-align: center;" colspan="2"><button type="button" class="btn bg-gradient-info"><a href="/detailpengaduanadmin/' + laporan.id + '" style="text-decoration: none; color:white;"><i class="fas fa-eye"></i></a></button></td>' +
+                                    '</tr>';
+                            });
+                        } else {
+                            tableBody += '<tr><td colspan="7" style="text-align: center;">No Data</td></tr>';
+                        }
+
+                        // Perbarui isi tabel
+                        $('#laporanTable tbody').html(tableBody);
                     }
+                });
+            }
+    }
 
-                    // Perbarui isi tabel
-                    $('#laporanTable tbody').html(tableBody);
-
-                    // Perbarui tautan halaman
-                    var pagination = laporans.links;
-                    $('.pagination').html(pagination);
-                }
-            });
-        });
-
-        // Fungsi untuk mendapatkan label status berdasarkan kode status
         function getStatusBadge(status_selesai, proses_tindak, validasi_laporan, disposisi_opd) {
             if (status_selesai === 'Y') {
                 return '<div><span class="badge badge-success">Selesai</span></div>';
@@ -235,6 +241,8 @@
             }
         }
     });
+    
 </script>
+
 
 @endsection
