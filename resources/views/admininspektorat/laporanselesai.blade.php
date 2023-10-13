@@ -57,6 +57,7 @@
                                 @csrf
                                 <select class="form-control select2"style="width: 20%;" name="rentang" required>
                                     <option selected="selected" value="">Pilih Rentang</option>
+                                    <option value="1">1 Bulan Terakhir</option>
                                     <option value="3">3 Bulan Terakhir</option>
                                     <option value="6">6 Bulan Terakhir</option>
                                 </select>
