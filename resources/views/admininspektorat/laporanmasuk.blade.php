@@ -52,6 +52,7 @@
                                 </select>
                                 <select class="form-control select2"style="width: 20%;" name="status" required>
                                     <option selected="selected" value="">Pilih Status</option>
+                                    <option value="S">Semua</option>
                                     <option value="P">Pending</option>
                                     <option value="D">Terdisposisi</option>
                                     <option value="T">Ditolak</option>

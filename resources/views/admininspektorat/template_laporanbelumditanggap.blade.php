@@ -110,7 +110,7 @@
                 <th>Kategori</th>
                 <th style="width: 150px;">OPD Tujuan</th>
                 <th>Isi Laporan</th>
-                <th>Status</th>
+                <th>Status Terkini</th>
             </tr>
         </thead>
         <tbody>
@@ -126,40 +126,40 @@
                 <td style="width: 150px;">{{ $d->opd->name }}</td>
                 <td>{{ $d->isi_laporan }}</td>
                 @if ($d->status_selesai == 'Y')
+                    <td>
+                        <div>Selesai</div>
+                    </td>
+                    @else
+                        @if ($d->proses_tindak == 'Y')
+                            <td>
+                                <div>Ditindak</div>
+                            </td>
+                        @else
+                            @if ($d->validasi_laporan == 'Y')
+                                <td>
+                                    <div>Valid</div>
+                                </td>
+                                @elseif($d->validasi_laporan == 'N')
+                                <td>
+                                    <div>Tidak valid</div>
+                                </td>
+                                    @else
+                                        @if ($d->disposisi_opd == 'Y')
                                             <td>
-                                                <div>Selesai</div>
+                                                <div>Terdisposisi</div>
                                             </td>
+                                        @elseif($d->disposisi_opd == 'N')
+                                                <td>
+                                                    <div>Ditolak</div>
+                                                </td>
                                             @else
-                                                @if ($d->proses_tindak == 'Y')
-                                                    <td>
-                                                        <div>Ditindak</div>
-                                                    </td>
-                                                @else
-                                                    @if ($d->validasi_laporan == 'Y')
-                                                        <td>
-                                                            <div>Valid</div>
-                                                        </td>
-                                                    @elseif($d->validasi_laporan == 'N')
-                                                        <td>
-                                                            <div>Tidak valid</div>
-                                                        </td>
-                                                    @else
-                                                        @if ($d->disposisi_opd == 'Y')
-                                                            <td>
-                                                                <div>Terdisposisi</div>
-                                                            </td>
-                                                        @elseif($d->disposisi_opd == 'N')
-                                                            <td>
-                                                                <div>Ditolak</div>
-                                                            </td>
-                                                        @else
-                                                            <td>
-                                                                <div>Pending</div>
-                                                            </td>
-                                                        @endif
-                                                    @endif
-                                                @endif
+                                                <td>
+                                                    <div>Pending</div>
+                                                </td>
+                                            @endif
                                         @endif
+                                    @endif
+                                @endif
             </tr>
             @endforeach
             @else

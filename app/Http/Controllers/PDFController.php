@@ -57,8 +57,17 @@ class PDFController extends Controller
         // Menghitung tanggal awal berdasarkan rentang waktu yang dipilih
         $tanggalAwal = now()->subMonths($rentang);
 
-        if($status == 'P'){
-            $data = Pengaduan::where('disposisi_opd','P')->where('created_at', '>=', $tanggalAwal)->get();
+        if($status == 'S'){
+            $data = Pengaduan::where('status_selesai',NULL)
+            ->where('created_at', '>=', $tanggalAwal)
+            ->get();
+
+        }elseif($status == 'P')
+        {
+            $data = Pengaduan::where('disposisi_opd','P')
+            ->where('created_at', '>=', $tanggalAwal)
+            ->get();
+
         }elseif($status == 'D')
         {
             $data = Pengaduan::where('disposisi_opd','Y')
@@ -108,6 +117,6 @@ class PDFController extends Controller
         $pdf = PDF::loadView('admininspektorat.template_laporanbelumditanggap', compact('data')); // 'pdf.template' adalah nama view PDF
 
 
-        return $pdf->setPaper('legal', 'landscape')->download('data.pdf'); // Nama file PDF yang akan diunduh
+        return $pdf->setPaper('a3', 'landscape')->download('data.pdf'); // Nama file PDF yang akan diunduh
     }
 }
