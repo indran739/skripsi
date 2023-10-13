@@ -217,6 +217,21 @@ if ($request->hasFile('foto_wajah')) {
 
 public function store_pengaduan(Request $request)
 {
+   // Validasi
+        $request->validate([
+            'id_category_fk' => 'required',
+            'id_kecamatan_fk' => 'required',
+            'id_desa_fk' => 'required',
+            'isi_laporan' => 'required',
+            'lokasi_kejadian' => 'required',
+            'tanggal_kejadian' => 'required',
+            'id_opd_fk' => 'required',
+            'lampiran' => 'nullable|file|mimes:pdf|max:5048',
+            'first_image' => 'nullable|mimes:jpeg,png|max:5048',
+            'sec_image' => 'nullable|mimes:jpeg,png|max:5048',
+            'anonim' => 'nullable|in:Y',
+        ]);
+
     // Ambil semua data dari request tanpa validasi
     $pengaduan = new Pengaduan();
     $pengaduan->isi_laporan = $request->input('isi_laporan');

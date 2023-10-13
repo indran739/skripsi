@@ -41,6 +41,38 @@
                         <a class="nav-link" style="color: black;text-decoration: none;" id="custom-tabs-four-disposisi-tab" data-toggle="pill" href="#custom-tabs-four-disposisi" role="tab" aria-controls="custom-tabs-four-disposisi" aria-selected="false"><i class="fas fa-paper-plane mr-2"></i>Terdisposisi</a>
                     </li>
                     </ul>
+                    <div class="row mt-3 ml-3">
+                        <div class="col-8">
+                            <form action="{{ url('/cetak-laporan-belumtanggap') }}" method="post" target="_blank">
+                                @csrf
+                                <select class="form-control select2"style="width: 20%;" name="rentang" required>
+                                    <option selected="selected" value="">Pilih Rentang</option>
+                                    <option value="3">3 Bulan Terakhir</option>
+                                    <option value="6">6 Bulan Terakhir</option>
+                                </select>
+                                <select class="form-control select2"style="width: 20%;" name="status" required>
+                                    <option selected="selected" value="">Pilih Status</option>
+                                    <option value="P">Pending</option>
+                                    <option value="D">Terdisposisi</option>
+                                    <option value="T">Ditolak</option>
+                                    <option value="V">Valid</option>
+                                    <option value="I">Tidak Valid</option>
+                                    <option value="W">Ditindak</option>
+                                </select>
+                                <button type="submit" class="btn bg-gradient-olive ml-3">Cetak Laporan</button>
+                            </form>
+                        </div>
+                        <div class="col-4">
+                            <div class="input-group input-group-sm" style="width: 500px;">
+                                <input type="text" name="table_search" class="form-control" placeholder="Search">
+                                    <div class="input-group-append float-left">
+                                        <button type="submit" class="btn btn-default">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="tab-content" id="custom-tabs-four-tabContent">
@@ -48,14 +80,6 @@
                         <div class="row">
                                 <div class="col-12">
                                     <div class="card-tools d-flex justify-content-end">
-                                        <div class="input-group input-group-sm" style="width: 500px;">
-                                            <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-                                            <div class="input-group-append float-left">
-                                            <button type="submit" class="btn btn-default">
-                                                <i class="fas fa-search"></i>
-                                            </button>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                                 <!-- /.card-header -->
@@ -223,14 +247,6 @@
                         <div class="row">
                                     <div class="col-12">
                                         <div class="card-tools d-flex justify-content-end">
-                                            <div class="input-group input-group-sm" style="width: 500px;">
-                                                <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-                                                <div class="input-group-append float-left">
-                                                <button type="submit" class="btn btn-default">
-                                                    <i class="fas fa-search"></i>
-                                                </button>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                     <!-- /.card-header -->
@@ -319,14 +335,6 @@
                     <div class="row">
                                     <div class="col-12">
                                         <div class="card-tools d-flex justify-content-end">
-                                            <div class="input-group input-group-sm" style="width: 500px;">
-                                                <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-                                                <div class="input-group-append float-left">
-                                                <button type="submit" class="btn btn-default">
-                                                    <i class="fas fa-search"></i>
-                                                </button>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                     <!-- /.card-header -->

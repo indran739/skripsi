@@ -98,7 +98,7 @@
     </div>
     <div class="border"></div>
     <div class="title">
-        <h2>Data Laporan Pengaduan Selesai</h2>
+        <h2>Data Laporan Masuk</h2>
     </div>
     <table>
         <thead>
@@ -106,27 +106,65 @@
                 <th>No</th>
                 <th>NIK Pengadu</th>
                 <th style="width: 150px;">Nama Pengadu</th>
-                <th style="width: 150px;">Tanggal Tindak</th>
-                <th style="width: 150px;">Tanggal Selesai</th>
+                <th style="width: 150px;">Tanggal Lapor</th>
                 <th>Kategori</th>
                 <th style="width: 150px;">OPD Tujuan</th>
                 <th>Isi Laporan</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
             @php $count = 1 @endphp
+            @if(count($data) > 0)
             @foreach($data as $d)
             <tr>
                 <td>{{ $count++ }}</td>
                 <td>{{ $d->user->nik }}</td>
                 <td style="width: 150px;">{{ $d->user->name }}</td>
-                <td style="width: 150px;">{{ \Carbon\Carbon::parse($d->tanggal_tindak)->format('d F Y') }}</td>
-                <td style="width: 150px;">{{ \Carbon\Carbon::parse($d->updated_at)->format('d F Y') }}</td>
+                <td style="width: 150px;">{{ \Carbon\Carbon::parse($d->created_at)->format('d F Y') }}</td>
                 <td>{{ $d->category->name }}</td>
                 <td style="width: 150px;">{{ $d->opd->name }}</td>
                 <td>{{ $d->isi_laporan }}</td>
+                @if ($d->status_selesai == 'Y')
+                                            <td>
+                                                <div>Selesai</div>
+                                            </td>
+                                            @else
+                                                @if ($d->proses_tindak == 'Y')
+                                                    <td>
+                                                        <div>Ditindak</div>
+                                                    </td>
+                                                @else
+                                                    @if ($d->validasi_laporan == 'Y')
+                                                        <td>
+                                                            <div>Valid</div>
+                                                        </td>
+                                                    @elseif($d->validasi_laporan == 'N')
+                                                        <td>
+                                                            <div>Tidak valid</div>
+                                                        </td>
+                                                    @else
+                                                        @if ($d->disposisi_opd == 'Y')
+                                                            <td>
+                                                                <div>Terdisposisi</div>
+                                                            </td>
+                                                        @elseif($d->disposisi_opd == 'N')
+                                                            <td>
+                                                                <div>Ditolak</div>
+                                                            </td>
+                                                        @else
+                                                            <td>
+                                                                <div>Pending</div>
+                                                            </td>
+                                                        @endif
+                                                    @endif
+                                                @endif
+                                        @endif
             </tr>
             @endforeach
+            @else
+            <tr> <td colspan="8" style="text-align: center;">No Data</td> </tr>
+            @endif
         </tbody>
     </table>
 </body>
