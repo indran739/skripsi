@@ -20,7 +20,7 @@
                         <div class="card-header">
                     <div class="row">
                         <div class="col-8">
-                            <select class="form-control select2 mr-2" style="width: 35%;" name="id_opd_fk" id="id_opd_fk" required>
+                            <select class="form-control filter select2 mr-2" style="width: 35%;" name="id_opd_fk" id="id_opd_fk" required>
                                 <option selected="selected">Filter OPD</option>
                                 @foreach($opds as $opd)
                                     @if($opd->name != 'pengadu' && $opd->name != 'Inspektorat Kabupaten Gunung Mas')
@@ -28,7 +28,7 @@
                                     @endif
                                 @endforeach
                             </select>
-                            <select class="form-control select2" style="width: 35%;" name="id_category_fk" id="id_category_fk" required>
+                            <select class="form-control filter select2" style="width: 35%;" name="id_category_fk" id="id_category_fk" required>
                                 <option selected="selected">Filter Kategori</option>
                                 @foreach($categories as $category)
                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -55,7 +55,7 @@
                         <div class="col-8">
                             <form action="{{ url('/cetak-pdf') }}" method="post" target="_blank">
                                 @csrf
-                                <select class="form-control select2" style="width: 20%;" name="rentang" required>
+                                <select class="form-control select2"style="width: 20%;" name="rentang" required>
                                     <option selected="selected" value="">Pilih Rentang</option>
                                     <option value="3">3 Bulan Terakhir</option>
                                     <option value="6">6 Bulan Terakhir</option>
@@ -171,7 +171,7 @@
         $('.select2').select2();
 
         // Fungsi untuk memfilter data saat nilai select form berubah
-        $('.form-control').change(function(){
+        $('.filter').change(function(){
             filterData();
         });
 

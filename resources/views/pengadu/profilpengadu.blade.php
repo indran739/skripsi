@@ -99,92 +99,15 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="" class="col-sm-3 col-form-label">Tempat Lahir</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" placeholder="" name="tempat_lahir" value="{{ auth()->user()->tempat_lahir }}">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="" class="col-sm-3 col-form-label">Tanggal Lahir</label>
-                        <div class="col-sm-9">
-                            <div class="input-group date" style="width: 35%;" id="reservationdate" data-target-input="nearest" >
-                                <input type="text" class="form-control datetimepicker-input" name="tanggal_lahir" data-target="#reservationdate" value="{{ \Carbon\Carbon::parse(auth()->user()->tanggal_lahir)->format('d/m/Y') }}" />
-                                <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
-                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="" class="col-sm-3 col-form-label">Jenis Kelamin</label>
-                        <div class="col-sm-9">
-                            <select class="form-control select2" style="width: 70%;" name="jenis_kelamin">
-                                <option selected="selected" disabled>Pilih Jenis Kelamin</option>
-                                <option value="Laki-Laki" {{ auth()->user()->jenis_kelamin == 'Laki-Laki' ? 'selected' : '' }}>Laki-laki</option>
-                                <option value="Perempuan" {{ auth()->user()->jenis_kelamin == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="" class="col-sm-3 col-form-label">Agama</label>
-                        <div class="col-sm-9">
-                            <select class="form-control select2" style="width: 70%;" name="agama">
-                                <option selected="selected" disbabled>Pilih Agama</option>
-                                <option value="Islam" {{ auth()->user()->agama == 'Islam' ? 'selected' : '' }}>Islam</option>
-                                <option value="Kristen" {{ auth()->user()->agama == 'Kristen' ? 'selected' : '' }}>Kristen</option>
-                                <option value="Katolik" {{ auth()->user()->agama == 'Katolik' ? 'selected' : '' }}>Katolik</option>
-                                <option value="Hindu" {{ auth()->user()->agama == 'Hindu' ? 'selected' : '' }}>Hindu</option>
-                                <option value="Budha" {{ auth()->user()->agama == 'Budha' ? 'selected' : '' }}>Budha</option>
-                                <option value="Kong Hu Chu" {{ auth()->user()->agama == 'Kong Hu Chu' ? 'selected' : '' }}>Kong Hu Chu</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
                         <label for="" class="col-sm-3 col-form-label">Email</label>
                         <div class="col-sm-9">
-                            <input type="email" class="form-control" style="width: 25%;" placeholder="" name="no_hp" value="{{ auth()->user()->email }}">
+                            <input type="email" class="form-control" style="width: 39%;" placeholder="" name="no_hp" value="{{ auth()->user()->email }}">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="" class="col-sm-3 col-form-label">No. Handphone</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" style="width: 25%;" placeholder="" name="no_hp" value="{{ auth()->user()->no_hp }}">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="" class="col-sm-3 col-form-label">Pekerjaan</label>
-                        <div class="col-sm-9">
-                            <select class="form-control select2" style="width: 70%;" name="pekerjaan">
-                                <option selected="selected">Pilih Pekerjaan</option>
-                                <option value="PNS" {{ auth()->user()->pekerjaan == 'PNS' ? 'selected' : '' }}>PNS</option>
-                                <option value="Wiraswasta" {{ auth()->user()->pekerjaan == 'Wiraswasta' ? 'selected' : '' }}>Wiraswasta</option>
-                                <option value="Mahasiswa" {{ auth()->user()->pekerjaan == 'Mahasiswa' ? 'selected' : '' }}>Mahasiswa</option>
-                                <option value="Pelajar" {{ auth()->user()->pekerjaan == 'Pelajar' ? 'selected' : '' }}>Pelajar</option>   
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="" class="col-sm-3 col-form-label">Golongan Darah</label>
-                        <div class="col-sm-9">
-                            <select class="form-control select2" style="width: 70%;" name="gol_darah">
-                                <option selected="selected" disbabled>Pilih Gol.Darah</option>
-                                <option value="A" {{ auth()->user()->gol_darah == 'A' ? 'selected' : '' }}>A</option>
-                                <option value="B" {{ auth()->user()->gol_darah == 'B' ? 'selected' : '' }}>B</option>
-                                <option value="AB" {{ auth()->user()->gol_darah == 'AB' ? 'selected' : '' }}>AB</option>
-                                <option value="O" {{ auth()->user()->gol_darah == 'O' ? 'selected' : '' }}>O</option>
-
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="" class="col-sm-3 col-form-label">Status Pernikahan</label>
-                        <div class="col-sm-9">
-                            <select class="form-control select2" style="width: 70%;" name="status_pernikahan">
-                                <option selected="selected" disabled>Pilih Status</option>
-                                <option value="Belum Menikah" {{ auth()->user()->status_pernikahan == 'Belum Menikah' ? 'selected' : '' }}>Belum Menikah</option>
-                                <option value="Sudah Menikah" {{ auth()->user()->status_pernikahan == 'Sudah Menikah' ? 'selected' : '' }}>Sudah Menikah</option>
-
-                            </select>
                         </div>
                     </div>
                     <div class="form-group row">

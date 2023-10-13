@@ -163,33 +163,12 @@ public function editprofile(Request $request, $id_user){
 
     $user->name = $request->name;
     $user->alamat = $request->alamat;
-    $user->tempat_lahir = $request->tempat_lahir;
-
-    // Ambil tanggal dari input HTML
-    $tanggal_lahir = $request->input('tanggal_lahir');
-
-    // Konversi format tanggal dari 'd/m/Y' menjadi 'Y-m-d'
-    $tanggal_lahir_mysql = date("Y-m-d", strtotime($tanggal_lahir));
-
-    $user->tanggal_lahir = $tanggal_lahir_mysql;
-    $user->jenis_kelamin = $request->jenis_kelamin;
-    $user->agama = $request->agama;
     $user->no_hp = $request->no_hp;
-    $user->pekerjaan = $request->pekerjaan;
-    $user->status_pernikahan = $request->status_pernikahan;
-    $user->gol_darah = $request->gol_darah;
-    
 
 if ($request->hasFile('foto_wajah')) {
     $fotoWajah = $request->file('foto_wajah');
     $fotoWajahPath = $fotoWajah->store('profile-fotos');
     $user->foto_wajah = $fotoWajahPath;
-}
-
-if ($request->hasFile('foto_ktp')) {
-    $fotoKtp = $request->file('foto_ktp');
-    $fotoKtpPath = $fotoKtp->store('fotos_ktp'); 
-    $user->foto_ktp = $fotoKtpPath;
 }
 
     $user->save();
