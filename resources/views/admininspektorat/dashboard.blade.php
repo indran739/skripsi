@@ -54,7 +54,7 @@
                 <p>Jumlah Laporan Ditolak</p>
               </div>
               <div class="icon">
-                <i class="fas fa-times-circle mr-2"></i>
+                <i class="fas fa-exclamation-circle mr-2"></i>
               </div>
             </div>
           </div>
