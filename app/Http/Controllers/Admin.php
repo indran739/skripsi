@@ -22,7 +22,7 @@ class Admin extends Controller
         $idOpd = Auth::user()->id_opd_fk;
         $opd = Opd::select('name')->where('id', $idOpd)->get();
         
-        $count_users = User::where('role','pengadu')->get()->count();
+        $count_users = User::where('role','pengadu')->where('verification','Y')->get()->count();
 
         $count_laporan_masuk = Pengaduan::where('disposisi_opd','P')
         ->where('status_selesai',NULL)
@@ -31,6 +31,12 @@ class Admin extends Controller
         ->count();
 
         $count_laporan_disposisi = Pengaduan::where('disposisi_opd','Y')
+        ->where('status_selesai',NULL)->where('validasi_laporan','P')
+        ->where('proses_tindak','P')
+        ->get()
+        ->count();
+
+        $count_laporan_tolak = Pengaduan::where('disposisi_opd','N')
         ->where('status_selesai',NULL)->where('validasi_laporan','P')
         ->where('proses_tindak','P')
         ->get()
@@ -117,6 +123,7 @@ class Admin extends Controller
             'count_pengadu' => $count_users,
             'count_laporanmasuk' => $count_laporan_masuk,
             'count_laporandisposisi' => $count_laporan_disposisi,
+            'count_laporantolak' => $count_laporan_tolak,
             'count_laporanselesai' => $count_laporan_selesai,
             'data' => $data,
             'active' => 'beranda',

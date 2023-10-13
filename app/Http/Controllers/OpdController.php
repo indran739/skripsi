@@ -20,9 +20,12 @@ class OpdController extends Controller
         $opd =  Opd::select('name')->where('id',$idOpd)->first();
 
         // Mengambil data pengaduan berdasarkan status
-        $count_users = User::where('role','pengadu')->get()->count();
+        $count_users = User::where('role','pengadu')->where('verification','Y')->get()->count();
+        
         $count_laporan_masuk = Pengaduan::where('disposisi_opd','P')->where('status_selesai',NULL)->where('validasi_laporan','P')->where('proses_tindak','P')->count();
         $count_laporan_disposisi = Pengaduan::where('disposisi_opd','Y')->where('status_selesai',NULL)->where('validasi_laporan','P')->where('proses_tindak','P')->where('id_opd_fk',$idOpd)->get()->count();
+        $count_laporan_valid = Pengaduan::where('disposisi_opd','Y')->where('status_selesai',NULL)->where('validasi_laporan','Y')->where('proses_tindak','P')->where('id_opd_fk',$idOpd)->get()->count();
+        $count_laporan_invalid = Pengaduan::where('disposisi_opd','Y')->where('status_selesai',NULL)->where('validasi_laporan','N')->where('proses_tindak','P')->where('id_opd_fk',$idOpd)->get()->count();
         $count_laporan_ditindak = Pengaduan::where('disposisi_opd','Y')->where('status_selesai',NULL)->where('validasi_laporan','Y')->where('proses_tindak','Y')->where('id_opd_fk',$idOpd)->get()->count();
         $count_laporan_selesai = Pengaduan::where('disposisi_opd','Y')->where('status_selesai','Y')->where('validasi_laporan','Y')->where('proses_tindak','Y')->where('id_opd_fk',$idOpd)->get()->count();
 
@@ -112,6 +115,8 @@ class OpdController extends Controller
             'count_pengadu' => $count_users,
             'count_laporanditindak' => $count_laporan_ditindak,
             'count_laporandisposisi' => $count_laporan_disposisi,
+            'count_laporanvalid' => $count_laporan_valid,
+            'count_laporaninvalid' => $count_laporan_invalid,
             'count_laporanselesai' => $count_laporan_selesai,
             'labels' => $labels,
             'data' => $data,

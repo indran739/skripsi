@@ -18,65 +18,83 @@
     </div>
     <!-- /.content-header -->
     <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
         <div class="row">
-          <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-success">
+        <div class="col-lg-2 col-6">
+              <div class="small-box bg-olive">
                 <div class="inner">
-                  <h3>{{ $averageResolutionTime }} Hours<sup style="font-size: 20px"></sup></h3>
+                  <h3>{{ $averageResolutionTime }} Hours<sup></sup></h3>
 
-                  <p>Rata-rata waktu penyelesaian pengaduan</p>
+                  <p>Jumlah Laporan Tedisposisi</p>
                 </div>
                 <div class="icon">
                   <i class="far fa-clock"></i>
                 </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+          <div class="col-lg-2 col-6">
+              <div class="small-box bg-primary">
+                <div class="inner">
+                  <h3>{{ $count_laporandisposisi }}<sup></sup></h3>
+
+                  <p>Jumlah Laporan Tedisposisi</p>
+                </div>
+                <div class="icon">
+                <i class="fas fa-paper-plane mr-2"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-2 col-6">
+              <div class="small-box bg-info">
+                <div class="inner">
+                  <h3>{{ $count_laporanvalid }}<sup></sup></h3>
+
+                  <p>Jumlah Laporan Valid</p>
+                </div>
+                <div class="icon">
+                  <i class="fas fa-check-circle mr-2"></i>
+                </div>
               </div>
             </div>
           <!-- ./col -->
-          <div class="col-lg-3 col-6">
+          <div class="col-lg-2 col-6">
             <!-- small box -->
-            <div class="small-box bg-warning">
+            <div class="small-box bg-danger">
               <div class="inner">
-                <h3>{{ $count_laporandisposisi }}</h3>
+                <h3>{{ $count_laporaninvalid }}</h3>
 
-                <p>Jumlah Laporan Disposisi</p>
+                <p>Jumlah Laporan Invalid</p>
               </div>
               <div class="icon">
-                <i class="far fa-envelope"></i>
+                <i class="fas fa-times-circle mr-2"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
-          <div class="col-lg-3 col-6">
+          <div class="col-lg-2 col-6">
             <!-- small box -->
-            <div class="small-box bg-info">
+            <div class="small-box bg-dark">
               <div class="inner">
                 <h3>{{ $count_laporanditindak }}</h3>
 
                 <p>Jumlah Sedang Ditindak</p>
               </div>
               <div class="icon">
-                <i class="far fa-envelope"></i>
+                <i class="fas fa-cog mr-2"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
-          <div class="col-lg-3 col-6">
+          <div class="col-lg-2 col-6">
             <!-- small box -->
-            <div class="small-box bg-danger">
+            <div class="small-box bg-success">
               <div class="inner">
                 <h3>{{ $count_laporanselesai }}</h3>
 
                 <p>Jumlah Laporan Selesai</p>
               </div>
               <div class="icon">
-                <i class="far fa-envelope"></i>
+                <i class="fas fa-clipboard-check"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->

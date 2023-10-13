@@ -21,67 +21,61 @@
         <!-- Small boxes (Stat box) -->
         <div class="row">
           <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-info">
-              <div class="inner">
-                <h3>{{ $count_pengadu }}</h3>
+              <div class="small-box bg-warning">
+                <div class="inner">
+                  <h3>{{ $count_laporanmasuk }}<sup></sup></h3>
 
-                <p>Jumlah User Pengadu</p>
+                  <p>Jumlah Laporan Pending</p>
+                </div>
+                <div class="icon">
+                <i class="fas fa-clock mr-2"></i>
+                </div>
               </div>
-              <div class="icon">
-                <i class="far fa-user"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-success">
-              <div class="inner">
-                <h3>{{ $count_laporanmasuk }}<sup style="font-size: 20px"></sup></h3>
+            <div class="col-lg-3 col-6">
+              <div class="small-box bg-primary">
+                <div class="inner">
+                  <h3>{{ $count_laporandisposisi }}<sup></sup></h3>
 
-                <p>Jumlah Laporan Masuk</p>
+                  <p>Jumlah Terdisposisi</p>
+                </div>
+                <div class="icon">
+                  <i class="fas fa-paper-plane mr-2"></i>
+                </div>
               </div>
-              <div class="icon">
-                <i class="far fa-envelope"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-warning">
-              <div class="inner">
-                <h3>{{ $count_laporandisposisi }}</h3>
-
-                <p>Jumlah Laporan Disposisi</p>
-              </div>
-              <div class="icon">
-                <i class="far fa-envelope"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
           <!-- ./col -->
           <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>{{ $count_laporanselesai }}</h3>
+                <h3>{{ $count_laporantolak }}</h3>
 
-                <p>Jumlah Laporan Selesai</p>
+                <p>Jumlah Laporan Ditolak</p>
               </div>
               <div class="icon">
-                <i class="far fa-envelope""></i>
+                <i class="fas fa-times-circle mr-2"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
-        </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-lightblue">
+              <div class="inner">
+                <h3>{{ $count_pengadu }}</h3>
+                
+                <p>Jumlah User Pengadu</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-user"></i>
+              </div>
+            </div>
+          </div>
+          <!-- ./col -->
         <!-- /.row -->
+
         <!-- Main row -->
         <div class="row">
           <!-- Left col -->
