@@ -21,7 +21,7 @@
                     <div class="row">
                         <div class="col-8">
                             <select class="form-control select2 mr-2" style="width: 35%;" name="id_opd_fk" id="id_opd_fk" required>
-                                <option selected="selected">Pilih OPD</option>
+                                <option selected="selected">Filter OPD</option>
                                 @foreach($opds as $opd)
                                     @if($opd->name != 'pengadu' && $opd->name != 'Inspektorat Kabupaten Gunung Mas')
                                         <option value="{{ $opd->id }}">{{ $opd->name }}</option>
@@ -29,7 +29,7 @@
                                 @endforeach
                             </select>
                             <select class="form-control select2" style="width: 35%;" name="id_category_fk" id="id_category_fk" required>
-                                <option selected="selected">Pilih Kategori</option>
+                                <option selected="selected">Filter Kategori</option>
                                 @foreach($categories as $category)
                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                                 @endforeach
@@ -37,9 +37,7 @@
                             <button class="btn bg-gradient-info ml-3">
                                <a href="/laporanselesai"  style="text-decoration: none; color:white;"><i class="fas fa-reset"></i>Reset</a> 
                             </button>
-                            <button class="btn bg-gradient-primary ml-3">
-                                <a href="{{ url('/cetak-pdf') }}" style="text-decoration: none; color:white;" target="_blank" >Cetak Laporan</a>
-                            </button>
+                           
                         </div>
                         <div class="col-4">
                             <div class="input-group input-group-sm" style="width: 100%;">
@@ -53,7 +51,19 @@
                             </div>
                         </div>
                     </div>
-                    
+                    <div class="row mt-3">
+                        <div class="col-8">
+                            <form action="{{ url('/cetak-pdf') }}" method="post" target="_blank">
+                                @csrf
+                                <select class="form-control select2" style="width: 20%;" name="rentang" required>
+                                    <option selected="selected" value="">Pilih Rentang</option>
+                                    <option value="3">3 Bulan Terakhir</option>
+                                    <option value="6">6 Bulan Terakhir</option>
+                                </select>
+                                <button type="submit" class="btn bg-gradient-olive ml-3">Cetak Laporan</button>
+                            </form>
+                        </div>
+                    </div>
                         <div class="card-tools">
                         
                         </div>

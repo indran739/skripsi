@@ -24,27 +24,42 @@
                 <div class="col-12">
                     <div class="card">
                     <div class="card-header"> 
-                    <form id="filterForm"> <!-- Menambahkan ID "filterForm" pada elemen form -->
-                        <select class="form-control select2" style="width: 25%;" name="id_category_fk" id="id_category_fk" required> <!-- Menambahkan ID "id_category_fk" -->
-                            <option selected="selected">Pilih Kategori</option>
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                @endforeach
-                        </select>
-                        <button type="button" class="btn bg-gradient-olive ml-3" id="filterButton"> <!-- Menambahkan ID "filterButton" -->
-                            <i class="fas fa-filter mr-2"></i>Filter
-                        </button>
-                    </form>
-                        <div class="card-tools">
-                        <div class="input-group input-group-sm" style="width: 500px;">
-                            <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+                        <div class="row">
+                            <div class="col-8">
+                                <select class="form-control select2" style="width: 35%;" name="id_category_fk" id="id_category_fk" required>
+                                    <option selected="selected">Filter Kategori</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                                <button class="btn bg-gradient-info ml-3">
+                                    <a href="/laporanselesaiopd"  style="text-decoration: none; color:white;"><i class="fas fa-reset"></i>Reset</a> 
+                                </button>
+                            </div>
+                            <div class="col-4">
+                                <div class="input-group input-group-sm" style="width: 100%;">
+                                    <input type="text" name="table_search" class="form-control d-flex justofy-content-center" placeholder="Search">
 
-                            <div class="input-group-append">
-                            <button type="submit" class="btn btn-default">
-                                <i class="fas fa-search"></i>
-                            </button>
+                                    <div class="input-group-append">
+                                    <button type="submit" class="btn btn-default">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <div class="row mt-3">
+                            <div class="col-8">
+                                <form action="{{ url('/cetak-laporan-selesai-opd') }}" method="post" target="_blank">
+                                    @csrf
+                                    <select class="form-control select2" style="width: 20%;" name="rentang" required>
+                                        <option selected="selected" value="">Pilih Rentang</option>
+                                        <option value="3">3 Bulan Terakhir</option>
+                                        <option value="6">6 Bulan Terakhir</option>
+                                    </select>
+                                    <button type="submit" class="btn bg-gradient-olive ml-3">Cetak Laporan</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                     <!-- /.card-header -->
@@ -140,64 +155,71 @@
 </div><!-- /.container-fluid -->
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
 <script>
     $(document).ready(function(){
-        $('#filterButton').click(function(){
-            var idCategory = $('#id_category_fk').val();
+        // Inisialisasi Select2 untuk elemen select form
+        $('.select2').select2();
 
-            $.ajax({
-                url: '{{ route("laporanselesaiopd.filter") }}',
-                method: 'GET',
-                data: {
-                    id_category_fk: idCategory
-                },
-                success: function(data){
-                    // Perbarui tabel dengan data yang difilter
-                    var laporans = data.laporans;
-                    var tableBody = '';
-                    console.log(data); 
-                    if (laporans.data.length > 0) {
-                        $.each(laporans.data, function(index, laporan){
-                            // Mengonversi tanggal updated_at ke format 'd M Y'
-                            var formattedDateupdated = laporan.updated_at ? new Date(laporan.updated_at).toLocaleDateString('en-GB', {
-                                day: 'numeric',
-                                month: 'long',
-                                year: 'numeric'
-                            }) : '';
-
-                            var formattedDatecreated = laporan.updated_at ? new Date(laporan.tanggal_tindak).toLocaleDateString('en-GB', {
-                                day: 'numeric',
-                                month: 'long',
-                                year: 'numeric'
-                            }) : '';
-
-                            // Membuat baris tabel untuk setiap laporan
-                            tableBody += '<tr>' +
-                                '<td>' + ((laporans.current_page - 1) * laporans.per_page + index + 1) + '</td>' + // Menggunakan formula untuk menghitung nomor urut pada setiap halaman
-                                '<td>' + (laporan.isi_laporan ? laporan.isi_laporan.substring(0, 50) : '') + '</td>' +
-                                '<td>' + formattedDatecreated + '</td>' + // Menggunakan tanggal yang sudah di-format
-                                '<td>' + formattedDateupdated + '</td>' + // Menggunakan tanggal yang sudah di-format
-                                '<td>' + (laporan.category && laporan.category.name ? laporan.category.name : '') + '</td>' +
-                                '<td>' + getStatusBadge(laporan.status_selesai) + '</td>' +
-                                '<td>' + getKecepatanBadge(laporan.kecepatan) + '</td>' +
-                                '<td style="text-align: center;" colspan="2"><button type="button" class="btn bg-gradient-info"><a href="/detailpengaduanadmin/' + laporan.id + '" style="text-decoration: none; color:white;"><i class="fas fa-eye"></i></a></button></td>' +
-                                '</tr>';
-                        });
-                    } else {
-                        tableBody += '<tr><td colspan="7" style="text-align: center;">No Data</td></tr>';
-                    }
-
-                    // Perbarui isi tabel
-                    $('#laporanTable tbody').html(tableBody);
-
-                    // Perbarui tautan halaman
-                    var pagination = laporans.links;
-                    $('.pagination').html(pagination);
-                }
-            });
+        // Fungsi untuk memfilter data saat nilai select form berubah
+        $('.form-control').change(function(){
+            filterData();
         });
 
-        // Fungsi untuk mendapatkan label status berdasarkan kode status
+        // Fungsi untuk memfilter data dan memperbarui tabel
+        function filterData() {
+            var idCategory = $('#id_category_fk').val();
+
+            // Lakukan filter hanya jika kedua nilai select form sudah dipilih
+            if(idCategory !== 'Pilih Kategori'){
+                $.ajax({
+                    url: '{{ route("laporanselesaiopd.filter") }}',
+                    method: 'GET',
+                    data: {
+                        id_category_fk: idCategory
+                    },
+                    success: function(data){
+                        // Perbarui tabel dengan data yang difilter
+                        var laporans = data.laporans;
+                        var tableBody = '';
+                        if (laporans.data.length > 0) {
+                            $.each(laporans.data, function(index, laporan){
+
+                                var formattedDateCreated = laporan.updated_at ? new Date(laporan.created_at).toLocaleDateString('en-GB', {
+                                    day: 'numeric',
+                                    month: 'long',
+                                    year: 'numeric'
+                                }) : '';
+                                // Format tanggal
+                                var formattedDateUpdated = laporan.updated_at ? new Date(laporan.updated_at).toLocaleDateString('en-GB', {
+                                    day: 'numeric',
+                                    month: 'long',
+                                    year: 'numeric'
+                                }) : '';
+
+                                // Bangun baris tabel
+                                tableBody += '<tr>' +
+                                    '<td>' + ((laporans.current_page - 1) * laporans.per_page + index + 1) + '</td>' +
+                                    '<td>' + (laporan.isi_laporan ? laporan.isi_laporan.substring(0, 50) : '') + '</td>' +
+                                    '<td>' + formattedDateCreated + '</td>' +
+                                    '<td>' + formattedDateUpdated + '</td>' +
+                                    '<td>' + (laporan.category && laporan.category.name ? laporan.category.name : '') + '</td>' +
+                                    '<td>' + getStatusBadge(laporan.status_selesai) + '</td>' +
+                                    '<td>' + getKecepatanBadge(laporan.kecepatan) + '</td>' +
+                                    '<td style="text-align: center;" colspan="2"><button type="button" class="btn bg-gradient-info"><a href="/detailpengaduanadmin/' + laporan.id + '" style="text-decoration: none; color:white;"><i class="fas fa-eye"></i></a></button></td>' +
+                                    '</tr>';
+                            });
+                        } else {
+                            tableBody += '<tr><td colspan="7" style="text-align: center;">No Data</td></tr>';
+                        }
+                        // Perbarui isi tabel
+                        $('#laporanTable tbody').html(tableBody);
+                    }
+                });
+            }
+    }
+
         function getStatusBadge(status_selesai, proses_tindak, validasi_laporan, disposisi_opd) {
             if (status_selesai === 'Y') {
                 return '<div><span class="badge badge-success">Selesai</span></div>';
@@ -227,6 +249,7 @@
             }
         }
     });
+    
 </script>
 
 @endsection

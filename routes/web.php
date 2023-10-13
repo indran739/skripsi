@@ -103,7 +103,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('hapuskategori/{id_categories}', [Admin::class, 'hapus_kategori']);
         Route::post('tambahadmin', [Admin::class, 'tambah_admin']);
         Route::get('laporanselesai/filter', [Admin::class, 'filterLaporanSelesai'])->name('laporanselesai.filter');
-        Route::get('/cetak-pdf', [PDFController::class, 'cetakPDF']);
+        Route::post('/cetak-pdf', [PDFController::class, 'cetakPDF']);
 
 
         // Route::post('filter', [Admin::class, 'filterLaporan']);
@@ -123,6 +123,7 @@ Route::middleware(['auth'])->group(function () {
         Route::put('edittanggapanopd/{id_tanggapan}', [OpdController::class, 'edittanggapanopd']);
         Route::post('hapustanggapanopd/{id_tanggapan}', [OpdController::class, 'hapustanggapanopd']);
         Route::get('laporanselesaiopd/filter', [OpdController::class, 'filterLaporanSelesai'])->name('laporanselesaiopd.filter');
+        Route::post('/cetak-laporan-selesai-opd', [PDFController::class, 'cetakLaporanSelesaiOpd']);
     });
 
     Route::middleware(['pengadu'])->group(function () {

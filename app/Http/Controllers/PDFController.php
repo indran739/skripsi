@@ -16,10 +16,34 @@ use App\Models\Tanggapan_Admins;
 
 class PDFController extends Controller
 {
-    public function cetakPDF()
+    public function cetakPDF(Request $request)
     {
-        $data = Pengaduan::where('status_selesai','Y')->get(); // Ambil data dari database
+
+        $rentang = $request->input('rentang'); // Mendapatkan nilai rentang waktu dari formulir
+
+        // Menghitung tanggal awal berdasarkan rentang waktu yang dipilih
+        $tanggalAwal = now()->subMonths($rentang);
+
+        $data = Pengaduan::where('status_selesai','Y')->where('created_at', '>=', $tanggalAwal)->get();
+
         $pdf = PDF::loadView('pdf', compact('data')); // 'pdf.template' adalah nama view PDF
+
+
+        return $pdf->setPaper('legal', 'landscape')->download('data.pdf'); // Nama file PDF yang akan diunduh
+    }
+
+    public function cetakLaporanSelesaiOpd(Request $request)
+    {
+
+        $rentang = $request->input('rentang'); // Mendapatkan nilai rentang waktu dari formulir
+
+        // Menghitung tanggal awal berdasarkan rentang waktu yang dipilih
+        $tanggalAwal = now()->subMonths($rentang);
+
+        $data = Pengaduan::where('status_selesai','Y')->where('id_opd_fk',auth()->user()->id_opd_fk)->where('created_at', '>=', $tanggalAwal)->get();
+
+        $pdf = PDF::loadView('adminopd.tempalate_laporanselesai', compact('data')); // 'pdf.template' adalah nama view PDF
+
 
         return $pdf->setPaper('legal', 'landscape')->download('data.pdf'); // Nama file PDF yang akan diunduh
     }
