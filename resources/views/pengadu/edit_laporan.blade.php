@@ -60,12 +60,44 @@
                         @enderror
                     </div>
                   </div>
-                  <div class="form-group row">
-                    <label for="" class="col-sm-3 col-form-label">Lokasi Detail</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" placeholder="" name="lokasi_kejadian" required value="{{ $laporan->lokasi_kejadian }}">
-                        </div>
-                  </div>
+                    <div class="form-group row">
+                        <label for="" class="col-sm-3 col-form-label">Kecamatan</label>
+                            <div class="col-sm-9">
+                                <select class="form-control select2 @error('id_kecamatan_fk') is-invalid @enderror" value="{{ old('id_kecamatan_fk') }}" required autocomplete="id_kecamatan_fk" style="width: 70%;" name="id_kecamatan_fk">
+                                    <option selected="selected" disabled>Pilih Kecamatan</option>
+                                        @foreach($kecamatans as $kecamatan)
+                                            <option value="{{ $kecamatan->id }}" {{ auth()->user()->id_kecamatan_fk == $kecamatan->id ? 'selected' : '' }}>
+                                                {{ $kecamatan->name }}
+                                            </option>
+                                        @endforeach
+                                </select>
+                                    @error('id_kecamatan_fk')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                            </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="" class="col-sm-3 col-form-label">Kelurahan / Desa</label>
+                            <div class="col-sm-9">
+                                <select class="form-control select2 @error('id_desa_fk') is-invalid @enderror" value="{{ old('id_desa_fk') }}" required autocomplete="id_desa" style="width: 70%;" name="id_desa_fk">
+                                    <option selected="selected" disabled>Pilih Kelurahan / Desa</option>
+                                        @foreach($desas as $desa)
+                                            <option value="{{ $desa->id }}" {{  auth()->user()->id_desa_fk == $desa->id ? 'selected' : '' }}>
+                                                {{ $desa->name }}
+                                            </option>
+                                                @endforeach
+                                </select>
+                                @error('id_desa_fk')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                    </div>                  
+                    <div class="form-group row">
+                        <label for="" class="col-sm-3 col-form-label">Lokasi Detail</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" placeholder="" name="lokasi_kejadian" required value="{{ $laporan->lokasi_kejadian }}">
+                            </div>
+                    </div>
                   <div class="form-group row">
                     <label for="" class="col-sm-3 col-form-label">Titik MAP</label>
                         <div class="col-sm-9">

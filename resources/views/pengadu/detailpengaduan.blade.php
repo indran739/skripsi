@@ -98,6 +98,12 @@
                                     @endif
                                     <dt class="col-sm-5 mb-3">Kategori</dt>
                                     <dd class="col-sm-7 mb-3"> <span>:</span> {{ $laporan->category->name }}</dd>
+                                    <dt class="col-sm-5 mb-3">Kecamatan</dt>
+                                    <dd class="col-sm-7 mb-3"> <span>:</span> {{ $laporan->kecamatan->name }}</dd>
+                                    <dt class="col-sm-5 mb-3">Kelurahan</dt>
+                                    <dd class="col-sm-7 mb-3"> <span>:</span> {{ $laporan->kelurahan->name }}</dd>
+                                    <dt class="col-sm-5 mb-3">Desa</dt>
+                                    <dd class="col-sm-7 mb-3"> <span>:</span> {{ $laporan->desa->name }}</dd>
                                     <dt class="col-sm-5 mb-3">Lokasi Detail</dt>
                                     <dd class="col-sm-7 mb-3"> <span>:</span> {{ $laporan->lokasi_kejadian }}</dd>
                                     <dt class="col-sm-5 mb-3">OPD Tujuan</dt>

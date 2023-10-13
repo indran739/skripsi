@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Tanggapan;
 use App\Models\Kecamatan;
+use App\Models\Kelurahan;
 use App\Models\Desa;
 use App\Models\Tanggapan_Admins;
 use Illuminate\Support\Facades\Storage; // Import namespace Storage
@@ -44,6 +45,8 @@ class Pengadu extends Controller
         return view('pengadu.form_lapor', [
             'opds' => Opd::where('name', '!=', 'pengadu')->where('name', '!=', 'Inspektorat Kabupaten Gunung Mas')->get(['id', 'name']),
             'categories' => Category::all(),
+            'kecamatans' => Kecamatan::all(),
+            'desas' => Desa::all(),
             'active' => 'formlaporan',
         ]);
     }
@@ -217,6 +220,13 @@ public function store_pengaduan(Request $request)
     // Ambil semua data dari request tanpa validasi
     $pengaduan = new Pengaduan();
     $pengaduan->isi_laporan = $request->input('isi_laporan');
+    $pengaduan->id_kecamatan_fk = $request->input('id_kecamatan_fk');
+    $pengaduan->id_desa_fk = $request->input('id_desa_fk');
+    //cari id_kelurahan di objek desa
+        $desa = Desa::find($request->id_desa_fk);
+        $id_kelurahan = $desa->kelurahan->id;
+        $pengaduan->id_kelurahan_fk = $id_kelurahan;
+        
     $pengaduan->lokasi_kejadian = $request->input('lokasi_kejadian');
     $pengaduan->latitude = $request->input('latitude');
     $pengaduan->longitude = $request->input('longitude');
@@ -251,6 +261,8 @@ public function store_pengaduan(Request $request)
         return view('pengadu.edit_laporan', [
             'active' => 'beranda',
             'categories' => Category::all(),
+            'desas' => Desa::all(),
+            'kecamatans' => Kecamatan::all(),
             'opds' => Opd::where('name', '!=', 'pengadu')->get(['id', 'name']),
             'laporan' => $laporans,
         ]);
@@ -262,6 +274,8 @@ public function store_pengaduan(Request $request)
         return view('pengadu.edit_laporan_invalid', [
             'active' => 'beranda',
             'categories' => Category::all(),
+            'desas' => Desa::all(),
+            'kecamatans' => Kecamatan::all(),
             'opds' => Opd::where('name', '!=', 'pengadu')->get(['id', 'name']),
             'laporan' => $laporans,
         ]);
@@ -278,6 +292,8 @@ public function store_pengaduan(Request $request)
         // Validasi
         $request->validate([
             'id_category_fk' => 'required',
+            'id_kecamatan_fk' => 'required',
+            'id_desa_fk' => 'required',
             'isi_laporan' => 'required',
             'lokasi_kejadian' => 'required',
             'tanggal_kejadian' => 'required',
@@ -291,6 +307,12 @@ public function store_pengaduan(Request $request)
         // Mengupdate data laporan
         $laporan->id_category_fk = $request->id_category_fk;
         $laporan->isi_laporan = $request->isi_laporan;
+        $laporan->id_kecamatan_fk = $request->input('id_kecamatan_fk');
+        $laporan->id_desa_fk = $request->input('id_desa_fk');
+        //cari id_kelurahan di objek desa
+            $desa = Desa::find($request->id_desa_fk);
+            $id_kelurahan = $desa->kelurahan->id;
+            $laporan->id_kelurahan_fk = $id_kelurahan;
         $laporan->lokasi_kejadian = $request->lokasi_kejadian;
         $laporan->latitude = $request->latitude;
         $laporan->longitude = $request->longitude;
@@ -355,6 +377,8 @@ public function update_pengaduan_invalid(Request $request, $id_pengaduan)
     // Validasi
     $request->validate([
         'id_category_fk' => 'required',
+        'id_kecamatan_fk' => 'required',
+        'id_desa_fk' => 'required',
         'isi_laporan' => 'required',
         'lokasi_kejadian' => 'required',
         'tanggal_kejadian' => 'required',
@@ -368,6 +392,12 @@ public function update_pengaduan_invalid(Request $request, $id_pengaduan)
     // Mengupdate data laporan
     $laporan->id_category_fk = $request->id_category_fk;
     $laporan->isi_laporan = $request->isi_laporan;
+    $laporan->id_kecamatan_fk = $request->input('id_kecamatan_fk');
+    $laporan->id_desa_fk = $request->input('id_desa_fk');
+    //cari id_kelurahan di objek desa
+        $desa = Desa::find($request->id_desa_fk);
+        $id_kelurahan = $desa->kelurahan->id;
+        $laporan->id_kelurahan_fk = $id_kelurahan;
     $laporan->lokasi_kejadian = $request->lokasi_kejadian;
     $laporan->latitude = $request->latitude;
     $laporan->longitude = $request->longitude;

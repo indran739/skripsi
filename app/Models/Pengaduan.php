@@ -30,4 +30,19 @@ class Pengaduan extends Model
         return $this->hasMany(Tanggapan::class);
     }
     
+    public function kecamatan()
+    {
+        return $this->belongsTo(Kecamatan::class,'id_kecamatan_fk'); 
+    }
+
+    public function kelurahan()
+    {
+        return $this->belongsTo(Kelurahan::class,'id_kelurahan_fk'); 
+    }
+
+    public function desa()
+    {
+        return $this->belongsTo(Desa::class,'id_desa_fk'); 
+    }
+    
 }

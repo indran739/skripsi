@@ -244,15 +244,21 @@
                                     <dd class="col-sm-7 mb-2"> </dd> 
                                     <dt class="col-sm-5 mb-3">Kategori</dt>
                                     <dd class="col-sm-7 mb-3"> <span>:</span> {{ $laporan->category->name }}</dd>
+                                    <dt class="col-sm-5 mb-3">Kecamatan</dt>
+                                    <dd class="col-sm-7 mb-3"> <span>:</span> {{ $laporan->kecamatan->name }}</dd>
+                                    <dt class="col-sm-5 mb-3">Kelurahan</dt>
+                                    <dd class="col-sm-7 mb-3"> <span>:</span> {{ $laporan->kelurahan->name }}</dd>
+                                    <dt class="col-sm-5 mb-3">Desa</dt>
+                                    <dd class="col-sm-7 mb-3"> <span>:</span> {{ $laporan->desa->name }}</dd>
                                     <dt class="col-sm-5 mb-3">Lokasi Detail</dt>
                                     <dd class="col-sm-7 mb-3"> <span>:</span> {{ $laporan->lokasi_kejadian }}</dd>
-                                <dt class="col-sm-5 mb-3">OPD Tujuan</dt>
-                                <dd class="col-sm-7 mb-3"> <span>:</span> {{ $laporan->opd->name }}</dd>
-                                <dt class="col-sm-5 mb-3">Tanggal Kejadian</dt>
-                                <dd class="col-sm-7 mb-3"> <span>:</span> {{ \Carbon\Carbon::parse($laporan->tanggal_kejadian)->format('d F Y') }}</dd>
-                                <dt class="col-sm-5 mb-3">Tanggal Lapor</dt>
-                                <dd class="col-sm-7 mb-3"> <span>:</span> {{ \Carbon\Carbon::parse($laporan->created_at)->format('d F Y') }}</dd>
-                                
+                                    <dt class="col-sm-5 mb-3">OPD Tujuan</dt>
+                                    <dd class="col-sm-7 mb-3"> <span>:</span> {{ $laporan->opd->name }}</dd>
+                                    <dt class="col-sm-5 mb-3">Tanggal Kejadian</dt>
+                                    <dd class="col-sm-7 mb-3"> <span>:</span> {{ \Carbon\Carbon::parse($laporan->tanggal_kejadian)->format('d F Y') }}</dd>
+                                    <dt class="col-sm-5 mb-3">Tanggal Lapor</dt>
+                                    <dd class="col-sm-7 mb-3"> <span>:</span> {{ \Carbon\Carbon::parse($laporan->created_at)->format('d F Y') }}</dd>
+                                    
                                 <dt class="col-sm-5 mb-3">Tanggal Tindak Lanjut</dt>
                                 @if($laporan->tanggal_tindak === NULL)
                                 <dd class="col-sm-7 mb-3"> <span>:</span> - </dd>

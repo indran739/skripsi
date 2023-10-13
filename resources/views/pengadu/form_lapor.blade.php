@@ -28,7 +28,7 @@
 
 @if(Session::has('error'))
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>Laporan Pengaduan Berhasil dikirim!</strong> Anda dapat Menunggu Validasi dan Tindak Lanjut dari Admin Instansi.
+        <strong>Laporan Pengaduan Gagal dikirim!</strong>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
@@ -68,6 +68,38 @@
                         </div> 
                         @enderror
                     </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="" class="col-sm-3 col-form-label">Kecamatan</label>
+                        <div class="col-sm-9">
+                            <select class="form-control select2" required autocomplete="id_kecamatan_fk" style="width: 70%;" name="id_kecamatan_fk">
+                                <option selected="selected" disabled>Pilih Kecamatan</option>
+                                @foreach($kecamatans as $kecamatan)
+                                    <option value="{{ $kecamatan->id }}" {{ old('id_kecamatan_fk') == $kecamatan->id ? 'selected' : '' }}>
+                                        {{ $kecamatan->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('id_kecamatan_fk')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="" class="col-sm-3 col-form-label">Kelurahan/Desa</label>
+                        <div class="col-sm-9">
+                            <select class="form-control select2 @error('id_desa_fk') is-invalid @enderror" required autocomplete="id_desa_fk" style="width: 70%;" name="id_desa_fk">
+                                <option selected="selected" disabled>Pilih Kelurahan / Desa</option>
+                                @foreach($desas as $desa)
+                                    <option value="{{ $desa->id }}" {{ old('id_desa_fk') == $desa->id ? 'selected' : '' }}>
+                                        {{ $desa->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                                @error('id_desa_fk')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                        </div>
                   </div>
                   <div class="form-group row">
                     <label for="" class="col-sm-3 col-form-label">Lokasi Detail</label>

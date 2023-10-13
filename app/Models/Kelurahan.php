@@ -25,5 +25,9 @@ class Kelurahan extends Model
         return $this->hasMany(User::class);
     }
     
+    public function pengaduan()
+    {
+        return $this->hasMany(Pengaduan::class);
+    }
 
 }
