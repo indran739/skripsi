@@ -83,6 +83,7 @@ class Admin extends Controller
                 $data[] = ['opd' => $opd->name, 'total_selesai' => $totalSelesai];
                 }
 //<---------------------------------------------------------------Rata rata waktu----------------------------------------------------------------------------->//
+            
             $opds = OPD::all();
             $opdAverages = [];
 
@@ -93,7 +94,7 @@ class Admin extends Controller
                 $completedCount = $completedPengaduan->count();
 
                 foreach ($completedPengaduan as $pengaduan) {
-                    $createdAt = Carbon::parse($pengaduan->created_at);
+                    $createdAt = Carbon::parse($pengaduan->tanggal_tindak);
                     $resolvedAt = Carbon::parse($pengaduan->updated_at);
                     $duration = $resolvedAt->diffInHours($createdAt);
                     $totalDuration += $duration;
@@ -125,13 +126,14 @@ class Admin extends Controller
 
                 // Menghitung rata-rata waktu respon
                 $rataRataWaktuRespon = $jumlahPengaduan > 0 ? $totalWaktuRespon / $jumlahPengaduan : 0;
-                $rataRataWaktuRespon = number_format( $rataRataWaktuRespon, 0);
+                $rataRataWaktuRespon = number_format( $rataRataWaktuRespon, 2);
 
+                // Menghitung rata-rata waktu penyelesaian
                 $averageDuration = ($completedCount > 0) ? ($totalDuration / $completedCount) : 0;
-                $averageDuration = number_format($averageDuration, 0);
+                $averageDuration = number_format($averageDuration, 2);
 
                 // Hanya simpan data jika rata-rata waktu penyelesaian lebih dari 0
-                if ($averageDuration > 0) {
+                if ($averageDuration > 0 && $rataRataWaktuRespon > 0) {
                     $opdAverages[] = [
                         'opd_name' => $opd->name,
                         'average_duration' => $averageDuration,

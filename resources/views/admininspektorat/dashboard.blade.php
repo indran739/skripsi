@@ -95,8 +95,8 @@
                     </button>
                   </div>
                 </div>
-                <div class="card-body">
-                  <canvas id="barChartKate" style="min-height: 348px; margin: auto;"></canvas>
+                <div class="card-body" style="width: 100%; margin: auto;">
+                  <canvas id="barChartKate" style="min-height: 337px; margin: auto;"></canvas>
                 </div>
                 <!-- /.card-body -->
               </div>
@@ -121,7 +121,7 @@
                         </div>
                         <div class="card-body">
                             <div class="chart" style="width: 100%; margin: auto;">
-                                <canvas id="barChart" style="min-height: 200px;"></canvas>
+                                <canvas id="barChart" style="min-height: 200px; margin: auto;"></canvas>
                             </div>
                         </div>
                         <!-- /.card-body -->
@@ -154,8 +154,8 @@
                                 <tr>
                                   <th>No.</th>
                                   <th>Nama OPD</th>
-                                  <th>Waktu rata-rata Penyelesaian (Jam)</th>
-                                  <th>Waktu rata-rata Respon(Jam)</th>
+                                  <th>Rata-rata waktu Penyelesaian (Jam)</th>
+                                  <th>Rata-rata waktu Respon(Jam)</th>
                                 </tr>
                             </thead>
                             <tbody>
