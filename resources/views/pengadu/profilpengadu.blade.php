@@ -119,6 +119,15 @@
                             </div>
                         </div>
                     </div>
+                    <!-- <div class="form-group row">
+                        <label for="" class="col-sm-3 col-form-label">Foto KTP</label>
+                        <div class="col-sm-9">
+                            <div class="custom-file" style="width: 40%;">
+                                <input type="file" class="custom-file-input" id="customFile" name="foto_ktp">
+                                <label class="custom-file-label" for="customFile">Choose File</label>
+                            </div>
+                        </div>
+                    </div> -->
                     <div class="card-footer">
                         <button type="submit" class="btn btn-success">Submit</button>
                         <button class="btn btn-info float-right"><a href="/profile" style="color:white;">Kembali</a></button>

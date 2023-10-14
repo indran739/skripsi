@@ -135,7 +135,7 @@
           <section class="col-lg-6 connectedSortable">
             <div class="card">
                 <div class="card-header" style="background-color:#4030A3;">
-                  <h3 class="card-title text-white">Rata-rata waktu OPD</h3>
+                  <h3 class="card-title text-white">Rata-rata waktu penyelesaian OPD</h3>
 
                   <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -152,17 +152,20 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>Rank</th>
-                                    <th>Nama OPD</th>
-                                    <th>Average Duration (hours)</th>
+                                  <th>No.</th>
+                                  <th>Nama OPD</th>
+                                  <th>Waktu rata-rata Penyelesaian (Jam)</th>
+                                  <th>Waktu rata-rata Respon(Jam)</th>
                                 </tr>
                             </thead>
                             <tbody>
+                            @php $count = 1 @endphp
                                 @foreach($opdAverages as $index => $opdAverage)
                                     <tr>
-                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $count++ }}</td>
                                         <td>{{ $opdAverage['opd_name'] }}</td>
                                         <td>{{ $opdAverage['average_duration'] }}</td>
+                                        <td>{{ $opdAverage['rataRataWaktuRespon'] }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

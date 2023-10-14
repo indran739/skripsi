@@ -88,7 +88,7 @@ class Admin extends Controller
 
             foreach ($opds as $opd) {
                 $completedPengaduan = Pengaduan::where('status_selesai', 'Y')->where('id_opd_fk', $opd->id)->get();
-
+                
                 $totalDuration = 0;
                 $completedCount = $completedPengaduan->count();
 
@@ -98,23 +98,47 @@ class Admin extends Controller
                     $duration = $resolvedAt->diffInHours($createdAt);
                     $totalDuration += $duration;
                 }
+                
+                $pengaduan = Pengaduan::whereNotNull('tanggal_disposisi')
+                ->whereNotNull('tanggal_validasi')
+                ->where('id_opd_fk', $opd->id)
+                ->get();
+
+                $totalWaktuRespon = 0;
+                $jumlahPengaduan = 0;
+
+                foreach ($pengaduan as $aduan) {
+                    $waktuPenerimaan = Carbon::parse($aduan->created_at);
+                    $waktuDisposisi = Carbon::parse($aduan->tanggal_disposisi);
+                    $waktuValidasi = Carbon::parse($aduan->tanggal_validasi);
+
+                    // Menghitung selisih waktu dalam jam dari penerimaan hingga disposisi
+                    $selisihDisposisi = $waktuPenerimaan->diffInHours($waktuDisposisi);
+
+                    // Menghitung selisih waktu dalam jam dari penerimaan hingga validasi
+                    $selisihValidasi = $waktuPenerimaan->diffInHours($waktuValidasi);
+
+                    // Menambahkan selisih waktu ke total waktu respon
+                    $totalWaktuRespon += ($selisihDisposisi + $selisihValidasi) / 2; // Rata-rata waktu respon disposisi dan validasi
+                    $jumlahPengaduan++;
+                }
+
+                // Menghitung rata-rata waktu respon
+                $rataRataWaktuRespon = $jumlahPengaduan > 0 ? $totalWaktuRespon / $jumlahPengaduan : 0;
+                $rataRataWaktuRespon = number_format( $rataRataWaktuRespon, 0);
 
                 $averageDuration = ($completedCount > 0) ? ($totalDuration / $completedCount) : 0;
-                $averageDuration = number_format($averageDuration, 2);
+                $averageDuration = number_format($averageDuration, 0);
 
                 // Hanya simpan data jika rata-rata waktu penyelesaian lebih dari 0
                 if ($averageDuration > 0) {
                     $opdAverages[] = [
                         'opd_name' => $opd->name,
                         'average_duration' => $averageDuration,
+                        'rataRataWaktuRespon' => $rataRataWaktuRespon,
                     ];
                 }
             }
-
-            // Urutkan array berdasarkan rata-rata waktu penyelesaian (dari yang terkecil)
-            usort($opdAverages, function ($a, $b) {
-                return $a['average_duration'] <=> $b['average_duration'];
-            });
 
         return view('admininspektorat.dashboard', [
             'opd' => $opd,
@@ -272,6 +296,10 @@ class Admin extends Controller
 
             $disposisi->save();
 
+            $disposisi->tanggal_disposisi = $disposisi->updated_at;
+            
+            $disposisi->save();
+
             if($request->tanggapan == NULL){
                 return redirect('/laporanmasuk')->with('success', 'Data berhasil diperbarui');
             }
@@ -287,6 +315,10 @@ class Admin extends Controller
         }else if($request->disposisi_opd == 'N'){
             
             $disposisi->disposisi_opd = $request->disposisi_opd;
+
+            $disposisi->save();
+
+            $disposisi->tanggal_disposisi = $disposisi->updated_at;
 
             $disposisi->save();
 

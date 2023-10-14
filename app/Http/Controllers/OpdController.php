@@ -268,6 +268,10 @@ class OpdController extends Controller
 
             $validasi->save();
 
+            $validasi->tanggal_validasi = $validasi->updated_at;
+            
+            $validasi->save();
+
             if($request->tanggapan == NULL){
                 return redirect('/laporanterdisposisiopd')->with('success', 'Data berhasil diperbarui');
             }
@@ -285,6 +289,10 @@ class OpdController extends Controller
 
             $validasi->validasi_laporan = $request->validasi_laporan; 
 
+            $validasi->save();
+
+            $validasi->tanggal_validasi = $validasi->updated_at;
+            
             $validasi->save();
             
             if($request->tanggapan == NULL){
@@ -306,6 +314,7 @@ class OpdController extends Controller
             return redirect('/laporanterdisposisiopd');
         }
     }
+
 
     public function status_selesai(Request $request, $id_pengaduan)
     {

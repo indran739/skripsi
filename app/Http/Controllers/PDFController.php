@@ -24,12 +24,14 @@ class PDFController extends Controller
         // Menghitung tanggal awal berdasarkan rentang waktu yang dipilih
         $tanggalAwal = now()->subMonths($rentang);
 
-        $data = Pengaduan::where('status_selesai','Y')->where('created_at', '>=', $tanggalAwal)->get();
+        $data = Pengaduan::where('status_selesai','Y')
+        ->where('created_at', '>=', $tanggalAwal)
+        ->get();
 
         $pdf = PDF::loadView('pdf', compact('data')); // 'pdf.template' adalah nama view PDF
 
 
-        return $pdf->setPaper('a3', 'landscape')->download('data.pdf'); // Nama file PDF yang akan diunduh
+        return $pdf->setPaper('a3', 'landscape')->download('Laporan_Pengaduan_Selesai.pdf'); // Nama file PDF yang akan diunduh
     }
 
     public function cetakLaporanSelesaiOpd(Request $request)
@@ -40,12 +42,15 @@ class PDFController extends Controller
         // Menghitung tanggal awal berdasarkan rentang waktu yang dipilih
         $tanggalAwal = now()->subMonths($rentang);
 
-        $data = Pengaduan::where('status_selesai','Y')->where('id_opd_fk',auth()->user()->id_opd_fk)->where('created_at', '>=', $tanggalAwal)->get();
+        $data = Pengaduan::where('status_selesai','Y')
+        ->where('id_opd_fk',auth()->user()->id_opd_fk)
+        ->where('created_at', '>=', $tanggalAwal)
+        ->get();
 
         $pdf = PDF::loadView('adminopd.tempalate_laporanselesai', compact('data')); // 'pdf.template' adalah nama view PDF
 
 
-        return $pdf->setPaper('legal', 'landscape')->download('data.pdf'); // Nama file PDF yang akan diunduh
+        return $pdf->setPaper('legal', 'landscape')->download('Laporan_Pengaduan_Selesai.pdf'); // Nama file PDF yang akan diunduh
     }
 
     public function cetakLaporanBelumTanggap(Request $request)
@@ -117,6 +122,6 @@ class PDFController extends Controller
         $pdf = PDF::loadView('admininspektorat.template_laporanbelumditanggap', compact('data')); // 'pdf.template' adalah nama view PDF
 
 
-        return $pdf->setPaper('a3', 'landscape')->download('data.pdf'); // Nama file PDF yang akan diunduh
+        return $pdf->setPaper('a3', 'landscape')->download('Laporan_Pengaduan_Masuk.pdf'); // Nama file PDF yang akan diunduh
     }
 }

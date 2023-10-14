@@ -174,6 +174,13 @@ if ($request->hasFile('foto_wajah')) {
     $user->foto_wajah = $fotoWajahPath;
 }
 
+// if ($request->hasFile('foto_ktp')) {
+//     $fotoKtp = $request->file('foto_ktp');
+//     $fotoKtpPath = $fotoKtp->store('fotos-ktp');
+//     $user->foto_ktp = $fotoKtpPath;
+// }
+
+
     $user->save();
     return redirect()->back()->with('success', 'Data berhasil disimpan');
 

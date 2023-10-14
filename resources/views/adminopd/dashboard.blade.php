@@ -24,7 +24,7 @@
                 <div class="inner">
                   <h3>{{ $averageResolutionTime }} Hours<sup></sup></h3>
 
-                  <p>Jumlah Laporan Tedisposisi</p>
+                  <p>Rata-rata waktu penyelesaian</p>
                 </div>
                 <div class="icon">
                   <i class="far fa-clock"></i>
