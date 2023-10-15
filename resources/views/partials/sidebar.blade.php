@@ -1,9 +1,9 @@
   <!-- Main Sidebar Container -->
-<aside class="main-sidebar sidebar-dark-light elevation-4" style="background-color:#4030A3;">
+<aside class="main-sidebar sidebar-dark-light elevation-4" style="background-color:#4030A3;" >
     <!-- Brand Logo -->
     <a href="/admininspektorat" class="brand-link">
       <img src="{{asset('/')}}dist/img/gumas.png" alt="AdminLTE Logo" class="img mr-2" style="opacity: .8; height:70px; width:70;">
-      <span class="brand-text text-xl font-weight-light">SIPEMAS</span>
+      <span class="brand-text font-weight-light" style="font-size:45px;">SIPEMAS</span>
     </a>
 
     <!-- Sidebar -->

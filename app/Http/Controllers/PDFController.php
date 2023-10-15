@@ -127,13 +127,13 @@ class PDFController extends Controller
 
     public function cetakLaporanKinerja()
     {
-
-
         $opds = OPD::all();
             $opdAverages = [];
 
             foreach ($opds as $opd) {
-                $completedPengaduan = Pengaduan::where('status_selesai', 'Y')->where('id_opd_fk', $opd->id)->get();
+                $completedPengaduan = Pengaduan::where('status_selesai', 'Y')
+                ->where('id_opd_fk', $opd->id)
+                ->get();
                 
                 $totalDuration = 0;
                 $completedCount = $completedPengaduan->count();

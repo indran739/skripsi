@@ -197,7 +197,6 @@
 </div>
 
 <script>
-
         var latitude = document.getElementById('map').getAttribute('data-latitude');
         var longitude = document.getElementById('map').getAttribute('data-longitude');
         var map = L.map('map').setView([latitude, longitude], 15);
