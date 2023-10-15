@@ -136,7 +136,6 @@
             <div class="card">
                 <div class="card-header" style="background-color:#4030A3;">
                   <h3 class="card-title text-white">Rata-rata waktu penyelesaian OPD</h3>
-
                   <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
                       <i class="fas fa-minus"></i>
@@ -147,6 +146,9 @@
                   </div>
                 </div>
                 <div class="card-body">
+                <button type="button"  class="btn btn-default mb-3">
+                      <a href="{{ url('/cetak-laporan-kinerja') }}" style="color: black;text-decoration: none;"><i class="fas fa-download mr-2"></i>Cetak Laporan</a>
+                </button>
                 <div class="box">
                     <div class="box-body">
                         <table class="table table-bordered">

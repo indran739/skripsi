@@ -100,8 +100,7 @@ class Admin extends Controller
                     $totalDuration += $duration;
                 }
                 
-                $pengaduan = Pengaduan::whereNotNull('tanggal_disposisi')
-                ->whereNotNull('tanggal_validasi')
+                $pengaduan = Pengaduan::whereNotNull('tanggal_validasi')
                 ->where('id_opd_fk', $opd->id)
                 ->get();
 
@@ -109,18 +108,14 @@ class Admin extends Controller
                 $jumlahPengaduan = 0;
 
                 foreach ($pengaduan as $aduan) {
-                    $waktuPenerimaan = Carbon::parse($aduan->created_at);
-                    $waktuDisposisi = Carbon::parse($aduan->tanggal_disposisi);
+                    $waktuPenerimaan = Carbon::parse($aduan->tanggal_tindak);
                     $waktuValidasi = Carbon::parse($aduan->tanggal_validasi);
-
-                    // Menghitung selisih waktu dalam jam dari penerimaan hingga disposisi
-                    $selisihDisposisi = $waktuPenerimaan->diffInHours($waktuDisposisi);
 
                     // Menghitung selisih waktu dalam jam dari penerimaan hingga validasi
                     $selisihValidasi = $waktuPenerimaan->diffInHours($waktuValidasi);
 
                     // Menambahkan selisih waktu ke total waktu respon
-                    $totalWaktuRespon += ($selisihDisposisi + $selisihValidasi) / 2; // Rata-rata waktu respon disposisi dan validasi
+                    $totalWaktuRespon += $selisihValidasi;// Rata-rata waktu respon disposisi dan validasi
                     $jumlahPengaduan++;
                 }
 

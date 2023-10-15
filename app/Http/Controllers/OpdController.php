@@ -338,12 +338,12 @@ class OpdController extends Controller
                 return redirect('/laporanselesaiopd')->with('selesai', 'Data berhasil diperbarui');
             }
             
-        // }else if($request->status_selesai == 'P' && $pengaduan->proses_tindak == "Y" && $pengaduan->validasi_laporan == "Y" ){
+            // }else if($request->status_selesai == 'P' && $pengaduan->proses_tindak == "Y" && $pengaduan->validasi_laporan == "Y" ){
 
-        //     $pengaduan->status_selesai = $request->status_selesai; 
+            //     $pengaduan->status_selesai = $request->status_selesai; 
 
-        //     $pengaduan->save();
-        //     return redirect('/laporanterdisposisiopd')->with('tidakselesai', 'Data berhasil diperbarui');
+            //     $pengaduan->save();
+            //     return redirect('/laporanterdisposisiopd')->with('tidakselesai', 'Data berhasil diperbarui');
             
         }else {
             $pengaduan->status_selesai = $request->status_selesai; 

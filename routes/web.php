@@ -105,6 +105,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('laporanselesai/filter', [Admin::class, 'filterLaporanSelesai'])->name('laporanselesai.filter');
         Route::post('/cetak-pdf', [PDFController::class, 'cetakPDF']);
         Route::post('/cetak-laporan-belumtanggap', [PDFController::class, 'cetakLaporanBelumTanggap']);
+        Route::get('/cetak-laporan-kinerja', [PDFController::class, 'cetakLaporanKinerja']);
 
 
         // Route::post('filter', [Admin::class, 'filterLaporan']);

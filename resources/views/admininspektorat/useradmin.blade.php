@@ -174,10 +174,52 @@
                                         <td><div class="d-flex justify-content-center"><span class="badge badge-danger">Tidak Terverifikasi</span></div></td>
                                         @endif
                 
-                                        <td style="text-align: center;" colspan="2">
-                                            <button type="button" class="btn bg-gradient-warning" data-toggle="modal" data-target="#modal-lg__{{ $u->id }}">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
+                                        <td colspan="2">
+                                        <button type="button"  class="btn bg-gradient-info d-flex justify-content-end float-right" data-toggle="modal" data-target="#modal-view__{{ $u->id }}">
+                                            <a style="text-decoration: none; color:white;"><i class="fas fa-eye"></i></a>
+                                        </button>
+                                        <div class="modal fade" id="modal-view__{{ $u->id }}">
+                                                <div class="modal-dialog modal-default">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                    <h4 class="modal-title">Data Admin OPD</h4>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    </div>
+                                                    <div class="modal-body d-flex justify-content-center">
+                                                        <table class="vertical-table">
+                                                            <tr>
+                                                                <th>NIK</th>
+                                                                <td>{{ $u->nik }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Nama</th>
+                                                                <td>{{ $u->name }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Alamat</th>
+                                                                <td>{{ $u->alamat }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Email</th>
+                                                                <td>{{ $u->email }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>No. Handphone</th>
+                                                                <td>{{ $u->no_hp }}</td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    <div class="modal-footer justify-content-between">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                                <!-- /.modal-content -->
+                                                </div>
+                                                <!-- /.modal-dialog -->
+                                            </div>
+                                            <!-- /.modal -->  
                                         </td>
                                         </tr>
                                     @endforeach

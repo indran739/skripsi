@@ -16,7 +16,7 @@
     </div><!-- /.col -->
 </div><!-- /.row -->
 
-<div class="col-md-6 ml-3">
+<div class="col-md-12">
 @if(Session::has('error'))
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <strong>Gagal update</strong>
@@ -35,9 +35,9 @@
                 @method('put')
                 <div class="card-body">
                     <div class="form-group row">
-                        <label for="" class="col-sm-3 col-form-label">Kategori</label>
-                        <div class="col-sm-9">
-                            <select class="form-control select2" style="width: 70%;" name="id_category_fk" required>
+                        <label for="" class="col-sm-2 col-form-label">Kategori</label>
+                        <div class="col-sm-10">
+                            <select class="form-control select2" style="width: 100%;" name="id_category_fk" required>
                             @foreach($categories as $category)
                                     <option value="{{ $category->id }}" @if($laporan->id_category_fk == $category->id) selected @endif>
                                         {{ $category->name }}
@@ -50,9 +50,9 @@
                         </div>
                     </div>
                   <div class="form-group row">
-                    <label for="" class="col-sm-3 col-form-label">Isi Laporan</label>
-                    <div class="col-sm-9">
-                        <textarea class="form-control @error('isi_laporan') is-invalid @enderror" rows="3" placeholder="" name="isi_laporan" value="" required>{{ $laporan->isi_laporan }}</textarea>
+                    <label for="" class="col-sm-2 col-form-label">Isi Laporan</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control @error('isi_laporan') is-invalid @enderror" style="width: 100%;" rows="3" placeholder="" name="isi_laporan" value="" required>{{ $laporan->isi_laporan }}</textarea>
                         @error('isi_laporan')
                         <div class="invalid-feedback">
                             {{ $message }}  
@@ -61,9 +61,9 @@
                     </div>
                   </div>
                     <div class="form-group row">
-                        <label for="" class="col-sm-3 col-form-label">Kecamatan</label>
-                            <div class="col-sm-9">
-                                <select class="form-control select2 @error('id_kecamatan_fk') is-invalid @enderror" value="{{ old('id_kecamatan_fk') }}" required autocomplete="id_kecamatan_fk" style="width: 70%;" name="id_kecamatan_fk">
+                        <label for="" class="col-sm-2 col-form-label">Kecamatan</label>
+                            <div class="col-sm-10">
+                                <select class="form-control select2 @error('id_kecamatan_fk') is-invalid @enderror" value="{{ old('id_kecamatan_fk') }}" required autocomplete="id_kecamatan_fk" style="width: 100%;" name="id_kecamatan_fk">
                                     <option selected="selected" disabled>Pilih Kecamatan</option>
                                         @foreach($kecamatans as $kecamatan)
                                             <option value="{{ $kecamatan->id }}" {{ auth()->user()->id_kecamatan_fk == $kecamatan->id ? 'selected' : '' }}>
@@ -77,9 +77,9 @@
                             </div>
                     </div>
                     <div class="form-group row">
-                        <label for="" class="col-sm-3 col-form-label">Kelurahan / Desa</label>
-                            <div class="col-sm-9">
-                                <select class="form-control select2 @error('id_desa_fk') is-invalid @enderror" value="{{ old('id_desa_fk') }}" required autocomplete="id_desa" style="width: 70%;" name="id_desa_fk">
+                        <label for="" class="col-sm-2 col-form-label">Kelurahan / Desa</label>
+                            <div class="col-sm-10">
+                                <select class="form-control select2 @error('id_desa_fk') is-invalid @enderror" value="{{ old('id_desa_fk') }}" required autocomplete="id_desa" style="width: 100%;" name="id_desa_fk">
                                     <option selected="selected" disabled>Pilih Kelurahan / Desa</option>
                                         @foreach($desas as $desa)
                                             <option value="{{ $desa->id }}" {{  auth()->user()->id_desa_fk == $desa->id ? 'selected' : '' }}>
@@ -93,12 +93,12 @@
                             </div>
                     </div>                  
                     <div class="form-group row">
-                        <label for="" class="col-sm-3 col-form-label">Lokasi Detail</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" placeholder="" name="lokasi_kejadian" required value="{{ $laporan->lokasi_kejadian }}">
+                        <label for="" class="col-sm-2 col-form-label">Lokasi Detail</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" style="width: 100%;" placeholder="" name="lokasi_kejadian" required value="{{ $laporan->lokasi_kejadian }}">
                             </div>
                     </div>
-                  <div class="form-group row">
+                <!-- <div class="form-group row">
                     <label for="" class="col-sm-3 col-form-label">Titik MAP</label>
                         <div class="col-sm-9">
                             <input type="hidden" id="latitude" name="latitude">
@@ -106,11 +106,11 @@
                             <div id="map" data-latitude="{{ $laporan->latitude }}" data-longitude="{{ $laporan->longitude }}" style="width: 530px; height: 398px;"></div>
 
                         </div>
-                  </div>
+                  </div> -->
                   <div class="form-group row">
-                    <label for="" class="col-sm-3 col-form-label">Tanggal Kejadian</label>
-                    <div class="col-sm-9">
-                        <div class="input-group date" style="width: 35%;" id="reservationdate" data-target-input="nearest">
+                    <label for="" class="col-sm-2 col-form-label">Tanggal Kejadian</label>
+                    <div class="col-sm-10">
+                        <div class="input-group date" style="width: 100%;" id="reservationdate" data-target-input="nearest">
                             <input type="text" class="form-control datetimepicker-input" name="tanggal_kejadian"   value="{{ \Carbon\Carbon::parse($laporan->tanggal_kejadian)->format('d/m/Y') }}" required data-target="#reservationdate"/>
                             <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
                                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -119,9 +119,9 @@
                     </div>
                   </div>
                     <div class="form-group row">
-                        <label for="" class="col-sm-3 col-form-label">OPD Tujuan</label>
-                        <div class="col-sm-9">
-                            <select class="form-control select2" style="width: 70%;" name="id_opd_fk" required>
+                        <label for="" class="col-sm-2 col-form-label">OPD Tujuan</label>
+                        <div class="col-sm-10">
+                            <select class="form-control select2" style="width: 100%;" name="id_opd_fk" required>
                                 @foreach($opds as $opd)
                                     @if($opd->name != 'pengadu')
                                         <option value="{{ $opd->id }}" @if($laporan->id_opd_fk == $opd->id) selected @endif>
@@ -136,18 +136,18 @@
                         </div>
                    </div>
                    <div class="form-group row">
-                        <label for="" class="col-sm-3 col-form-label">Lampiran</label>
-                        <div class="col-sm-9">
-                            <div class="custom-file" style="width: 70%;">
+                        <label for="" class="col-sm-2 col-form-label">Lampiran</label>
+                        <div class="col-sm-10">
+                            <div class="custom-file" style="width: 15%;">
                                 <input type="file" class="custom-file-input" id="customFile" name="lampiran">
                                 <label class="custom-file-label" for="customFile">{{ pathinfo($laporan->lampiran, PATHINFO_BASENAME) }}</label>
                             </div>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="" class="col-sm-3 col-form-label">Foto 1</label>
-                        <div class="col-sm-9">
-                            <div class="custom-file" style="width: 70%;">
+                        <label for="" class="col-sm-2 col-form-label">Foto 1</label>
+                        <div class="col-sm-10">
+                            <div class="custom-file" style="width: 15%;">
                                 <input type="file" class="custom-file-input" id="customFile" name="first_image">
                                 @if(pathinfo($laporan->first_image, PATHINFO_BASENAME))
                                 <label class="custom-file-label" for="customFile">foto_1.jpg</label>
@@ -158,9 +158,9 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="" class="col-sm-3 col-form-label">Foto 2</label>
-                        <div class="col-sm-9">
-                            <div class="custom-file" style="width: 70%;">
+                        <label for="" class="col-sm-2 col-form-label">Foto 2</label>
+                        <div class="col-sm-10">
+                            <div class="custom-file" style="width: 15%;">
                                 <input type="file" class="custom-file-input" id="customFile" name="sec_image">
                                 @if(pathinfo($laporan->sec_image, PATHINFO_BASENAME))
                                 <label class="custom-file-label" for="customFile">foto_2.jpg</label>
@@ -171,8 +171,8 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="" class="col-sm-3 col-form-label">Anonim</label>
-                        <div class="col-sm-9 mt-1">
+                        <label for="" class="col-sm-2 col-form-label">Anonim</label>
+                        <div class="col-sm-10 mt-1">
                             <div class="form-group clearfix">
                                 <div class="icheck-dark d-inline">
                                     @if($laporan->anonim == 'Y')
@@ -187,9 +187,8 @@
                     </div>
                 </div>
                 <!-- /.card-body -->
-                <div class="card-footer">
-                  <button type="submit" class="btn btn-success">Submit</button>
-                  <button class="btn btn-info float-right"><a href="/berandapengadu" style="color:white;">Kembali</a></button>
+                <div class="card-footer d-flex justify-content-start">
+                     <button type="submit" style="width:100px;" class="btn btn-success">Submit</button>
                 </div>
                 <!-- /.card-footer -->
               </form>

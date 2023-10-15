@@ -124,4 +124,92 @@ class PDFController extends Controller
 
         return $pdf->setPaper('a3', 'landscape')->download('Laporan_Pengaduan_Masuk.pdf'); // Nama file PDF yang akan diunduh
     }
+
+    public function cetakLaporanKinerja()
+    {
+
+
+        $opds = OPD::all();
+            $opdAverages = [];
+
+            foreach ($opds as $opd) {
+                $completedPengaduan = Pengaduan::where('status_selesai', 'Y')->where('id_opd_fk', $opd->id)->get();
+                
+                $totalDuration = 0;
+                $completedCount = $completedPengaduan->count();
+
+                foreach ($completedPengaduan as $pengaduan) {
+                    $createdAt = Carbon::parse($pengaduan->tanggal_tindak);
+                    $resolvedAt = Carbon::parse($pengaduan->updated_at);
+                    $duration = $resolvedAt->diffInHours($createdAt);
+                    $totalDuration += $duration;
+                }
+                
+                $pengaduan = Pengaduan::whereNotNull('tanggal_validasi')
+                ->where('id_opd_fk', $opd->id)
+                ->get();
+
+                $totalWaktuRespon = 0;
+                $jumlahPengaduan = 0;
+
+                foreach ($pengaduan as $aduan) {
+                    $waktuPenerimaan = Carbon::parse($aduan->tanggal_tindak);
+                    $waktuValidasi = Carbon::parse($aduan->tanggal_validasi);
+
+                    // Menghitung selisih waktu dalam jam dari penerimaan hingga validasi
+                    $selisihValidasi = $waktuPenerimaan->diffInHours($waktuValidasi);
+
+                    // Menambahkan selisih waktu ke total waktu respon
+                    $totalWaktuRespon += $selisihValidasi;// Rata-rata waktu respon disposisi dan validasi
+                    $jumlahPengaduan++;
+                }
+
+                // Menghitung rata-rata waktu respon
+                $rataRataWaktuRespon = $jumlahPengaduan > 0 ? $totalWaktuRespon / $jumlahPengaduan : 0;
+                $rataRataWaktuRespon = number_format( $rataRataWaktuRespon, 2);
+
+                // Menghitung rata-rata waktu penyelesaian
+                $averageDuration = ($completedCount > 0) ? ($totalDuration / $completedCount) : 0;
+                $averageDuration = number_format($averageDuration, 2);
+                
+                $count_laporan_selesai = Pengaduan::where('disposisi_opd','Y')
+                ->where('status_selesai','Y')
+                ->where('validasi_laporan','Y')
+                ->where('proses_tindak','Y')
+                ->where('id_opd_fk', $opd->id)
+                ->get()
+                ->count();
+
+                $count_laporan_ditindak = Pengaduan::where('disposisi_opd','Y')
+                ->where('status_selesai',NULL)
+                ->where('validasi_laporan','Y')
+                ->where('proses_tindak','Y')
+                ->where('id_opd_fk',$opd->id)
+                ->get()->count();
+
+                $count_laporan_belum = Pengaduan::where('status_selesai',NULL)
+                ->where('id_opd_fk',$opd->id)
+                ->where('proses_tindak','P')
+                ->whereNotNull('validasi_laporan')
+                ->whereNotNull('disposisi_opd')
+                ->get()->count();
+
+                // Hanya simpan data jika rata-rata waktu penyelesaian lebih dari 0
+                if ($averageDuration > 0 && $rataRataWaktuRespon > 0) {
+                    $opdAverages[] = [
+                        'opd_name' => $opd->name,
+                        'average_duration' => $averageDuration,
+                        'rataRataWaktuRespon' => $rataRataWaktuRespon,
+                        'count_laporan_selesai' => $count_laporan_selesai,
+                        'count_laporan_ditindak' => $count_laporan_ditindak,
+                        'count_laporan_belum' => $count_laporan_belum
+                    ];
+                }
+            }
+
+        $pdf = PDF::loadView('admininspektorat.template_laporankinerja', compact('opdAverages')); // 'pdf.template' adalah nama view PDF
+
+
+        return $pdf->setPaper('a3', 'landscape')->download('Laporan_Pengaduan_Selesai.pdf'); // Nama file PDF yang akan diunduh
+    }
 }

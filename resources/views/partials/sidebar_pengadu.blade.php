@@ -32,7 +32,7 @@
             <a href="/berandapengadu" class="nav-link {{ ($active === 'beranda') ? 'active' : '' }}">
               <i class="nav-icon fas fa-th"></i>
               <p>
-                Dashboard
+                Beranda
               </p>
             </a>
           </li>
