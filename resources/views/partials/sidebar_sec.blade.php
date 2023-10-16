@@ -16,7 +16,7 @@
         <div class="info">
           <a href="#" class="d-block">{{ Auth::user()->name }}</a>
         </div>
-      </div>
+      </div>  
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">

@@ -125,9 +125,6 @@
   });
 </script>
 
-
-</script>
-
 <script>
   $(function () {
     $("#examplesec").DataTable({
