@@ -125,6 +125,7 @@ Route::middleware(['auth'])->group(function () {
         Route::put('edittanggapanopd/{id_tanggapan}', [OpdController::class, 'edittanggapanopd']);
         Route::post('hapustanggapanopd/{id_tanggapan}', [OpdController::class, 'hapustanggapanopd']);
         Route::get('laporanselesaiopd/filter', [OpdController::class, 'filterLaporanSelesai'])->name('laporanselesaiopd.filter');
+        Route::post('/cetak-laporan-belumtanggapopd', [PDFController::class, 'cetakLaporanBelumTanggapOpd']);
         Route::post('/cetak-laporan-selesai-opd', [PDFController::class, 'cetakLaporanSelesaiOpd']);
     });
 

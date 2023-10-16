@@ -125,6 +125,69 @@ class PDFController extends Controller
         return $pdf->setPaper('a3', 'landscape')->download('Laporan_Pengaduan_Masuk.pdf'); // Nama file PDF yang akan diunduh
     }
 
+    public function cetakLaporanBelumTanggapOpd(Request $request)
+    {
+
+        $rentang = $request->input('rentang'); // Mendapatkan nilai rentang waktu dari formulir
+        $status = $request->input('status');
+
+        // Menghitung tanggal awal berdasarkan rentang waktu yang dipilih
+        $tanggalAwal = now()->subMonths($rentang);
+
+        if($status == 'S'){
+            $data = Pengaduan::where('status_selesai',NULL)
+            ->where('created_at', '>=', $tanggalAwal)
+            ->where('disposisi_opd','Y')
+            ->where('id_opd_fk', auth()->user()->id_opd_fk)
+            ->get();
+
+        }elseif($status == 'D')
+        {
+            $data = Pengaduan::where('disposisi_opd','Y')
+            ->where('validasi_laporan','P')
+            ->where('proses_tindak','P')
+            ->where('status_selesai',NULL)
+            ->where('created_at', '>=', $tanggalAwal)
+            ->where('id_opd_fk', auth()->user()->id_opd_fk)
+            ->get();
+
+        }elseif($status == 'V')
+        {
+            $data = Pengaduan::where('validasi_laporan','Y')
+            ->where('disposisi_opd','Y')
+            ->where('proses_tindak','P')
+            ->where('status_selesai',NULL)
+            ->where('created_at', '>=', $tanggalAwal)
+            ->where('id_opd_fk', auth()->user()->id_opd_fk)
+            ->get();
+
+        }elseif($status == 'I')
+        {
+           $data = Pengaduan::where('validasi_laporan','N')
+            ->where('disposisi_opd','Y')
+            ->where('proses_tindak','P')
+            ->where('status_selesai',NULL)
+            ->where('created_at', '>=', $tanggalAwal)
+            ->where('id_opd_fk', auth()->user()->id_opd_fk)
+            ->get();
+
+        }elseif($status == 'W')
+        {
+            $data = Pengaduan::where('proses_tindak','Y')
+            ->where('disposisi_opd','Y')
+            ->where('validasi_laporan','Y')
+            ->where('status_selesai',NULL)
+            ->where('created_at', '>=', $tanggalAwal)
+            ->where('id_opd_fk', auth()->user()->id_opd_fk)
+            ->get();
+        }
+
+        $pdf = PDF::loadView('adminopd.template_laporanbelumditanggapopd', compact('data')); // 'pdf.template' adalah nama view PDF
+
+
+        return $pdf->setPaper('a3', 'landscape')->download('Laporan_Pengaduan_Masuk.pdf'); // Nama file PDF yang akan diunduh
+    }
+
     public function cetakLaporanKinerja()
     {
         $opds = OPD::all();

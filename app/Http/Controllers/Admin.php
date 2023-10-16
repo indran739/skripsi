@@ -126,16 +126,44 @@ class Admin extends Controller
                 // Menghitung rata-rata waktu penyelesaian
                 $averageDuration = ($completedCount > 0) ? ($totalDuration / $completedCount) : 0;
                 $averageDuration = number_format($averageDuration, 2);
+                
+                $count_laporan_diselesai = Pengaduan::where('disposisi_opd','Y')
+                ->where('status_selesai','Y')
+                ->where('validasi_laporan','Y')
+                ->where('proses_tindak','Y')
+                ->where('id_opd_fk', $opd->id)
+                ->get()
+                ->count();
+    
+                $count_laporan_ditindak = Pengaduan::where('disposisi_opd','Y')
+                ->where('status_selesai',NULL)
+                ->where('validasi_laporan','Y')
+                ->where('proses_tindak','Y')
+                ->where('id_opd_fk',$opd->id)
+                ->get()->count();
+    
+                $count_laporan_belum = Pengaduan::where('status_selesai',NULL)
+                ->where('id_opd_fk',$opd->id)
+                ->where('proses_tindak','P')
+                ->whereNotNull('validasi_laporan')
+                ->whereNotNull('disposisi_opd')
+                ->get()->count();
 
+                
                 // Hanya simpan data jika rata-rata waktu penyelesaian lebih dari 0
                 if ($averageDuration > 0 && $rataRataWaktuRespon > 0) {
                     $opdAverages[] = [
                         'opd_name' => $opd->name,
                         'average_duration' => $averageDuration,
                         'rataRataWaktuRespon' => $rataRataWaktuRespon,
+                        'count_laporan_selesai' => $count_laporan_diselesai,
+                        'count_laporan_ditindak' => $count_laporan_ditindak,
+                        'count_laporan_belum' => $count_laporan_belum
                     ];
                 }
             }
+
+
 
         return view('admininspektorat.dashboard', [
             'opd' => $opd,

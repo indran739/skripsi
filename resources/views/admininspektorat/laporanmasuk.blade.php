@@ -26,22 +26,7 @@
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
-
-            <div class="col-12 col-sm-12">
-                <div class="card card-indigo card-outline card-outline-tabs">
-                <div class="card-header p-0 border-bottom-0">
-                    <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" style="color: black;text-decoration: none;" id="custom-tabs-four-pending-tab" data-toggle="pill" href="#custom-tabs-four-pending" role="tab" aria-controls="custom-tabs-four-pending" aria-selected="true"><i class="fas fa-clock mr-2"></i>Pending</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" style="color: black;text-decoration: none;" id="custom-tabs-four-tolak-tab" data-toggle="pill" href="#custom-tabs-four-tolak" role="tab" aria-controls="custom-tabs-four-tolak" aria-selected="false"><i class="fas fa-exclamation-circle mr-2"></i>Ditolak</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" style="color: black;text-decoration: none;" id="custom-tabs-four-disposisi-tab" data-toggle="pill" href="#custom-tabs-four-disposisi" role="tab" aria-controls="custom-tabs-four-disposisi" aria-selected="false"><i class="fas fa-paper-plane mr-2"></i>Terdisposisi</a>
-                    </li>
-                    </ul>
-                    <div class="row mt-3 ml-3">
+        <div class="row mt-3 ml-1 mb-3">
                         <div class="col-8">
                             <form action="{{ url('/cetak-laporan-belumtanggap') }}" method="post" target="_blank">
                                 @csrf
@@ -75,6 +60,22 @@
                             </div>
                         </div>
                     </div>
+
+            <div class="col-12 col-sm-12">
+                <div class="card card-indigo card-outline card-outline-tabs">
+                <div class="card-header p-0 border-bottom-0">
+                    <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" style="color: black;text-decoration: none;" id="custom-tabs-four-pending-tab" data-toggle="pill" href="#custom-tabs-four-pending" role="tab" aria-controls="custom-tabs-four-pending" aria-selected="true"><i class="fas fa-clock mr-2"></i>Pending</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: black;text-decoration: none;" id="custom-tabs-four-tolak-tab" data-toggle="pill" href="#custom-tabs-four-tolak" role="tab" aria-controls="custom-tabs-four-tolak" aria-selected="false"><i class="fas fa-exclamation-circle mr-2"></i>Ditolak</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: black;text-decoration: none;" id="custom-tabs-four-disposisi-tab" data-toggle="pill" href="#custom-tabs-four-disposisi" role="tab" aria-controls="custom-tabs-four-disposisi" aria-selected="false"><i class="fas fa-paper-plane mr-2"></i>Terdisposisi</a>
+                    </li>
+                    </ul>
+                    
                 </div>
                 <div class="card-body">
                     <div class="tab-content" id="custom-tabs-four-tabContent">

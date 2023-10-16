@@ -63,6 +63,39 @@
           </div><!-- /.col -->
         </div><!-- /.row -->
 
+        <div class="row mt-3 ml-1 mb-3">
+                        <div class="col-8">
+                            <form action="{{ url('/cetak-laporan-belumtanggapopd') }}" method="post">
+                                @csrf
+                                <select class="form-control select2"style="width: 20%;" name="rentang" required>
+                                    <option selected="selected" value="">Pilih Rentang</option>
+                                    <option value="1">1 Bulan Terakhir</option>
+                                    <option value="3">3 Bulan Terakhir</option>
+                                    <option value="6">6 Bulan Terakhir</option>
+                                </select>
+                                <select class="form-control select2"style="width: 20%;" name="status" required>
+                                    <option selected="selected" value="">Pilih Status</option>
+                                    <option value="S">Semua</option>
+                                    <option value="D">Terdisposisi</option>
+                                    <option value="V">Valid</option>
+                                    <option value="I">Tidak Valid</option>
+                                    <option value="W">Ditindak</option>
+                                </select>
+                                <button type="submit" class="btn bg-gradient-olive ml-3">Cetak Laporan</button>
+                            </form>
+                        </div>
+                        <div class="col-4">
+                            <div class="input-group input-group-sm" style="width: 450px;">
+                                <input type="text" name="table_search" class="form-control" placeholder="Search">
+                                    <div class="input-group-append float-left">
+                                        <button type="submit" class="btn btn-default">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+
             <div class="col-12 col-sm-12">
                 <div class="card card-indigo card-outline card-outline-tabs">
                 <div class="card-header p-0 border-bottom-0">
@@ -82,18 +115,6 @@
                     <div class="tab-content" id="custom-tabs-four-tabContent">
                     <div class="tab-pane fade show active" id="custom-tabs-four-pending" role="tabpanel" aria-labelledby="custom-tabs-four-pending-tab">
                         <div class="row">
-                                <div class="col-12">
-                                    <div class="card-tools">
-                                        <div class="input-group input-group-sm" style="width: 500px;">
-                                            <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-                                            <div class="input-group-append float-left">
-                                            <button type="submit" class="btn btn-default">
-                                                <i class="fas fa-search"></i>
-                                            </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                                 <!-- /.card-header -->
                                 <div class="card-body table-responsive p-0">
                                     <table class="table table-hover text-nowrap">

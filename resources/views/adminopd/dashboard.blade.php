@@ -19,18 +19,6 @@
     <!-- /.content-header -->
     <div class="container-fluid">
         <div class="row">
-        <div class="col-lg-2 col-6">
-              <div class="small-box bg-olive">
-                <div class="inner">
-                  <h3>{{ $averageResolutionTime }} Hours<sup></sup></h3>
-
-                  <p>Rata-rata waktu penyelesaian</p>
-                </div>
-                <div class="icon">
-                  <i class="far fa-clock"></i>
-                </div>
-              </div>
-            </div>
           <div class="col-lg-2 col-6">
               <div class="small-box bg-primary">
                 <div class="inner">
@@ -70,7 +58,7 @@
             </div>
           </div>
           <!-- ./col -->
-          <div class="col-lg-2 col-6">
+          <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box bg-dark">
               <div class="inner">
@@ -84,7 +72,7 @@
             </div>
           </div>
           <!-- ./col -->
-          <div class="col-lg-2 col-6">
+          <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
