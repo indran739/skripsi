@@ -436,7 +436,7 @@ public function update_pengaduan_invalid(Request $request, $id_pengaduan)
     if ($laporan->disposisi_opd == 'Y' && $laporan->validasi_laporan == 'N' && $laporan->id_opd_fk == $request->id_opd_fk) {
         $laporan->id_opd_fk = $request->id_opd_fk;
         $laporan->validasi_laporan = 'P';
-        $laporan->tanggal_lapor = Carbon::now();
+        $laporan->tanggal_disposisi = Carbon::now();
 
     } elseif ($laporan->disposisi_opd == 'Y' && $laporan->validasi_laporan == 'N' && $laporan->id_opd_fk !== $request->id_opd_fk) {
         $laporan->id_opd_fk = $request->id_opd_fk;

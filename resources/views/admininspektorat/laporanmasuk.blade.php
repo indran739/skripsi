@@ -383,7 +383,7 @@
                                                             </td>
                                                         @elseif($laporan->validasi_laporan == 'N')
                                                             <td>
-                                                                <div><span class="badge badge-danger">Tidak valid</span></div>
+                                                                <div><span class="badge badge-danger">Tidak valid</span><br>{{\Carbon\Carbon::parse($laporan->tanggal_validasi)->diffForHumans()}}</div>
                                                             </td>
                                                         @else
                                                             @if ($laporan->disposisi_opd == 'Y')
@@ -396,14 +396,14 @@
                                                                 </td>
                                                             @else
                                                                 <td>
-                                                                    <div class=""><span class="badge badge-warning">Pending</span></div>
+                                                                    <div class=""><span class="badge badge-warning">Menunggu</span></div>
                                                                 </td>
                                                             @endif
                                                         @endif
                                                     @endif
                                             @endif
 
-                                            <td style="text-align: center;"" colspan="2">
+                                            <td style="text-align: center;" colspan="2">
                                                 <button type="button"  class="btn bg-gradient-info" data-toggle="" data-target="">
                                                     <a href="/detailpengaduanadmin/{{ $laporan->id }}" style="text-decoration: none; color:white;"><i class="fas fa-eye"></i></a>
                                                 </button>

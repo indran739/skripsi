@@ -4,6 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SIPEMAS | Admin Inspektorat</title>
+  <!-- Select2 -->
+  <link rel="stylesheet" href="{{asset('/')}}plugins/select2/css/select2.min.css">
   <!-- Ekko Lightbox -->
   <link rel="stylesheet" href="{{asset('/')}}plugins/ekko-lightbox/ekko-lightbox.css">
   <!-- CSS & JS Bootstrap 5.1 -->
@@ -94,6 +96,8 @@
 <script src="{{asset('/')}}plugins/datatables-buttons/js/buttons.html5.min.js"></script>
 <script src="{{asset('/')}}plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="{{asset('/')}}plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<!-- Select2 -->
+<script src="{{asset('/')}}plugins/select2/js/select2.full.min.js"></script>
 <!-- Filterizr-->
 <script src="{{asset('/')}}plugins/filterizr/jquery.filterizr.min.js"></script>
 <!-- Ekko Lightbox -->
@@ -128,6 +132,17 @@ $(function () {
 });
 </script>
 <script>
+    $(function () {
+      $('.select2').select2()
+    });
+        $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    })
+</script>
+
+
+<script>
+//<---------------------------------------------------------------Grafik Kategori----------------------------------------------------------------------------->//    
     var barChartCanvas = document.getElementById('barChartKate').getContext('2d');
     var barData = {
         labels: @json($categoryNames),
@@ -171,60 +186,10 @@ $(function () {
         data: barData,
         options: barOptions
     });
-</script>
 
-
-<script>
-        // Data yang diambil dari controller
-        var data = @json($data);
-        var opdNames = data.map(item => item.opd);
-        var totalSelesai = data.map(item => item.total_selesai);
-
-        // Inisialisasi Chart
-        var ctx = document.getElementById('barChart').getContext('2d');
-        var barChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: opdNames,
-                datasets: [{
-                    label: 'Total Pengaduan Selesai',
-                    data: totalSelesai,
-                    backgroundColor: 'rgba(54, 162, 235, 0.7)', // Warna latar belakang batang grafik dengan transparansi
-                    borderColor: 'rgba(54, 162, 235, 1)', // Warna garis batang grafik
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Grafik Total Pengaduan Selesai berdasarkan OPD'
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Jumlah Pengaduan Selesai'
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'OPD'
-                        }
-                    }
-                },
-                animation: {
-                    duration: 2000 // Durasi animasi dalam milidetik (misalnya, 2000ms = 2 detik)
-                }
-            }
-        });
-    </script>
-
-<script>
-        var opdCounts = @json($opdCounts); // Mengonversi data PHP ke JSON
+//<---------------------------------------------------------------End Grafik Kategori----------------------------------------------------------------------------->//
+//<---------------------------------------------------------------Grafik Total Pengaduan----------------------------------------------------------------------------->//
+var opdCounts = @json($opdCounts); // Mengonversi data PHP ke JSON
         var ctx = document.getElementById('opdPengaduan').getContext('2d');
 
         var labels = Object.keys(opdCounts);
@@ -266,7 +231,8 @@ $(function () {
             data: data,
             options: options
         });
-    </script>
- 
+//<---------------------------------------------------------------End Grafik Total Pengaduan----------------------------------------------------------------------------->//        
+</script>
+
 </body>
 </html>

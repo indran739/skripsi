@@ -87,14 +87,26 @@
                   <h3 class="card-title text-white">Total Pengaduan Per Kategori</h3>
 
                   <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <!-- <button type="button" class="btn btn-tool" data-card-widget="collapse">
                       <i class="fas fa-minus"></i>
                     </button>
                     <button type="button" class="btn btn-tool" data-card-widget="remove">
                       <i class="fas fa-times"></i>
-                    </button>
+                    </button> -->
                   </div>
+                  
                 </div>
+                <div class="row mb-2 mt-3 ml-3">
+                    <div class="col-12">
+                        <select class="form-control filter select2" style="width: 30%;" name="id_category_fk" id="" required>
+                            <option selected="selected">Filter Tahun</option>
+                                  <option value="">Sekarang</option>
+                                  <option value="">2022</option>
+                        </select>
+                        <button class="btn bg-gradient-olive ml-3">
+                            <a href="/admininspektorat"  style="text-decoration: none; color:white;"><i class="fas fa-reset"></i>Reset</a> 
+                        </button>
+                    </div>
                 <div class="card-body" style="width: 100%; margin: auto;">
                   <canvas id="barChartKate" style="min-height: 337px; margin: auto;"></canvas>
                 </div>
@@ -110,15 +122,27 @@
                 <div class="card-header" style="background-color:#4030A3;">
                   <h3 class="card-title text-white">Total Pengaduan OPD</h3>
                   <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <!-- <button type="button" class="btn btn-tool" data-card-widget="collapse">
                       <i class="fas fa-minus"></i>
                     </button>
                     <button type="button" class="btn btn-tool" data-card-widget="remove">
                       <i class="fas fa-times"></i>
-                    </button>
+                    </button> -->
                   </div>
                 </div>
                 <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-8">
+                        <select class="form-control filter select2" style="width: 50%;" name="" id="" required>
+                            <option selected="selected">Filter Tahun</option>
+                                  <option value="">Sekarang</option>
+                                  <option value="">2022</option>
+                        </select>
+                        <button class="btn bg-gradient-olive ml-3">
+                            <a href="/admininspektorat"  style="text-decoration: none; color:white;"><i class="fas fa-reset"></i>Reset</a> 
+                        </button>
+                    </div>
+                  </div>   
                 <div class="box">
                     <div class="box-body">
                         <canvas id="opdPengaduan" width="400" height="200"></canvas>
@@ -145,9 +169,19 @@
                   </div>
                 </div>
                 <div class="card-body">
-                <button type="button"  class="btn btn-default mb-3">
-                      <a href="{{ url('/cetak-laporan-kinerja') }}" style="color: black;text-decoration: none;"><i class="fas fa-download mr-2"></i>Cetak Laporan</a>
-                </button>
+                  <div class="row mb-3">
+                    <div class="col-8">
+                        <select class="form-control filter select2" style="width: 25%;" name="id_category_fk" id="" required>
+                            <option selected="selected">Filter Tahun</option>
+                                  <option value="">Sekarang</option>
+                                  <option value="">2022</option>
+                        </select>
+                        <button class="btn bg-gradient-olive ml-3">
+                            <a href="/admininspektorat"  style="text-decoration: none; color:white;"><i class="fas fa-reset"></i>Reset</a> 
+                        </button>
+                    </div>
+                  </div>
+               
                 <div class="box">
                     <div class="box-body">
                         <table class="table table-bordered">

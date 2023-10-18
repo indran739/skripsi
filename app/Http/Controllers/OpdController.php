@@ -32,7 +32,7 @@ class OpdController extends Controller
 //<--------------------------------------------------Grafik Pie-------------------------------------------------------------------------->//
 
         // Mengambil data Pengaduan dari model Pengaduan
-        $pengaduans = Pengaduan::where('id_opd_fk',$idOpd)->where('disposisi_opd','Y')->where('status_selesai','Y')->get();
+        $pengaduans = Pengaduan::where('id_opd_fk',$idOpd)->whereYear('tanggal_lapor', Carbon::now()->year)->where('disposisi_opd','Y')->where('status_selesai','Y')->get();
         // Mengambil data kategori yang hanya ada di tabel pengaduan
         $categoryIds = $pengaduans->pluck('id_category_fk')->unique(); // Mendapatkan daftar ID kategori yang unik dari tabel pengaduan
         $categories = Category::whereIn('id', $categoryIds)->get(); // Mengambil data kategori berdasarkan ID yang ada di tabel pengaduan
@@ -50,7 +50,7 @@ class OpdController extends Controller
 //<--------------------------------------------------Grafik Line-------------------------------------------------------------------------->//
 
         // Mengambil data pengaduan yang memiliki status selesai
-        $pengaduanSelesai = Pengaduan::where('status_selesai', 'Y')->where('id_opd_fk',$idOpd)->get();
+        $pengaduanSelesai = Pengaduan::where('status_selesai', 'Y')->whereYear('tanggal_lapor', Carbon::now()->year)->where('id_opd_fk',$idOpd)->get();
 
         // Mengelompokkan pengaduan berdasarkan bulan
         $pengaduanPerBulan = $pengaduanSelesai->groupBy(function ($pengaduanSelesai) {

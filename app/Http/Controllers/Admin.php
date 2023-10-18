@@ -50,7 +50,7 @@ class Admin extends Controller
         ->count();
     
         // Mengambil data Pengaduan dari model Pengaduan
-         $pengaduans = Pengaduan::all();
+         $pengaduans = Pengaduan::whereYear('tanggal_lapor', Carbon::now()->year)->where('status_selesai','Y')->get();
 
         // Mengambil data kategori yang hanya ada di tabel pengaduan
             $categoryIds = $pengaduans->where('disposisi_opd','Y')->where('status_selesai','Y')->pluck('id_category_fk')->unique(); // Mendapatkan daftar ID kategori yang unik dari tabel pengaduan
@@ -88,8 +88,12 @@ class Admin extends Controller
             $opdAverages = [];
 
             foreach ($opds as $opd) {
-                $completedPengaduan = Pengaduan::where('status_selesai', 'Y')->where('id_opd_fk', $opd->id)->get();
-                
+                // $completedPengaduan = Pengaduan::where('status_selesai', 'Y')->where('id_opd_fk', $opd->id)->get();
+                $completedPengaduan = Pengaduan::where('status_selesai', 'Y')
+                ->where('id_opd_fk', $opd->id)
+                ->whereYear('tanggal_lapor', Carbon::now()->year)
+                ->get();
+
                 $totalDuration = 0;
                 $completedCount = $completedPengaduan->count();
 
@@ -103,6 +107,7 @@ class Admin extends Controller
                 $pengaduan = Pengaduan::whereNotNull('tanggal_validasi')
                 ->where('status_selesai', 'Y')
                 ->where('id_opd_fk', $opd->id)
+                ->whereYear('tanggal_lapor', Carbon::now()->year)
                 ->get();
 
                 $totalWaktuRespon = 0;
@@ -136,6 +141,7 @@ class Admin extends Controller
                 ->where('validasi_laporan','Y')
                 ->where('proses_tindak','Y')
                 ->where('id_opd_fk', $opd->id)
+                ->whereYear('tanggal_lapor', '=', '2023')
                 ->get()
                 ->count();
     
@@ -180,6 +186,7 @@ class Admin extends Controller
                 ->where('status_selesai', 'Y')
                 ->where('validasi_laporan', 'Y')
                 ->where('proses_tindak', 'Y')
+                ->whereYear('tanggal_lapor', Carbon::now()->year)
                 ->count();
 
                 $countLaporanTindak = Pengaduan::whereHas('opd', function ($query) use ($opd) {
@@ -189,6 +196,7 @@ class Admin extends Controller
                 ->where('status_selesai', NULL)
                 ->where('validasi_laporan', 'Y')
                 ->where('proses_tindak', 'Y')
+                ->whereYear('tanggal_lapor', Carbon::now()->year)
                 ->count();
 
                 $countLaporanBelum = Pengaduan::whereHas('opd', function ($query) use ($opd) {
@@ -199,6 +207,7 @@ class Admin extends Controller
                 ->whereNotNull('validasi_laporan')
                 ->where('disposisi_opd', '!=', 'P')
                 ->where('disposisi_opd', '!=', 'N')
+                ->whereYear('tanggal_lapor', Carbon::now()->year)
                 ->count();
 
                 // Hanya menyimpan data OPD yang memiliki pengaduan

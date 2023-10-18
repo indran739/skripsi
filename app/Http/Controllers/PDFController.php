@@ -203,7 +203,7 @@ class PDFController extends Controller
 
                 foreach ($completedPengaduan as $pengaduan) {
                     $createdAt = Carbon::parse($pengaduan->tanggal_tindak);
-                    $resolvedAt = Carbon::parse($pengaduan->updated_at);
+                    $resolvedAt = Carbon::parse($pengaduan->tgl_dinyatakan_selesai);
                     $duration = $resolvedAt->diffInHours($createdAt);
                     $totalDuration += $duration;
                 }
@@ -216,7 +216,7 @@ class PDFController extends Controller
                 $jumlahPengaduan = 0;
 
                 foreach ($pengaduan as $aduan) {
-                    $waktuPenerimaan = Carbon::parse($aduan->tanggal_tindak);
+                    $waktuPenerimaan = Carbon::parse($aduan->tanggal_disposisi);
                     $waktuValidasi = Carbon::parse($aduan->tanggal_validasi);
 
                     // Menghitung selisih waktu dalam jam dari penerimaan hingga validasi
