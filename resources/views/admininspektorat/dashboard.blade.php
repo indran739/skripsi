@@ -121,7 +121,7 @@
                 <div class="card-body">
                 <div class="box">
                     <div class="box-body">
-                        <canvas id="opdChart" width="400" height="200"></canvas>
+                        <canvas id="opdPengaduan" width="400" height="200"></canvas>
                     </div>
                 </div>
                 </div>

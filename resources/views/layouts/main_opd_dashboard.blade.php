@@ -223,75 +223,50 @@ $(function () {
         });
     </script>
 
-    <script>
-// Ambil data dari PHP (gunakan sintaks Blade untuk menyisipkan data PHP ke dalam script JavaScript jika perlu)
-        var opdAverages = {!! json_encode($opdAverages) !!};
+<script>
+        var opdCounts = @json($opdCounts); // Mengonversi data PHP ke JSON
+        var ctx = document.getElementById('opdPengaduan').getContext('2d');
 
-        // Persiapkan label, data waktu penyelesaian, dan data waktu respon
-        var labels = [];
-        var selesai = [];
-        var ditindak = [];
-        var belum = [];
-
-        opdAverages.forEach(function(opd) {
-            labels.push(opd.opd_name);
-            selesai.push(opd.count_laporan_selesai);
-            ditindak.push(opd.count_laporan_ditindak);
-            belum.push(opd.count_laporan_belum);
-        });
-
-        // Buat grafik stack bar dengan nilai rata-rata waktu di atas bar
-        var ctx = document.getElementById('opdChart').getContext('2d');
-        var opdChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Selesai',
-                    data: selesai,
-                    backgroundColor: 'rgba(54, 162, 235, 0.7)', // Warna latar belakang batang grafik dengan transparansi
+        var labels = Object.keys(opdCounts);
+        var data = {
+            labels: labels,
+            datasets: [{
+                label: 'Selesai',
+                backgroundColor: 'rgba(54, 162, 235, 0.7)', // Warna latar belakang batang grafik dengan transparansi
                     borderColor: 'rgba(54, 162, 235, 1)', // Warna garis batang grafik
-                    borderWidth: 1
-                }, {
-                    label: 'Ditindak',
-                    data: ditindak,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
-                }, {
-                    label: 'Belum',
-                    data: belum,
-                    backgroundColor: 'rgba(173, 255, 48)',
-                    borderColor: 'rgba(0, 0, 0)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
+                borderWidth: 1,
+                data: labels.map(opd => opdCounts[opd]['Selesai'])
+            }, {
+                label: 'Tindak Lanjut',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1,
+                data: labels.map(opd => opdCounts[opd]['Tindak Lanjut'])
+            }, {
+                label: 'Belum Ditindak',
+                backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                borderColor: 'rgba(255, 206, 86, 1)',
+                borderWidth: 1,
+                data: labels.map(opd => opdCounts[opd]['Belum Ditindak'])
+            }]
+        };
+
+        var options = {
+            scales: {
+                yAxes: [{
+                    ticks: {
                         beginAtZero: true
                     }
-                },
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    datalabels: {
-                        color: '#000', // Warna teks nilai
-                        anchor: 'end', // Menempatkan nilai di atas bar
-                        align: 'top',
-                        font: {
-                            weight: 'bold',
-                            size: 12
-                        },
-                        formatter: function(value) {
-                            return value; // Menampilkan nilai di atas bar
-                        }
-                    }
-                }
+                }]
             }
-        });
+        };
 
+        var myBarChart = new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: options
+        });
     </script>
+ 
 </body>
 </html>

@@ -95,7 +95,7 @@ class Admin extends Controller
 
                 foreach ($completedPengaduan as $pengaduan) {
                     $createdAt = Carbon::parse($pengaduan->tanggal_tindak);
-                    $resolvedAt = Carbon::parse($pengaduan->updated_at);
+                    $resolvedAt = Carbon::parse($pengaduan->tgl_dinyatakan_selesai);
                     $duration = $resolvedAt->diffInHours($createdAt);
                     $totalDuration += $duration;
                 }
@@ -155,7 +155,7 @@ class Admin extends Controller
 
                 
                 // Hanya simpan data jika rata-rata waktu penyelesaian lebih dari 0
-                if ($averageDuration > 0 && $rataRataWaktuRespon > 0) {
+                if ($averageDuration > 0 && $rataRataWaktuRespon > 0 && $totalDuration > 0 && $totalWaktuRespon > 0 && $count_laporan_diselesai > 0) {
                     $opdAverages[] = [
                         'opd_name' => $opd->name,
                         'average_duration' => $averageDuration,
@@ -168,8 +168,46 @@ class Admin extends Controller
                     ];
                 }
             }
+//<---------------------------------------------------------------End Rata rata waktu----------------------------------------------------------------------------->/
+//<---------------------------------------------------------------Grafik Bar Pengaduan----------------------------------------------------------------------------->/
+            $opdCounts = [];
 
+            foreach ($opds as $opd) {
+                $countLaporanSelesai = Pengaduan::whereHas('opd', function ($query) use ($opd) {
+                    $query->where('id', $opd->id);
+                })
+                ->where('disposisi_opd', 'Y')
+                ->where('status_selesai', 'Y')
+                ->where('validasi_laporan', 'Y')
+                ->where('proses_tindak', 'Y')
+                ->count();
 
+                $countLaporanTindak = Pengaduan::whereHas('opd', function ($query) use ($opd) {
+                    $query->where('id', $opd->id);
+                })
+                ->where('disposisi_opd', 'Y')
+                ->where('status_selesai', NULL)
+                ->where('validasi_laporan', 'Y')
+                ->where('proses_tindak', 'Y')
+                ->count();
+
+                $countLaporanBelum = Pengaduan::whereHas('opd', function ($query) use ($opd) {
+                    $query->where('id', $opd->id);
+                })
+                ->where('status_selesai', NULL)
+                ->where('proses_tindak', 'P')
+                ->whereNotNull('validasi_laporan')
+                ->count();
+
+                // Hanya menyimpan data OPD yang memiliki pengaduan
+                if ($countLaporanSelesai > 0 || $countLaporanTindak > 0 || $countLaporanBelum > 0) {
+                    $opdCounts[$opd->name] = [
+                        'Selesai' => $countLaporanSelesai,
+                        'Tindak Lanjut' => $countLaporanTindak,
+                        'Belum Ditindak' => $countLaporanBelum,
+                    ];
+                }
+            }   
 
         return view('admininspektorat.dashboard', [
             'opd' => $opd,
@@ -182,11 +220,13 @@ class Admin extends Controller
             'count_laporanselesai' => $count_laporan_selesai,
             'data' => $data,
             'active' => 'beranda',
-            'opdAverages' => $opdAverages
+            'opdAverages' => $opdAverages,
+            'opdCounts' => $opdCounts
 
         ]);
     }
     
+
     public function view_laporan_masuk() {
 
         $idOpd = Auth::user()->id_opd_fk;
