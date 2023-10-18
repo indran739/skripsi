@@ -5,10 +5,6 @@
 <div class="row mt-2 mb-2">
     <div class="col-sm-6 mb-3">
         <h1 class="ml-3">Form Pengaduan</h1>
-            <div class="callout callout-info ml-3">
-                <h5><i class="fas fa-info"></i> Note:</h5>
-                Pastikan anda mengisi form pengaduan dengan baik dan benar.
-            </div>
     </div><!-- /.col -->
     <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
@@ -46,7 +42,7 @@
                             <div class="form-group row">
                                 <label for="" class="col-sm-2 col-form-label">Kategori</label>
                                 <div class="col-sm-10" >
-                                    <select class="form-control select2" style="width: 100%;" name="id_category_fk" required>
+                                    <select class="form-control select2" style="width: 30%;" name="id_category_fk" required>
                                         <option selected="selected">Pilih Kategori Pengaduan</option>
                                         @foreach($categories as $category)
                                             <option value="{{ $category->id }}" {{ old('id_category_fk') == $category->id ? 'selected' : '' }}>
@@ -73,7 +69,7 @@
                         <div class="form-group row">
                             <label for="" class="col-sm-2 col-form-label">Kecamatan</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control select2" required autocomplete="id_kecamatan_fk" style="width: 100%;" name="id_kecamatan_fk">
+                                    <select class="form-control select2" required autocomplete="id_kecamatan_fk" style="width: 30%;" name="id_kecamatan_fk">
                                         <option selected="selected" disabled>Pilih Kecamatan</option>
                                         @foreach($kecamatans as $kecamatan)
                                             <option value="{{ $kecamatan->id }}" {{ old('id_kecamatan_fk') == $kecamatan->id ? 'selected' : '' }}>
@@ -89,7 +85,7 @@
                         <div class="form-group row">
                             <label for="" class="col-sm-2 col-form-label">Kelurahan/Desa</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control select2 @error('id_desa_fk') is-invalid @enderror" required autocomplete="id_desa_fk" style="width: 100%;" name="id_desa_fk">
+                                    <select class="form-control select2 @error('id_desa_fk') is-invalid @enderror" required autocomplete="id_desa_fk" style="width: 30%;" name="id_desa_fk">
                                         <option selected="selected" disabled>Pilih Kelurahan / Desa</option>
                                         @foreach($desas as $desa)
                                             <option value="{{ $desa->id }}" {{ old('id_desa_fk') == $desa->id ? 'selected' : '' }}>
@@ -119,7 +115,7 @@
                         <div class="form-group row">
                             <label for="" class="col-sm-2 col-form-label">Tanggal Kejadian</label>
                             <div class="col-sm-10">
-                                <div class="input-group date" style="width: 100%;" id="reservationdate" data-target-input="nearest">
+                                <div class="input-group date" style="width: 30%;" id="reservationdate" data-target-input="nearest">
                                     <input type="text" class="form-control datetimepicker-input" name="tanggal_kejadian"   required data-target="#reservationdate"/>
                                     <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
                                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -130,7 +126,7 @@
                         <div class="form-group row">
                                 <label for="" class="col-sm-2 col-form-label">OPD Tujuan</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control select2" style="width: 100%;" name="id_opd_fk" required>
+                                    <select class="form-control select2" style="width: 30%;" name="id_opd_fk" required>
                                         <option selected="selected">Pilih OPD Tujuan</option>
                                         @foreach($opds as $opd)
                                             @if($opd->name != 'pengadu' && $opd->name != 'Inspektorat Kabupaten Gunung Mas')
@@ -186,7 +182,7 @@
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer d-flex justify-content-start">
-                            <button type="submit" style="width:100px;" class="btn btn-success">Submit</button>
+                            <button type="submit" style="width:100px;" class="btn btn-success">Submit</button>  
                         </div>
                         <!-- /.card-footer -->
                     </form>

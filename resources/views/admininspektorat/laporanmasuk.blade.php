@@ -108,7 +108,7 @@
                                         <tr>
                                         <td>{{ $no++ }}</td>
                                         <td>{{ Str::limit($laporan->isi_laporan, 20) }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($laporan->created_at)->format('d F Y') }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($laporan->tanggal_lapor)->format('d F Y') }}</td>
                                         <td>{{ $laporan->category->name }}</td>
                                         <td>{{ $laporan->opd->name }}</td>
                                         
@@ -141,7 +141,7 @@
                                                             </td>
                                                         @else
                                                             <td>
-                                                                <div class=""><span class="badge badge-warning">Pending</span></div>
+                                                                <div class=""><span class="badge badge-warning">Menunggu</span></div>
                                                             </td>
                                                         @endif
                                                     @endif
@@ -275,7 +275,7 @@
                                             <tr>
                                             <td>{{ $no++ }}</td>
                                             <td>{{ Str::limit($laporan->isi_laporan, 20) }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($laporan->created_at)->format('d F Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($laporan->tanggal_lapor)->format('d F Y') }}</td>
                                             <td>{{ $laporan->category->name }}</td>
                                             <td>{{ $laporan->opd->name }}</td>
                                             
@@ -363,7 +363,7 @@
                                             <tr>
                                             <td>{{ $no++ }}</td>
                                             <td>{{ Str::limit($laporan->isi_laporan, 20) }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($laporan->created_at)->format('d F Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($laporan->tanggal_lapor)->format('d F Y') }}</td>
                                             <td>{{ $laporan->category->name }}</td>
                                             <td>{{ $laporan->opd->name }}</td>
                                             

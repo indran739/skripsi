@@ -101,6 +101,7 @@ class Admin extends Controller
                 }
                 
                 $pengaduan = Pengaduan::whereNotNull('tanggal_validasi')
+                ->where('status_selesai', 'Y')
                 ->where('id_opd_fk', $opd->id)
                 ->get();
 
@@ -108,7 +109,7 @@ class Admin extends Controller
                 $jumlahPengaduan = 0;
 
                 foreach ($pengaduan as $aduan) {
-                    $waktuPenerimaan = Carbon::parse($aduan->tanggal_tindak);
+                    $waktuPenerimaan = Carbon::parse($aduan->tanggal_disposisi);
                     $waktuValidasi = Carbon::parse($aduan->tanggal_validasi);
 
                     // Menghitung selisih waktu dalam jam dari penerimaan hingga validasi
@@ -121,12 +122,15 @@ class Admin extends Controller
 
                 // Menghitung rata-rata waktu respon
                 $rataRataWaktuRespon = $jumlahPengaduan > 0 ? $totalWaktuRespon / $jumlahPengaduan : 0;
-                $rataRataWaktuRespon = number_format( $rataRataWaktuRespon, 2);
+                $rataRataWaktuRespon = number_format( $rataRataWaktuRespon, 1);
 
                 // Menghitung rata-rata waktu penyelesaian
                 $averageDuration = ($completedCount > 0) ? ($totalDuration / $completedCount) : 0;
-                $averageDuration = number_format($averageDuration, 2);
+                $averageDuration = number_format($averageDuration, 1);
                 
+                $totalDuration = number_format($totalDuration, 1);
+                $totalWaktuRespon = number_format($totalWaktuRespon, 1);
+
                 $count_laporan_diselesai = Pengaduan::where('disposisi_opd','Y')
                 ->where('status_selesai','Y')
                 ->where('validasi_laporan','Y')
@@ -155,6 +159,8 @@ class Admin extends Controller
                     $opdAverages[] = [
                         'opd_name' => $opd->name,
                         'average_duration' => $averageDuration,
+                        'completed_duration' => $totalDuration,
+                        'respons_duration' => $totalWaktuRespon,
                         'rataRataWaktuRespon' => $rataRataWaktuRespon,
                         'count_laporan_selesai' => $count_laporan_diselesai,
                         'count_laporan_ditindak' => $count_laporan_ditindak,
@@ -186,10 +192,10 @@ class Admin extends Controller
         $idOpd = Auth::user()->id_opd_fk;
 
         $opd =  Opd::select('name')->where('id',$idOpd)->first();
-        $laporans_pending = Pengaduan::where('disposisi_opd', 'P')->whereNull('status_selesai')->orderBy('created_at', 'desc')->paginate(5);
-        $laporans_tolak = Pengaduan::where('disposisi_opd', 'N')->whereNull('status_selesai')->orderBy('created_at', 'desc')->paginate(5);
-        $laporans_disposisi = Pengaduan::where('disposisi_opd', 'Y')->whereNull('status_selesai')->orderBy('created_at', 'desc')->paginate(5);
-        // $laporans_disposisi = Pengaduan::where('disposisi_opd', 'Y')->whereNull('status_selesai')->orderBy('created_at', 'desc')->paginate(5);
+        $laporans_pending = Pengaduan::where('disposisi_opd', 'P')->whereNull('status_selesai')->orderBy('tanggal_lapor', 'desc')->paginate(5);
+        $laporans_tolak = Pengaduan::where('disposisi_opd', 'N')->whereNull('status_selesai')->orderBy('tanggal_lapor', 'desc')->paginate(5);
+        $laporans_disposisi = Pengaduan::where('disposisi_opd', 'Y')->whereNull('status_selesai')->orderBy('tanggal_lapor', 'desc')->paginate(5);
+        // $laporans_disposisi = Pengaduan::where('disposisi_opd', 'Y')->whereNull('status_selesai')->orderBy('tanggal_lapor', 'desc')->paginate(5);
         return view('admininspektorat.laporanmasuk', [
             'opd' => $opd,
             'laporans_pending' => $laporans_pending,
@@ -203,7 +209,7 @@ class Admin extends Controller
 
         $idOpd= Auth::user()->id_opd_fk;
         $opd =  Opd::select('name')->where('id',$idOpd)->first();
-        $laporans = Pengaduan::where('status_selesai', 'Y')->orderBy('created_at', 'desc')->paginate(10);
+        $laporans = Pengaduan::where('status_selesai', 'Y')->orderBy('tanggal_lapor', 'desc')->paginate(10);
 
         return view('admininspektorat.laporanselesai', [
             'opd' => $opd,
@@ -228,7 +234,7 @@ class Admin extends Controller
             ->when($idCategory, function ($query) use ($idCategory) {
                 return $query->where('id_category_fk', $idCategory);
             })
-            ->orderBy('created_at', 'desc')
+            ->orderBy('tanggal_lapor', 'desc')
             ->paginate(7);
 
         return response()->json(['laporans' => $filteredLaporans]); // Pastikan mengirimkan 'laporans' ke frontend

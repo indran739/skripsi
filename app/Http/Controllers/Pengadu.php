@@ -15,6 +15,8 @@ use App\Models\Desa;
 use App\Models\Tanggapan_Admins;
 use Illuminate\Support\Facades\Storage; // Import namespace Storage
 use Auth;
+use Carbon\Carbon;
+
 
 class Pengadu extends Controller
 {
@@ -33,7 +35,7 @@ class Pengadu extends Controller
     }
 
     public function index() {
-        $laporans = Pengaduan::orderBy('created_at', 'desc')->where('status_selesai','Y')->paginate(5);
+        $laporans = Pengaduan::orderBy('tanggal_lapor', 'desc')->where('status_selesai','Y')->paginate(5);
     
         return view('pengadu.beranda', [
             'laporans' => $laporans,
@@ -54,12 +56,12 @@ class Pengadu extends Controller
     public function view_laporan_terkirim() {
         $iduser = Auth::user()->id;
 
-        $laporans_pending = Pengaduan::where('id_user_fk', $iduser)->where('disposisi_opd', 'P')->whereNull('status_selesai')->orderBy('created_at', 'desc')->paginate(5);
-        $laporans_tolak = Pengaduan::where('id_user_fk', $iduser)->where('disposisi_opd', 'N')->whereNull('status_selesai')->orderBy('created_at', 'desc')->paginate(5);
-        $laporans_disposisi = Pengaduan::where('id_user_fk', $iduser)->where('disposisi_opd', 'Y')->where('validasi_laporan', 'P')->whereNull('status_selesai')->orderBy('created_at', 'desc')->paginate(5);
-        $laporans_invalid = Pengaduan::where('id_user_fk', $iduser)->where('validasi_laporan', 'N')->whereNull('status_selesai')->orderBy('created_at', 'desc')->paginate(5);
-        $laporans_valid = Pengaduan::where('id_user_fk', $iduser)->where('validasi_laporan', 'Y')->where('proses_tindak', 'P')->whereNull('status_selesai')->orderBy('created_at', 'desc')->paginate(5);
-        $laporans_tindak = Pengaduan::where('id_user_fk', $iduser)->where('proses_tindak', 'Y')->whereNull('status_selesai')->orderBy('created_at', 'desc')->paginate(5);
+        $laporans_pending = Pengaduan::where('id_user_fk', $iduser)->where('disposisi_opd', 'P')->whereNull('status_selesai')->orderBy('tanggal_lapor', 'desc')->paginate(5);
+        $laporans_tolak = Pengaduan::where('id_user_fk', $iduser)->where('disposisi_opd', 'N')->whereNull('status_selesai')->orderBy('tanggal_lapor', 'desc')->paginate(5);
+        $laporans_disposisi = Pengaduan::where('id_user_fk', $iduser)->where('disposisi_opd', 'Y')->where('validasi_laporan', 'P')->whereNull('status_selesai')->orderBy('tanggal_lapor', 'desc')->paginate(5);
+        $laporans_invalid = Pengaduan::where('id_user_fk', $iduser)->where('validasi_laporan', 'N')->whereNull('status_selesai')->orderBy('tanggal_lapor', 'desc')->paginate(5);
+        $laporans_valid = Pengaduan::where('id_user_fk', $iduser)->where('validasi_laporan', 'Y')->where('proses_tindak', 'P')->whereNull('status_selesai')->orderBy('tanggal_lapor', 'desc')->paginate(5);
+        $laporans_tindak = Pengaduan::where('id_user_fk', $iduser)->where('proses_tindak', 'Y')->whereNull('status_selesai')->orderBy('tanggal_lapor', 'desc')->paginate(5);
 
         return view('pengadu.laporan_terkirim', [
             'laporans_pending' => $laporans_pending,
@@ -74,7 +76,7 @@ class Pengadu extends Controller
 
     public function view_laporan_selesai() {
         $iduser = Auth::user()->id;
-        $laporans = Pengaduan::where('id_user_fk', $iduser)->where('status_selesai','Y')->orderBy('created_at', 'desc')->paginate(7);
+        $laporans = Pengaduan::where('id_user_fk', $iduser)->where('status_selesai','Y')->orderBy('tanggal_lapor', 'desc')->paginate(7);
     
         return view('pengadu.laporan_selesai', [
             'laporans' => $laporans,
@@ -250,8 +252,8 @@ public function store_pengaduan(Request $request)
         $pengaduan->id_kelurahan_fk = $id_kelurahan;
         
     $pengaduan->lokasi_kejadian = $request->input('lokasi_kejadian');
-    $pengaduan->latitude = $request->input('latitude');
-    $pengaduan->longitude = $request->input('longitude');
+    $pengaduan->latitude = $request->input('latitude', null);
+    $pengaduan->longitude = $request->input('longitude', null);
     $pengaduan->tanggal_kejadian = date("Y-m-d", strtotime($request->input('tanggal_kejadian')));
     $pengaduan->id_opd_fk = $request->input('id_opd_fk');
     $pengaduan->id_category_fk = $request->input('id_category_fk');
@@ -266,6 +268,8 @@ public function store_pengaduan(Request $request)
     $pengaduan->id_user_fk = auth()->user()->id;
 
     try {
+        $pengaduan->save();
+        $pengaduan->tanggal_lapor = $pengaduan->created_at;
         $pengaduan->save();
         return redirect()->back()->with('success', 'Data berhasil disimpan');
     } catch (\Exception $e) {
@@ -345,11 +349,13 @@ public function store_pengaduan(Request $request)
             $laporan->id_opd_fk = $request->id_opd_fk;
             $laporan->validasi_laporan = 'P';
             $laporan->disposisi_opd = 'P';
+            $laporan->tanggal_lapor = Carbon::now();
     
-        } elseif ($laporan->disposisi_opd == 'N' && $laporan->id_opd_fk !== $request->id_opd_fk) {
+        } elseif ($laporan->disposisi_opd == 'N' && $laporan->id_opd_fk !== $request->id_opd_fk) { //laporan di alihkan ke OPD lain.
             $laporan->id_opd_fk = $request->id_opd_fk;
             $laporan->disposisi_opd = 'P';
             $laporan->validasi_laporan = 'P';
+            $laporan->tanggal_lapor = Carbon::now();
         }
         
             // Menghandle unggah lampiran dan gambar
@@ -430,11 +436,13 @@ public function update_pengaduan_invalid(Request $request, $id_pengaduan)
     if ($laporan->disposisi_opd == 'Y' && $laporan->validasi_laporan == 'N' && $laporan->id_opd_fk == $request->id_opd_fk) {
         $laporan->id_opd_fk = $request->id_opd_fk;
         $laporan->validasi_laporan = 'P';
+        $laporan->tanggal_lapor = Carbon::now();
 
     } elseif ($laporan->disposisi_opd == 'Y' && $laporan->validasi_laporan == 'N' && $laporan->id_opd_fk !== $request->id_opd_fk) {
         $laporan->id_opd_fk = $request->id_opd_fk;
         $laporan->disposisi_opd = 'P';
         $laporan->validasi_laporan = 'P';
+        $laporan->tanggal_lapor = Carbon::now();
     }
     
         // Menghandle unggah lampiran dan gambar

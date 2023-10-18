@@ -111,7 +111,7 @@
                     <label for="" class="col-sm-2 col-form-label">Tanggal Kejadian</label>
                     <div class="col-sm-10">
                         <div class="input-group date" style="width: 100%;" id="reservationdate" data-target-input="nearest">
-                            <input type="text" class="form-control datetimepicker-input" name="tanggal_kejadian"   value="{{ \Carbon\Carbon::parse($laporan->tanggal_kejadian)->format('d/m/Y') }}" required data-target="#reservationdate"/>
+                            <input type="text" class="form-control datetimepicker-input" name="tanggal_kejadian"   value="{{ \Carbon\Carbon::parse($laporan->tanggal_kejadian)->format('m/d/Y') }}" required data-target="#reservationdate"/>
                             <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
                                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                             </div>

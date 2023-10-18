@@ -154,7 +154,7 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
-Route::put('disposisi/{id_pengaduan}', [Admin::class, 'disposisi']);
+// Route::put('disposisi/{id_pengaduan}', [Admin::class, 'disposisi']);
 
 // Route::controller(LoginController::class)->group(function(){
 //     Route::get('login','index')->name('login');

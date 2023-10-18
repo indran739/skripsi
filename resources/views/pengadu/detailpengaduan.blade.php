@@ -30,14 +30,14 @@
 
 <!-- Default box -->
 <div class="card">
-  <div class="card-header>
+  <div class="card-header">
     <h3 class="card-title"></h3>
   </div>
 
   <div class="card-body">
     <div class="row">
     @if($laporan->first_image || $laporan->sec_image )
-      <div class="col-7">
+      <div class="col-5">
           <div class="card">
               <div class="card-header text-white" style="background-color:#4030A3;">
                 <div class="card-title">
@@ -81,9 +81,44 @@
                     </a>
                 </div>
             </div>
+        <div class="container">
+                <div class="card">
+                    <div class="card-header text-white" style="background-color:#4030A3;">
+                        <div class="card-title">
+                            <h5>Tanggapan Admin</h5>
+                        </div>
+                    </div>
+                        <div class="card-body">
+                        @if(count($tanggapans) > 0)
+                                @foreach ($tanggapans as $tanggapan)
+                                <div class="post">
+                                    <div class="user-block">
+                                    @if($tanggapan->id_user_fk !== '3' && $tanggapan->user->jenis_kelamin == 'Laki-laki')
+                                        <img src="{{asset('/')}}dist/img/avatar5.png" class="img-circle img-bordered-sm" alt="User Image">
+                                    @else
+                                        <img src="{{asset('/')}}dist/img/avatar3.png" class="img-circle img-bordered-sm" alt="User Image">
+                                    @endif
+                                    <span class="username">
+                                        <a href="#">{{ $tanggapan->user->name }}</a>
+                                    </span>
+                                    <span class="description">Memberi tanggapan - {{ \Carbon\Carbon::parse($tanggapan->created_at)->format('d F Y, H:i') }}</span>
+                                    </div>
+                                    <!-- /.user-block -->
+                                    <p>
+                                    {{ $tanggapan->tanggapan }}
+                                    </p>
+                                </div>
+                                @endforeach
+                        @else
+                            <p>Belum ada tanggapan untuk pengaduan ini</p>
+                        @endif
+                        </div>
+                </div>
         </div>
+    </div>
+        
         @else
-        <div class="col-7">
+        <div class="col-5">
           <div class="card">
               <div class="card-header text-white" style="background-color:#4030A3;">
                 <div class="card-title">
@@ -159,11 +194,12 @@
                         @endif
                         </div>
                 </div>
+                
         <!--col-->
         @endif
               <!-- /.card-body -->
             </div>
-            <div class="col-5">
+            <div class="col-7">
                    <div class="card">
                         <div class="card-header">
                             <div class="card-body">
@@ -191,7 +227,7 @@
                                     <dt class="col-sm-5 mb-3">Tanggal Kejadian</dt>
                                     <dd class="col-sm-7 mb-3"> <span>:</span> {{ \Carbon\Carbon::parse($laporan->tanggal_kejadian)->format('d F Y') }}</dd>
                                     <dt class="col-sm-5 mb-3">Tanggal Lapor</dt>
-                                    <dd class="col-sm-7 mb-3"> <span>:</span> {{ \Carbon\Carbon::parse($laporan->created_at)->format('d F Y') }}</dd>
+                                    <dd class="col-sm-7 mb-3"> <span>:</span> {{ \Carbon\Carbon::parse($laporan->tanggal_lapor)->format('d F Y') }}</dd>
                                     <dt class="col-sm-5 mb-3">Tanggal Tindak Lanjut</dt>
                                     @if($laporan->tanggal_tindak === NULL)
                                     <dd class="col-sm-7 mb-3"> <span>:</span> - </dd>
@@ -210,7 +246,7 @@
                                     @elseif($laporan->tanggal_selesai && $laporan->status_selesai === NULL)
                                     <dd class="col-sm-5 mb-3"> <span>:</span> - </dd>
                                     @elseif($laporan->tanggal_selesai && $laporan->status_selesai == 'Y')
-                                        <dd class="col-sm-7 mb-3"> <span>:</span> {{ \Carbon\Carbon::parse($laporan->updated_at)->format('d F Y') }} </dd>
+                                        <dd class="col-sm-7 mb-3"> <span>:</span> {{ \Carbon\Carbon::parse($laporan->tgl_dinyatakan_selesai)->format('d F Y') }} </dd>
                                         @endif
                                     <dt class="col-sm-5 mb-2">Isi Laporan :</dt>
                                     <dd>{{ $laporan->isi_laporan }}</dd>
@@ -220,7 +256,7 @@
                                             @if ($laporan->disposisi_opd && $laporan->disposisi_opd == 'Y')
                                             <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning"
                                             role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0"
-                                            aria-valuemax="100">Pending</div>
+                                            aria-valuemax="100">Menunggu</div>
                                             <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
                                             role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0"
                                             aria-valuemax="100">Terdisposisi</div>
@@ -234,7 +270,7 @@
                                             @elseif($laporan->disposisi_opd && $laporan->disposisi_opd == 'P')
                                             <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning"
                                             role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0"
-                                            aria-valuemax="100">Pending</div>
+                                            aria-valuemax="100">Menunggu</div>
                                             @endif
                                             @if ($laporan->validasi_laporan && $laporan->validasi_laporan == 'Y')
                                             <div class="progress-bar progress-bar-striped progress-bar-animated bg-info"
@@ -276,46 +312,7 @@
             </div>
     </div>
 <!--- row ---->
-@if($laporan->first_image || $laporan->sec_image)
-        <div class="row ml-3">
-            <div class="col-12 col-md-12 col-lg-12 order-2 order-md-1">
-                <div class="card mr-4">
-                    <div class="card-header text-white" style="background-color:#4030A3;">
-                        <div class="card-title">
-                            <h5>Tanggapan Admin</h5>
-                        </div>
-                    </div>
-                        <div class="card-body">
-                        @if(count($tanggapans) > 0)
-                                @foreach ($tanggapans as $tanggapan)
-                                <div class="post">
-                                    <div class="user-block">
-                                    @if($tanggapan->id_user_fk !== '3' && $tanggapan->user->jenis_kelamin == 'Laki-laki')
-                                        <img src="{{asset('/')}}dist/img/avatar5.png" class="img-circle img-bordered-sm" alt="User Image">
-                                    @else
-                                        <img src="{{asset('/')}}dist/img/avatar3.png" class="img-circle img-bordered-sm" alt="User Image">
-                                    @endif
-                                    <span class="username">
-                                        <a href="#">{{ $tanggapan->user->name }}</a>
-                                    </span>
-                                    <span class="description">Memberi tanggapan - {{ \Carbon\Carbon::parse($tanggapan->created_at)->format('d F Y, H:i') }}</span>
-                                    </div>
-                                    <!-- /.user-block -->
-                                    <p>
-                                    {{ $tanggapan->tanggapan }}
-                                    </p>
-                                </div>
-                                @endforeach
-                        @else
-                            <p>Belum ada tanggapan untuk pengaduan ini</p>
-                        @endif
-                        </div>
-                </div>
-            </div>
-        </div>
-</div>
-</div>
-@endif
+
 <!-- /.card -->
 
 @endsection

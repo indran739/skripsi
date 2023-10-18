@@ -262,7 +262,7 @@ $(function () {
                     label: 'Belum',
                     data: belum,
                     backgroundColor: 'rgba(173, 255, 48)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderColor: 'rgba(0, 0, 0)',
                     borderWidth: 1
                 }]
             },

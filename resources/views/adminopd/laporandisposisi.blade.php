@@ -137,7 +137,7 @@
                                         <tr>
                                         <td>{{ $no++ }}</td>
                                         <td>{{ Str::limit($laporan->isi_laporan, 20) }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($laporan->created_at)->format('d F Y') }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($laporan->tanggal_lapor)->format('d F Y') }}</td>
                                         <td>{{ $laporan->category->name }}</td>
                                         
                                         @if ($laporan->status_selesai == 'Y')
@@ -358,7 +358,7 @@
                                             <tr>
                                             <td>{{ $no++ }}</td>
                                             <td>{{ Str::limit($laporan->isi_laporan, 20) }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($laporan->created_at)->format('d F Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($laporan->tanggal_lapor)->format('d F Y') }}</td>
                                             <td>{{ $laporan->category->name }}</td>
                                             
                                             @if ($laporan->status_selesai == 'Y')
@@ -452,7 +452,7 @@
                                             <tr>
                                             <td>{{ $no++ }}</td>
                                             <td>{{ Str::limit($laporan->isi_laporan, 20) }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($laporan->created_at)->format('d F Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($laporan->tanggal_lapor)->format('d F Y') }}</td>
                                             <td>{{ $laporan->category->name }}</td>
                                             
                                             @if ($laporan->status_selesai == 'Y')

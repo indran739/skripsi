@@ -55,7 +55,7 @@
                             <tr>
                             <td>{{ $no++ }}</td>
                             <td>{{ Str::limit($laporan->isi_laporan, 50) }}</td>
-                            <td>{{ \Carbon\Carbon::parse($laporan->updated_at)->format('d F Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($laporan->tgl_dinyatakan_selesai)->format('d F Y') }}</td>
                             <td>{{ $laporan->category->name }}</td>
                             <td>{{ $laporan->opd->name }}</td>
                             

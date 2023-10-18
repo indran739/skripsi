@@ -160,27 +160,27 @@ class OpdController extends Controller
 
         $pengaduans = Pengaduan::where('disposisi_opd','Y')->where('id_opd_fk',$idOpd)->where('status_selesai', 'Y')->orderBy('created_at', 'desc')->paginate(7);
         
-        foreach ($pengaduans as $item) 
-        {
-            $tanggalSelesai = Carbon::parse($item->tanggal_selesai);
-            $tanggalUpdate = Carbon::parse($item->updated_at);
+        // foreach ($pengaduans as $item) 
+        // {
+        //     $tanggalSelesai = Carbon::parse($item->tanggal_selesai);
+        //     $tanggalUpdate = Carbon::parse($item->updated_at);
             
-            if ($tanggalUpdate->isSameDay($tanggalSelesai) && $tanggalUpdate->isSameMonth($tanggalSelesai)) {
-                // Tanggal dinyatakan selesai sama dengan tanggal estimasi selesai
-                $item->kecepatan = "Tepat Waktu";
+        //     if ($tanggalUpdate->isSameDay($tanggalSelesai) && $tanggalUpdate->isSameMonth($tanggalSelesai)) {
+        //         // Tanggal dinyatakan selesai sama dengan tanggal estimasi selesai
+        //         $item->kecepatan = "Tepat Waktu";
                
-            } elseif ($tanggalUpdate->greaterThan($tanggalSelesai)) {
+        //     } elseif ($tanggalUpdate->greaterThan($tanggalSelesai)) {
 
-                // Tanggal dinyatakan selesai lambat dari tanggal estimasi selesai
-                $item->kecepatan = "Lambat";
+        //         // Tanggal dinyatakan selesai lambat dari tanggal estimasi selesai
+        //         $item->kecepatan = "Lambat";
                 
-            } else {
-                    // Tanggal dinyatakan selesai cepat dari tanggal estimasi selesai
-                $item->kecepatan = "Cepat";
+        //     } else {
+        //             // Tanggal dinyatakan selesai cepat dari tanggal estimasi selesai
+        //         $item->kecepatan = "Cepat";
                 
-            }
-            $item->save();
-        }
+        //     }
+        //     $item->save();
+        // }
         // Mendapatkan kategori yang sudah berstatus selesai dari tabel pengaduan sebagai collection
         $kategorisSelesai = Category::whereHas('pengaduan', function ($query) {
             $query->where('status_selesai', 'Y')->where('id_opd_fk', auth()->user()->id_opd_fk);
@@ -325,6 +325,11 @@ class OpdController extends Controller
             $pengaduan->status_selesai = $request->status_selesai; 
 
             $pengaduan->save();
+
+            $pengaduan->tgl_dinyatakan_selesai = $pengaduan->updated_at;
+
+            $pengaduan->save();   
+
 
             if($request->tanggapan == NULL){
                 return redirect('/laporanselesaiopd')->with('selesai', 'Data berhasil diperbarui');

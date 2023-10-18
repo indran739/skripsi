@@ -74,7 +74,6 @@
                             <th>Tanggal Selesai</th>
                             <th>Kategori</th>
                             <th class="">Status</th>
-                            <th style="text-align: center;">Kecepatan Kinerja</th>
                             <th style="text-align: center;">Aksi</th>
                             </tr>
                         </thead>
@@ -88,7 +87,7 @@
                             <td>{{ $no++ }}</td>
                             <td>{{ Str::limit($laporan->isi_laporan, 50) }}</td>
                             <td>{{ \Carbon\Carbon::parse($laporan->tanggal_tindak)->format('d F Y') }}</td>
-                            <td>{{ \Carbon\Carbon::parse($laporan->updated_at)->format('d F Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($laporan->tgl_dinyatakan_selesai)->format('d F Y') }}</td>
                             <td>{{ $laporan->category->name }}</td>
                             
                             @if ($laporan->status_selesai == 'Y')
@@ -118,15 +117,7 @@
                                         @endif
                                     @endif
                             @endif
-                            @if($laporan->kecepatan == "Cepat")
-                            <td><div class="d-flex justify-content-center"><span class="badge badge-success">Cepat</span></div></td>
-                            @elseif($laporan->kecepatan == "Tepat Waktu")
-                            <td><div class="d-flex justify-content-center"><span class="badge badge-info">Tepat Waktu</span></div></td>
-                            @elseif($laporan->kecepatan == "Lambat")
-                            <td><div class="d-flex justify-content-center"><span class="badge badge-danger">Lambat</span></div></td>
-                            @elseif($laporan->kecepatan == NULL)
-                            <td><div class="d-flex justify-content-center"><span class="badge badge-danger">Tidak ada</span></div></td>
-                            @endif
+                          
                             <td style="text-align: center;" colspan="2">
                                 <button type="button"  class="btn bg-gradient-info" data-toggle="" data-target="">
                                     <a href="/detailpengaduanopd/{{ $laporan->id }}" style="text-decoration: none; color:white;"><i class="fas fa-eye"></i></a>
@@ -187,13 +178,13 @@
                         if (laporans.data.length > 0) {
                             $.each(laporans.data, function(index, laporan){
 
-                                var formattedDateCreated = laporan.updated_at ? new Date(laporan.created_at).toLocaleDateString('en-GB', {
+                                var formattedDateCreated = laporan.tanggal_lapor ? new Date(laporan.tanggal_lapor).toLocaleDateString('en-GB', {
                                     day: 'numeric',
                                     month: 'long',
                                     year: 'numeric'
                                 }) : '';
                                 // Format tanggal
-                                var formattedDateUpdated = laporan.updated_at ? new Date(laporan.updated_at).toLocaleDateString('en-GB', {
+                                var formattedDateUpdated = laporan.tgl_dinyatakan_selesai ? new Date(laporan.tgl_dinyatakan_selesai).toLocaleDateString('en-GB', {
                                     day: 'numeric',
                                     month: 'long',
                                     year: 'numeric'
@@ -207,7 +198,6 @@
                                     '<td>' + formattedDateUpdated + '</td>' +
                                     '<td>' + (laporan.category && laporan.category.name ? laporan.category.name : '') + '</td>' +
                                     '<td>' + getStatusBadge(laporan.status_selesai) + '</td>' +
-                                    '<td>' + getKecepatanBadge(laporan.kecepatan) + '</td>' +
                                     '<td style="text-align: center;" colspan="2"><button type="button" class="btn bg-gradient-info"><a href="/detailpengaduanadmin/' + laporan.id + '" style="text-decoration: none; color:white;"><i class="fas fa-eye"></i></a></button></td>' +
                                     '</tr>';
                             });
@@ -232,21 +222,6 @@
                 return '<div class=""><span class="badge badge-primary">Disposisi</span></div>';
             } else {
                 return '<div class=""><span class="badge badge-warning">Proses Disposisi</span></div>';
-            }
-        }
-        // Fungsi untuk mendapatkan label kecepatan berdasarkan kode kecepatan
-        function getKecepatanBadge(kecepatan) {
-            if (kecepatan === 'Cepat') {
-                return '<div class="d-flex justify-content-center"><span class="badge badge-success">Cepat</span></div>';
-            } else if (kecepatan === 'Tepat Waktu') {
-                return '<div class="d-flex justify-content-center"><span class="badge badge-info">Tepat Waktu</span></div>';
-            } else if (kecepatan === 'Lambat') {
-                return '<div class="d-flex justify-content-center"><span class="badge badge-danger">Lambat</span></div>';
-            } else if (kecepatan === null) {
-                return '<div class="d-flex justify-content-center"><span class="badge badge-danger">Tidak ada</span></div>';
-            } else {
-                // Handle nilai kecepatan lainnya jika diperlukan
-                return ''; // Atau sesuaikan dengan kebutuhan Anda
             }
         }
     });
