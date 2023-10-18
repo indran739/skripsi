@@ -243,7 +243,7 @@ $(function () {
                 borderWidth: 1,
                 data: labels.map(opd => opdCounts[opd]['Tindak Lanjut'])
             }, {
-                label: 'Belum Ditindak',
+                label: 'Belum Ditindak (Terdisposisi, Valid, Invalid)',
                 backgroundColor: 'rgba(255, 206, 86, 0.2)',
                 borderColor: 'rgba(255, 206, 86, 1)',
                 borderWidth: 1,

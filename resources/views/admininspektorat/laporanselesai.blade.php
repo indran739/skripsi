@@ -98,7 +98,7 @@
                             
                             @if ($laporan->status_selesai == 'Y')
                                 <td>
-                                    <div><span class="badge badge-success">Selesai</span></div>
+                                    <div><span class="badge badge-success">Selesai</span><br>{{\Carbon\Carbon::parse($laporan->tgl_dinyatakan_selesai)->diffForHumans()}}</div>
                                 </td>
                                 @else
                                     @if ($laporan->proses_tindak == 'Y')

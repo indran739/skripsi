@@ -197,6 +197,8 @@ class Admin extends Controller
                 ->where('status_selesai', NULL)
                 ->where('proses_tindak', 'P')
                 ->whereNotNull('validasi_laporan')
+                ->where('disposisi_opd', '!=', 'P')
+                ->where('disposisi_opd', '!=', 'N')
                 ->count();
 
                 // Hanya menyimpan data OPD yang memiliki pengaduan

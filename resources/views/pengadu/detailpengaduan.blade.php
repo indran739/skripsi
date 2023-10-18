@@ -263,7 +263,7 @@
                                             @elseif($laporan->disposisi_opd && $laporan->disposisi_opd == 'N')
                                             <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning"
                                             role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0"
-                                            aria-valuemax="100">Pending</div>
+                                            aria-valuemax="100">Menunggu</div>
                                             <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger"
                                             role="progressbar" style="width: 20%;" aria-valuenow="20" aria-valuemin="0"
                                             aria-valuemax="100">Ditolak</div>

@@ -141,7 +141,7 @@
                                                             </td>
                                                         @else
                                                             <td>
-                                                                <div class=""><span class="badge badge-warning">Menunggu</span></div>
+                                                                <div class=""><span class="badge badge-warning">Menunggu</span><br>{{\Carbon\Carbon::parse($laporan->tanggal_lapor)->diffForHumans()}}</div>
                                                             </td>
                                                         @endif
                                                     @endif
@@ -304,7 +304,7 @@
                                                                 </td>
                                                             @elseif($laporan->disposisi_opd == 'N')
                                                                 <td>
-                                                                    <div class=""><span class="badge badge-danger">Ditolak</span></div>
+                                                                    <div class=""><span class="badge badge-danger">Ditolak</span><br>{{\Carbon\Carbon::parse($laporan->tanggal_disposisi)->diffForHumans()}}</div>
                                                                 </td>
                                                             @else
                                                                 <td>
@@ -374,12 +374,12 @@
                                                 @else
                                                     @if ($laporan->proses_tindak == 'Y')
                                                         <td>
-                                                            <div><span class="badge badge-dark">Ditindak</span></div>
+                                                            <div><span class="badge badge-dark">Ditindak</span><br>{{\Carbon\Carbon::parse($laporan->tanggal_tindak)->diffForHumans()}}</div>
                                                         </td>
                                                     @else
                                                         @if ($laporan->validasi_laporan == 'Y')
                                                             <td>
-                                                                <div><span class="badge badge-info">Valid</span></div>
+                                                                <div><span class="badge badge-info">Valid</span><br>{{\Carbon\Carbon::parse($laporan->tanggal_validasi)->diffForHumans()}}</div>
                                                             </td>
                                                         @elseif($laporan->validasi_laporan == 'N')
                                                             <td>
@@ -388,7 +388,7 @@
                                                         @else
                                                             @if ($laporan->disposisi_opd == 'Y')
                                                                 <td>
-                                                                    <div class=""><span class="badge badge-primary">Terdisposisi</span></div>
+                                                                    <div class=""><span class="badge badge-primary">Terdisposisi</span> <br>{{\Carbon\Carbon::parse($laporan->tanggal_disposisi)->diffForHumans()}}</div>
                                                                 </td>
                                                             @elseif($laporan->disposisi_opd == 'N')
                                                                 <td>
