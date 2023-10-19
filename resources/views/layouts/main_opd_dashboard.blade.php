@@ -170,7 +170,7 @@ $(function () {
         function fetchDataAndUpdateOPDChart() {
         var selectedYearOpd = document.getElementById('tahunSelectOpd').value;
 
-        if (selectedYearOpd === "Filter Tahun") {
+        if (selectedYearOpd === "-- Filter Tahun --") {
             selectedYearOpd = new Date().getFullYear().toString();
         }
 
@@ -285,7 +285,7 @@ $(function () {
             var selectedYear = document.getElementById('tahunSelect').value;
 
             // Jika nilai yang dipilih adalah "Filter Tahun", ganti nilainya dengan tahun sekarang
-            if (selectedYear === "Filter Tahun") {
+            if (selectedYear === "-- Filter Tahun --") {
                 selectedYear = new Date().getFullYear().toString();
             }
 

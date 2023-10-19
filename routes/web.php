@@ -85,8 +85,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['admininspektorat'])->group(function () {
         Route::get('admininspektorat', [Admin::class, 'index']);
-        Route::get('admininspektorat/chart-data', [Admin::class, 'chartCategories']);
-        Route::get('admininspektorat/chart-opd', [Admin::class, 'chartOpd']);
+        Route::get('admininspektorat/chart-data', [Admin::class, 'chartPengaduanCategories']);
+        Route::get('admininspektorat/chart-opd', [Admin::class, 'chartPengaduanOpd']);
 
         Route::get('laporanmasuk', [Admin::class, 'view_laporan_masuk']);
         Route::get('laporanterdisposisi', [Admin::class, 'view_laporan_terdisposisi']);
@@ -111,9 +111,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/cetak-laporan-belumtanggap', [PDFController::class, 'cetakLaporanBelumTanggap']);
         Route::get('/cetak-laporan-kinerja', [PDFController::class, 'cetakLaporanKinerja']);
 
-        Route::get('/admininspektorat/chart', [DashboardController::class, 'index']);
-        Route::get('/admininspektorat/chart-data', [DashboardController::class, 'chartData']);
-        Route::get('/admininspektorat/chart-data-opd', [DashboardController::class, 'chartDataOpd']);
+        // Route::get('/admininspektorat/chart', [DashboardController::class, 'index']);
+        // Route::get('/admininspektorat/chart-data', [DashboardController::class, 'chartData']);
+        // Route::get('/admininspektorat/chart-data-opd', [DashboardController::class, 'chartDataOpd']);
 
     });
 

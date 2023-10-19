@@ -28,17 +28,21 @@ class Admin extends Controller
         ->where('status_selesai',NULL)
         ->where('validasi_laporan','P')
         ->where('proses_tindak','P')
+        ->whereYear('tanggal_lapor', Carbon::now()->year)
+        ->get()
         ->count();
 
         $count_laporan_disposisi = Pengaduan::where('disposisi_opd','Y')
         ->where('status_selesai',NULL)->where('validasi_laporan','P')
         ->where('proses_tindak','P')
+        ->whereYear('tanggal_lapor', Carbon::now()->year)
         ->get()
         ->count();
 
         $count_laporan_tolak = Pengaduan::where('disposisi_opd','N')
         ->where('status_selesai',NULL)->where('validasi_laporan','P')
         ->where('proses_tindak','P')
+        ->whereYear('tanggal_lapor', Carbon::now()->year)
         ->get()
         ->count();
 
@@ -46,6 +50,7 @@ class Admin extends Controller
         ->where('status_selesai','Y')
         ->where('validasi_laporan','Y')
         ->where('proses_tindak','Y')
+        ->whereYear('tanggal_lapor', Carbon::now()->year)
         ->get()
         ->count();
     
@@ -202,23 +207,9 @@ class Admin extends Controller
                 ->where('validasi_laporan','Y')
                 ->where('proses_tindak','Y')
                 ->where('id_opd_fk', $opd->id)
-                ->whereYear('tanggal_lapor', '=', '2023')
+                ->whereYear('tanggal_lapor', Carbon::now()->year)
                 ->get()
                 ->count();
-    
-                $count_laporan_ditindak = Pengaduan::where('disposisi_opd','Y')
-                ->where('status_selesai',NULL)
-                ->where('validasi_laporan','Y')
-                ->where('proses_tindak','Y')
-                ->where('id_opd_fk',$opd->id)
-                ->get()->count();
-    
-                $count_laporan_belum = Pengaduan::where('status_selesai',NULL)
-                ->where('id_opd_fk',$opd->id)
-                ->where('proses_tindak','P')
-                ->whereNotNull('validasi_laporan')
-                ->whereNotNull('disposisi_opd')
-                ->get()->count();
 
                 
                 // Hanya simpan data jika rata-rata waktu penyelesaian lebih dari 0
@@ -230,15 +221,10 @@ class Admin extends Controller
                         'respons_duration' => $totalWaktuRespon,
                         'rataRataWaktuRespon' => $rataRataWaktuRespon,
                         'count_laporan_selesai' => $count_laporan_diselesai,
-                        'count_laporan_ditindak' => $count_laporan_ditindak,
-                        'count_laporan_belum' => $count_laporan_belum
                     ];
                 }
             }
-//<---------------------------------------------------------------End Rata rata waktu----------------------------------------------------------------------------->/
-
-
-
+//<---------------------------------------------------------------End Rata rata waktu----------------------------------------------------------------------------->//
         return view('admininspektorat.dashboard', [
             'count_pengadu' => $count_users,
             'count_laporanmasuk' => $count_laporan_masuk,
@@ -253,7 +239,7 @@ class Admin extends Controller
         ]);
     }
     
-    public function chartCategories(Request $request)
+    public function chartPengaduanCategories(Request $request)
     {
         // Ambil tahun dari permintaan (jika tidak ada, gunakan tahun sekarang)
         $selectedYear = $request->input('year', Carbon::now()->year);
@@ -285,7 +271,7 @@ class Admin extends Controller
         ]);
     }
 
-    public function chartOPD(Request $request)
+    public function chartPengaduanOPD(Request $request)
     {
         // Ambil tahun dari permintaan (jika tidak ada, gunakan tahun sekarang)
         $selectedYearOpd = $request->input('yearOpd', Carbon::now()->year);

@@ -89,8 +89,8 @@
                 </div>
                 <div class="row mb-2 mt-3 ml-3">
                     <div class="col-12">
-                        <select id="tahunSelect" style="width:30%;" class="form-control">
-                            <option selected="selected">Filter Tahun</option>
+                        <select id="tahunSelect" style="width:20%;" class="form-control">
+                            <option selected="selected"> -- Filter Tahun -- </option>
                             <option value="2022">2022</option>
                         </select>
                     </div>
@@ -112,8 +112,8 @@
                 <div class="card-body">
                 <div class="row mb-3">
                     <div class="col-12">
-                      <select id="tahunSelectOpd" style="width:30%;" class="form-control">
-                          <option selected="selected">Filter Tahun</option>
+                      <select id="tahunSelectOpd" style="width:21%;" class="form-control">
+                          <option selected="selected"> -- Filter Tahun -- </option>
                           <option value="2022">2022</option>
                       </select>
                     </div>
