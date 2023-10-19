@@ -142,33 +142,9 @@ $(function () {
 </script>
 
 <script>
-    var opdCounts = @json($opdCounts); // Mengonversi data PHP ke JSON
-        var ctx = document.getElementById('opdPengaduan').getContext('2d');
-
-        var labels = Object.keys(opdCounts);
-        var data = {
-            labels: labels,
-            datasets: [{
-                label: 'Selesai',
-                backgroundColor: 'rgba(54, 162, 235, 0.7)', // Warna latar belakang batang grafik dengan transparansi
-                    borderColor: 'rgba(54, 162, 235, 1)', // Warna garis batang grafik
-                borderWidth: 1,
-                data: labels.map(opd => opdCounts[opd]['Selesai'])
-            }, {
-                label: 'Tindak Lanjut',
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 1,
-                data: labels.map(opd => opdCounts[opd]['Tindak Lanjut'])
-            }, {
-                label: 'Belum Ditindak (Terdisposisi, Valid, Invalid)',
-                backgroundColor: 'rgba(255, 206, 86, 0.2)',
-                borderColor: 'rgba(255, 206, 86, 1)',
-                borderWidth: 1,
-                data: labels.map(opd => opdCounts[opd]['Belum Ditindak'])
-            }]
-        };
-
+        var barChartCanvasOpd;
+        var myBarChartOpd; // Variabel untuk menyimpan instance grafik
+    
         var options = {
             scales: {
                 yAxes: [{
@@ -179,11 +155,78 @@ $(function () {
             }
         };
 
-        var myBarChartOpd = new Chart(ctx, {
-            type: 'bar',
-            data: data,
-            options: options
+        // Mengambil data awal untuk tahun ini saat halaman dimuat
+        $(document).ready(function() {
+            barChartCanvasOpd = document.getElementById('opdPengaduan').getContext('2d'); // Inisialisasi variabel di sini
+            fetchDataAndUpdateOPDChart();
         });
+
+        // Event listener untuk perubahan pada elemen form select
+        document.getElementById('tahunSelectOpd').addEventListener('change', function () {
+            fetchDataAndUpdateOPDChart();
+        });
+
+
+        function fetchDataAndUpdateOPDChart() {
+        var selectedYearOpd = document.getElementById('tahunSelectOpd').value;
+
+        if (selectedYearOpd === "Filter Tahun") {
+            selectedYearOpd = new Date().getFullYear().toString();
+        }
+
+        $.ajax({
+            url: '/admininspektorat/chart-opd',
+            type: 'GET',
+            data: { yearOpd: selectedYearOpd },
+            success: function (response) {
+                console.log(response); // Tampilkan respons dari server di konsol
+                if (!response || Object.keys(response).length === 0) {
+                    console.error('Data response kosong atau tidak terdefinisi.');
+                    return;
+                }
+
+                if (myBarChartOpd) {
+                    myBarChartOpd.destroy();
+                }
+
+                var labels = Object.keys(response);
+                var updatedData = {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Selesai',
+                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1,
+                        data: labels.map(opd => response[opd] ? response[opd]['Selesai'] : 0) // Periksa apakah response[opd] terdefinisi
+                    }, {
+                        label: 'Tindak Lanjut',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1,
+                        data: labels.map(opd => response[opd] ? response[opd]['Tindak Lanjut'] : 0) // Periksa apakah response[opd] terdefinisi
+                    }, {
+                        label: 'Belum Ditindak (Terdisposisi, Valid, Invalid)',
+                        backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                        borderColor: 'rgba(255, 206, 86, 1)',
+                        borderWidth: 1,
+                        data: labels.map(opd => response[opd] ? response[opd]['Belum Ditindak'] : 0) // Periksa apakah response[opd] terdefinisi
+                    }]
+                };
+
+                // Buat grafik baru dengan data yang diperbarui
+                myBarChartOpd = new Chart(barChartCanvasOpd, {
+                    type: 'bar',
+                    data: updatedData,
+                    options: options
+                });
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
+
+
 </script>
 
 <script>

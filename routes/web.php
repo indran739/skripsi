@@ -86,8 +86,8 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['admininspektorat'])->group(function () {
         Route::get('admininspektorat', [Admin::class, 'index']);
         Route::get('admininspektorat/chart-data', [Admin::class, 'chartCategories']);
+        Route::get('admininspektorat/chart-opd', [Admin::class, 'chartOpd']);
 
-        
         Route::get('laporanmasuk', [Admin::class, 'view_laporan_masuk']);
         Route::get('laporanterdisposisi', [Admin::class, 'view_laporan_terdisposisi']);
         Route::get('laporanselesai', [Admin::class, 'view_laporan_selesai']);

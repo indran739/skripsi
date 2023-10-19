@@ -92,7 +92,6 @@
                         <select id="tahunSelect" style="width:30%;" class="form-control">
                             <option selected="selected">Filter Tahun</option>
                             <option value="2022">2022</option>
-                            <!-- Tambahkan opsi tahun lainnya sesuai kebutuhan -->
                         </select>
                     </div>
                 <div class="card-body" style="width: 100%; margin: auto;">
@@ -109,16 +108,13 @@
             <div class="card">
                 <div class="card-header" style="background-color:#4030A3;">
                   <h3 class="card-title text-white">Total Pengaduan OPD</h3>
-                  <div class="card-tools">
-
-                  </div>
                 </div>
                 <div class="card-body">
                 <div class="row mb-3">
                     <div class="col-12">
                       <select id="tahunSelectOpd" style="width:30%;" class="form-control">
-                              <option selected="selected">Filter Tahun</option>
-                              <option value="2022">2022</option>
+                          <option selected="selected">Filter Tahun</option>
+                          <option value="2022">2022</option>
                       </select>
                     </div>
                   </div>   

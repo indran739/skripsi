@@ -91,13 +91,61 @@ class Admin extends Controller
             $data[] = ['opd' => $opd->name, 'total_selesai' => $totalSelesai];
         }
 
-        
-
-
-
-//<---------------------------------------------------------------Rata rata waktu----------------------------------------------------------------------------->//
-            
+    
+//<---------------------------------------------------------------Grafik Bar Pengaduan----------------------------------------------------------------------------->/            
             $opds = OPD::all();
+
+            // Ambil tahun dari permintaan (jika tidak ada, gunakan tahun sekarang)
+            $selectedYearOpd = Carbon::now()->year;
+            $opdCounts = [];
+
+            foreach ($opds as $opd) {
+                $countLaporanSelesai = Pengaduan::whereHas('opd', function ($query) use ($opd) {
+                    $query->where('id', $opd->id);
+                })
+                ->where('disposisi_opd', 'Y')
+                ->where('status_selesai', 'Y')
+                ->where('validasi_laporan', 'Y')
+                ->where('proses_tindak', 'Y')
+                ->whereYear('tanggal_lapor', $selectedYearOpd)
+                ->count();
+
+                $countLaporanTindak = Pengaduan::whereHas('opd', function ($query) use ($opd) {
+                    $query->where('id', $opd->id);
+                })
+                ->where('disposisi_opd', 'Y')
+                ->where('status_selesai', NULL)
+                ->where('validasi_laporan', 'Y')
+                ->where('proses_tindak', 'Y')
+                ->whereYear('tanggal_lapor', $selectedYearOpd)
+                ->count();
+
+                $countLaporanBelum = Pengaduan::whereHas('opd', function ($query) use ($opd) {
+                    $query->where('id', $opd->id);
+                })
+                ->where('status_selesai', NULL)
+                ->where('proses_tindak', 'P')
+                ->whereNotNull('validasi_laporan')
+                ->where('disposisi_opd', '!=', 'P')
+                ->where('disposisi_opd', '!=', 'N')
+                ->whereYear('tanggal_lapor', $selectedYearOpd)
+                ->count();
+
+                // Hanya menyimpan data OPD yang memiliki pengaduan
+                if ($countLaporanSelesai > 0 || $countLaporanTindak > 0 || $countLaporanBelum > 0) {
+                    $opdCounts[$opd->name] = [
+                        'Selesai' => $countLaporanSelesai,
+                        'Tindak Lanjut' => $countLaporanTindak,
+                        'Belum Ditindak' => $countLaporanBelum,
+                    ];
+                }
+            }   
+
+            // dd($opdCounts);
+
+//<---------------------------------------------------------------End Grafik Bar Pengaduan----------------------------------------------------------------------------->/
+//<---------------------------------------------------------------Rata rata waktu----------------------------------------------------------------------------->//
+
             $opdAverages = [];
 
             foreach ($opds as $opd) {
@@ -188,63 +236,17 @@ class Admin extends Controller
                 }
             }
 //<---------------------------------------------------------------End Rata rata waktu----------------------------------------------------------------------------->/
-//<---------------------------------------------------------------Grafik Bar Pengaduan----------------------------------------------------------------------------->/
-            
-            $opdCounts = [];
 
-            foreach ($opds as $opd) {
-                $countLaporanSelesai = Pengaduan::whereHas('opd', function ($query) use ($opd) {
-                    $query->where('id', $opd->id);
-                })
-                ->where('disposisi_opd', 'Y')
-                ->where('status_selesai', 'Y')
-                ->where('validasi_laporan', 'Y')
-                ->where('proses_tindak', 'Y')
-                ->whereYear('tanggal_lapor', Carbon::now()->year)
-                ->count();
 
-                $countLaporanTindak = Pengaduan::whereHas('opd', function ($query) use ($opd) {
-                    $query->where('id', $opd->id);
-                })
-                ->where('disposisi_opd', 'Y')
-                ->where('status_selesai', NULL)
-                ->where('validasi_laporan', 'Y')
-                ->where('proses_tindak', 'Y')
-                ->whereYear('tanggal_lapor', Carbon::now()->year)
-                ->count();
-
-                $countLaporanBelum = Pengaduan::whereHas('opd', function ($query) use ($opd) {
-                    $query->where('id', $opd->id);
-                })
-                ->where('status_selesai', NULL)
-                ->where('proses_tindak', 'P')
-                ->whereNotNull('validasi_laporan')
-                ->where('disposisi_opd', '!=', 'P')
-                ->where('disposisi_opd', '!=', 'N')
-                ->whereYear('tanggal_lapor', Carbon::now()->year)
-                ->count();
-
-                // Hanya menyimpan data OPD yang memiliki pengaduan
-                if ($countLaporanSelesai > 0 || $countLaporanTindak > 0 || $countLaporanBelum > 0) {
-                    $opdCounts[$opd->name] = [
-                        'Selesai' => $countLaporanSelesai,
-                        'Tindak Lanjut' => $countLaporanTindak,
-                        'Belum Ditindak' => $countLaporanBelum,
-                    ];
-                }
-            }   
 
         return view('admininspektorat.dashboard', [
-            'opd' => $opd,
-            'categoryNames' => $categoryNames,
-            'categoryCounts' => $categoryCounts,
             'count_pengadu' => $count_users,
             'count_laporanmasuk' => $count_laporan_masuk,
             'count_laporandisposisi' => $count_laporan_disposisi,
             'count_laporantolak' => $count_laporan_tolak,
             'count_laporanselesai' => $count_laporan_selesai,
-            'data' => $data,
             'selectedYear' => $selectedYear,
+            'selectedYearOpd' => $selectedYearOpd,
             'active' => 'beranda',
             'opdAverages' => $opdAverages,
             'opdCounts' => $opdCounts
@@ -281,6 +283,62 @@ class Admin extends Controller
             'categoryNames' => $categoryNames,
             'categoryCounts' => $categoryCounts,
         ]);
+    }
+
+    public function chartOPD(Request $request)
+    {
+        // Ambil tahun dari permintaan (jika tidak ada, gunakan tahun sekarang)
+        $selectedYearOpd = $request->input('yearOpd', Carbon::now()->year);
+
+        // Kueri database berdasarkan tahun yang dipilih
+        $opds = OPD::all();
+
+        $opdCounts = [];
+
+        foreach ($opds as $opd) {
+            $countLaporanSelesai = Pengaduan::whereHas('opd', function ($query) use ($opd) {
+                $query->where('id', $opd->id);
+            })
+            ->where('disposisi_opd', 'Y')
+            ->where('status_selesai', 'Y')
+            ->where('validasi_laporan', 'Y')
+            ->where('proses_tindak', 'Y')
+            ->whereYear('tanggal_lapor', $selectedYearOpd)
+            ->count();
+
+            $countLaporanTindak = Pengaduan::whereHas('opd', function ($query) use ($opd) {
+                $query->where('id', $opd->id);
+            })
+            ->where('disposisi_opd', 'Y')
+            ->where('status_selesai', NULL)
+            ->where('validasi_laporan', 'Y')
+            ->where('proses_tindak', 'Y')
+            ->whereYear('tanggal_lapor', $selectedYearOpd)
+            ->count();
+
+            $countLaporanBelum = Pengaduan::whereHas('opd', function ($query) use ($opd) {
+                $query->where('id', $opd->id);
+            })
+            ->where('status_selesai', NULL)
+            ->where('proses_tindak', 'P')
+            ->whereNotNull('validasi_laporan')
+            ->where('disposisi_opd', '!=', 'P')
+            ->where('disposisi_opd', '!=', 'N')
+            ->whereYear('tanggal_lapor', $selectedYearOpd)
+            ->count();
+
+            // Hanya menyimpan data OPD yang memiliki pengaduan
+            if ($countLaporanSelesai > 0 || $countLaporanTindak > 0 || $countLaporanBelum > 0) {
+                $opdCounts[$opd->name] = [
+                    'Selesai' => $countLaporanSelesai,
+                    'Tindak Lanjut' => $countLaporanTindak,
+                    'Belum Ditindak' => $countLaporanBelum,
+                ];
+            }
+        }
+
+        // Mengembalikan data dalam format JSON untuk pembaruan grafik OPD Pengaduan
+        return response()->json($opdCounts);
     }
 
 
