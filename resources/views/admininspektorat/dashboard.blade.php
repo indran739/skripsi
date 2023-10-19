@@ -84,7 +84,7 @@
             <!-- PIE CHART -->
             <div class="card">
                 <div class="card-header" style="background-color:#4030A3;">
-                  <h3 class="card-title text-white">Total Pengaduan Per Kategori</h3>
+                  <h3 class="card-title text-white">Total Pengaduan Selesai Per Kategori</h3>
                   
                 </div>
                 <div class="row mb-2 mt-3 ml-3">
@@ -146,6 +146,10 @@
                 <div class="card-body">
                   <div class="row mb-3">
                     <div class="col-8">
+                      <select id="tahunSelectTable" style="width:21%;" class="form-control">
+                          <option selected="selected"> -- Filter Tahun -- </option>
+                          <option value="2022">2022</option>
+                      </select>
                     </div>
                   </div>
                

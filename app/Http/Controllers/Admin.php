@@ -323,7 +323,6 @@ class Admin extends Controller
             }
         }
 
-        // Mengembalikan data dalam format JSON untuk pembaruan grafik OPD Pengaduan
         return response()->json($opdCounts);
     }
 
