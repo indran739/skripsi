@@ -49,39 +49,52 @@ class Admin extends Controller
         ->get()
         ->count();
     
+        // Ambil tahun dari permintaan (jika tidak ada, gunakan tahun sekarang)
+        $selectedYear = Carbon::now()->year;
+
         // Mengambil data Pengaduan dari model Pengaduan
-         $pengaduans = Pengaduan::whereYear('tanggal_lapor', Carbon::now()->year)->where('status_selesai','Y')->get();
+        $pengaduans = Pengaduan::whereYear('tanggal_lapor', $selectedYear)
+                                ->where('status_selesai', 'Y')
+                                ->get();
 
         // Mengambil data kategori yang hanya ada di tabel pengaduan
-            $categoryIds = $pengaduans->where('disposisi_opd','Y')->where('status_selesai','Y')->pluck('id_category_fk')->unique(); // Mendapatkan daftar ID kategori yang unik dari tabel pengaduan
-            $categories = Category::whereIn('id', $categoryIds)->get(); // Mengambil data kategori berdasarkan ID yang ada di tabel pengaduan
+        $categoryIds = $pengaduans->where('disposisi_opd', 'Y')
+                                   ->where('status_selesai', 'Y')
+                                   ->pluck('id_category_fk')
+                                   ->unique();
+        $categories = Category::whereIn('id', $categoryIds)->get();
 
-            // Menghitung jumlah pengaduan per kategori
-            $categoryCounts = [];
-            $categoryNames = [];
-            foreach ($categories as $category) {
-                $count = $pengaduans->where('id_category_fk', $category->id)->count();
-                $categoryCounts[] = $count;
-                $categoryNames[] = $category->name; // Mengambil nama kategori dari model Category
-            }
+        // Menghitung jumlah pengaduan per kategori
+        $categoryCounts = [];
+        $categoryNames = [];
+        foreach ($categories as $category) {
+            $count = $pengaduans->where('id_category_fk', $category->id)->count();
+            $categoryCounts[] = $count;
+            $categoryNames[] = $category->name;
+        }
 
-            // Mengambil OPD yang memiliki pengaduan berstatus selesai ('Y')
-                $opdsWithSelesaiPengaduan = Opd::has('pengaduan')
-                ->whereHas('pengaduan', function ($query) {
-                $query->where('status_selesai', 'Y');})
-                ->get();
+        // Mengambil OPD yang memiliki pengaduan berstatus selesai ('Y')
+        $opdsWithSelesaiPengaduan = Opd::has('pengaduan')
+                                       ->whereHas('pengaduan', function ($query) {
+                                            $query->where('status_selesai', 'Y');
+                                       })
+                                       ->get();
 
-                // Menginisialisasi array untuk menyimpan data grafik
-                $data = [];
+        // Menginisialisasi array untuk menyimpan data grafik
+        $data = [];
 
-                // Iterasi melalui setiap OPD yang memiliki pengaduan selesai dan menghitung jumlahnya
-                foreach ($opdsWithSelesaiPengaduan as $opd) {
-                // Menghitung jumlah pengaduan selesai untuk OPD ini
-                $totalSelesai = $opd->pengaduan()->where('status_selesai', 'Y')->count();
+        // Iterasi melalui setiap OPD yang memiliki pengaduan selesai dan menghitung jumlahnya
+        foreach ($opdsWithSelesaiPengaduan as $opd) {
+            // Menghitung jumlah pengaduan selesai untuk OPD ini
+            $totalSelesai = $opd->pengaduan()->where('status_selesai', 'Y')->count();
+            // Menambahkan data OPD dan jumlah pengaduan selesai ke dalam array data
+            $data[] = ['opd' => $opd->name, 'total_selesai' => $totalSelesai];
+        }
 
-                // Menambahkan data OPD dan jumlah pengaduan selesai ke dalam array data
-                $data[] = ['opd' => $opd->name, 'total_selesai' => $totalSelesai];
-                }
+        
+
+
+
 //<---------------------------------------------------------------Rata rata waktu----------------------------------------------------------------------------->//
             
             $opds = OPD::all();
@@ -176,6 +189,7 @@ class Admin extends Controller
             }
 //<---------------------------------------------------------------End Rata rata waktu----------------------------------------------------------------------------->/
 //<---------------------------------------------------------------Grafik Bar Pengaduan----------------------------------------------------------------------------->/
+            
             $opdCounts = [];
 
             foreach ($opds as $opd) {
@@ -230,13 +244,45 @@ class Admin extends Controller
             'count_laporantolak' => $count_laporan_tolak,
             'count_laporanselesai' => $count_laporan_selesai,
             'data' => $data,
+            'selectedYear' => $selectedYear,
             'active' => 'beranda',
             'opdAverages' => $opdAverages,
             'opdCounts' => $opdCounts
-
         ]);
     }
     
+    public function chartCategories(Request $request)
+    {
+        // Ambil tahun dari permintaan (jika tidak ada, gunakan tahun sekarang)
+        $selectedYear = $request->input('year', Carbon::now()->year);
+    
+        // Kueri database berdasarkan tahun yang dipilih
+        $pengaduans = Pengaduan::whereYear('tanggal_lapor', $selectedYear)
+                                ->where('status_selesai', 'Y')
+                                ->get();
+    
+        // Mengambil data kategori yang hanya ada di tabel pengaduan
+        $categoryIds = $pengaduans->where('disposisi_opd', 'Y')
+                                   ->where('status_selesai', 'Y')
+                                   ->pluck('id_category_fk')
+                                   ->unique();
+        $categories = Category::whereIn('id', $categoryIds)->get();
+    
+        // Menghitung jumlah pengaduan per kategori
+        $categoryCounts = [];
+        $categoryNames = [];
+        foreach ($categories as $category) {
+            $count = $pengaduans->where('id_category_fk', $category->id)->count();
+            $categoryCounts[] = $count;
+            $categoryNames[] = $category->name;
+        }
+        // Mengembalikan data dalam format JSON untuk pembaruan kedua grafik
+        return response()->json([
+            'categoryNames' => $categoryNames,
+            'categoryCounts' => $categoryCounts,
+        ]);
+    }
+
 
     public function view_laporan_masuk() {
 

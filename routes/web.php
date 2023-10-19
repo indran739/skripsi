@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Admin;
 use App\Http\Controllers\Pengadu;
 use App\Http\Controllers\OpdController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\PDFController;
 use App\Models\Kecamatan;
@@ -84,6 +85,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['admininspektorat'])->group(function () {
         Route::get('admininspektorat', [Admin::class, 'index']);
+        Route::get('admininspektorat/chart-data', [Admin::class, 'chartCategories']);
+
+        
         Route::get('laporanmasuk', [Admin::class, 'view_laporan_masuk']);
         Route::get('laporanterdisposisi', [Admin::class, 'view_laporan_terdisposisi']);
         Route::get('laporanselesai', [Admin::class, 'view_laporan_selesai']);
@@ -107,8 +111,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/cetak-laporan-belumtanggap', [PDFController::class, 'cetakLaporanBelumTanggap']);
         Route::get('/cetak-laporan-kinerja', [PDFController::class, 'cetakLaporanKinerja']);
 
+        Route::get('/admininspektorat/chart', [DashboardController::class, 'index']);
+        Route::get('/admininspektorat/chart-data', [DashboardController::class, 'chartData']);
+        Route::get('/admininspektorat/chart-data-opd', [DashboardController::class, 'chartDataOpd']);
 
-        // Route::post('filter', [Admin::class, 'filterLaporan']);
     });
 
     Route::middleware(['adminopd'])->group(function () {

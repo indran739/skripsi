@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SIPEMAS | Admin Inspektorat</title>
-  <!-- Select2 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+      <!-- Select2 -->
   <link rel="stylesheet" href="{{asset('/')}}plugins/select2/css/select2.min.css">
   <!-- Ekko Lightbox -->
   <link rel="stylesheet" href="{{asset('/')}}plugins/ekko-lightbox/ekko-lightbox.css">
@@ -38,19 +38,40 @@
   <!-- summernote -->
   <link rel="stylesheet" href="{{asset('/')}}plugins/summernote/summernote-bs4.min.css">
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
-      <!-- Preloader -->
-  <div class="preloader flex-column justify-content-center align-items-center">
-    <img class="animation__shake" src="{{asset('/')}}dist/img/gumas.png" alt="AdminLTELogo" height="130" width="100">
-  </div>
-<!-- Navbar -->
-@include('partials.panel')
-<!-- /.navbar -->
-@include('partials.sidebar')
-<div class="content-wrapper">
-    @yield('container')
-    @yield('section')
-</div>
+<body>
+<div class="container mt-5">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <select id="tahunSelect" class="form-control">
+                            <option selected="selected">Filter Tahun</option>
+                            <option value="2022">2022</option>
+                            <!-- Tambahkan opsi tahun lainnya sesuai kebutuhan -->
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <select id="tahunSelectOpd" class="form-control">
+                            <option selected="selected">Filter Tahun</option>
+                            <option value="2022">2022</option>
+                            <!-- Tambahkan opsi tahun lainnya sesuai kebutuhan -->
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <canvas id="barChartKate" style="height: 300px;"></canvas>
+                    </div>
+                    <div class="col-md-6">
+                        <canvas id="opdPengaduan" width="400px" height="300px"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
 <!-- jQuery -->
 <script src="{{asset('/')}}plugins/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
@@ -109,30 +130,6 @@
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{asset('/')}}dist/js/pages/dashboard.js"></script>
 <script>
-  $(function () {
-    $("#example1").DataTable({
-      "responsive": true, "lengthChange": false, "autoWidth": false,
-      "buttons": ["csv", "excel", "pdf", "colvis"],
-      "pageLength": 5 
-    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
-    });
-  });
-</script>
-
-<script>
-$(function () {
-  bsCustomFileInput.init();
-});
-</script>
-<script>
     $(function () {
       $('.select2').select2()
     });
@@ -141,49 +138,52 @@ $(function () {
     })
 </script>
 
+
 <script>
     var opdCounts = @json($opdCounts); // Mengonversi data PHP ke JSON
-        var ctx = document.getElementById('opdPengaduan').getContext('2d');
+    var ctx = document.getElementById('opdPengaduan').getContext('2d');
 
-        var labels = Object.keys(opdCounts);
-        var data = {
-            labels: labels,
-            datasets: [{
-                label: 'Selesai',
-                backgroundColor: 'rgba(54, 162, 235, 0.7)', // Warna latar belakang batang grafik dengan transparansi
-                    borderColor: 'rgba(54, 162, 235, 1)', // Warna garis batang grafik
-                borderWidth: 1,
-                data: labels.map(opd => opdCounts[opd]['Selesai'])
-            }, {
-                label: 'Tindak Lanjut',
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 1,
-                data: labels.map(opd => opdCounts[opd]['Tindak Lanjut'])
-            }, {
-                label: 'Belum Ditindak (Terdisposisi, Valid, Invalid)',
-                backgroundColor: 'rgba(255, 206, 86, 0.2)',
-                borderColor: 'rgba(255, 206, 86, 1)',
-                borderWidth: 1,
-                data: labels.map(opd => opdCounts[opd]['Belum Ditindak'])
+    var labels = Object.keys(opdCounts);
+    var data = {
+        labels: labels,
+        datasets: [{
+            label: 'Selesai',
+            backgroundColor: 'rgba(54, 162, 235, 0.7)', // Warna latar belakang batang grafik dengan transparansi
+            borderColor: 'rgba(54, 162, 235, 1)', // Warna garis batang grafik
+            borderWidth: 1,
+            data: labels.map(opd => opdCounts[opd]['Selesai'])
+        }, {
+            label: 'Tindak Lanjut',
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1,
+            data: labels.map(opd => opdCounts[opd]['Tindak Lanjut'])
+        }, {
+            label: 'Belum Ditindak (Terdisposisi, Valid, Invalid)',
+            backgroundColor: 'rgba(255, 206, 86, 0.2)',
+            borderColor: 'rgba(255, 206, 86, 1)',
+            borderWidth: 1,
+            data: labels.map(opd => opdCounts[opd]['Belum Ditindak'])
+        }]
+    };
+
+    var options = {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
             }]
-        };
+        }
+    };
 
-        var options = {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
-        };
+    var myBarChart = new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options: options
+    });
 
-        var myBarChartOpd = new Chart(ctx, {
-            type: 'bar',
-            data: data,
-            options: options
-        });
+
 </script>
 
 <script>
@@ -274,8 +274,49 @@ $(function () {
             });
         }
 </script>
+<script>
+    var opdCounts = @json($opdCounts); // Mengonversi data PHP ke JSON
+        var ctx = document.getElementById('opdPengaduan').getContext('2d');
 
+        var labels = Object.keys(opdCounts);
+        var data = {
+            labels: labels,
+            datasets: [{
+                label: 'Selesai',
+                backgroundColor: 'rgba(54, 162, 235, 0.7)', // Warna latar belakang batang grafik dengan transparansi
+                    borderColor: 'rgba(54, 162, 235, 1)', // Warna garis batang grafik
+                borderWidth: 1,
+                data: labels.map(opd => opdCounts[opd]['Selesai'])
+            }, {
+                label: 'Tindak Lanjut',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1,
+                data: labels.map(opd => opdCounts[opd]['Tindak Lanjut'])
+            }, {
+                label: 'Belum Ditindak (Terdisposisi, Valid, Invalid)',
+                backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                borderColor: 'rgba(255, 206, 86, 1)',
+                borderWidth: 1,
+                data: labels.map(opd => opdCounts[opd]['Belum Ditindak'])
+            }]
+        };
 
+        var options = {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        };
 
-</body>
+        var myBarChart = new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: options
+        });
+</script>
 </html>
+
