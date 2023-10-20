@@ -146,10 +146,11 @@
                 <div class="card-body">
                   <div class="row mb-3">
                     <div class="col-8">
-                      <select id="tahunSelectTable" style="width:21%;" class="form-control">
-                          <option selected="selected"> -- Filter Tahun -- </option>
-                          <option value="2022">2022</option>
-                      </select>
+                        <select id="tahunSelectTable" style="width:15%;" class="form-control">
+                            <option selected="selected">-- Filter Tahun --</option>
+                            <option value="2022">2022</option>
+                            <!-- Tambahkan opsi tahun lainnya sesuai kebutuhan -->
+                        </select>
                     </div>
                   </div>
                
@@ -158,27 +159,27 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                  <th>No.</th>
-                                  <th>Nama OPD</th>
-                                  <th>Total Pengaduan Selesai</th>
-                                  <th>Total <br>Selisih waktu respon <br>(Jam)</th>
-                                  <th>Total <br>Selisih waktu penyelesaian <br>(Jam)</th>
-                                  <th>Rata-rata <br> waktu Penyelesaian <br>(Jam)</th>
-                                  <th>Rata-rata <br> waktu Respon <br> (Jam)</th>
+                                    <th>No.</th>
+                                    <th>Nama OPD</th>
+                                    <th>Total Pengaduan Selesai</th>
+                                    <th>Total <br>Selisih waktu respon <br>(Jam)</th>
+                                    <th>Total <br>Selisih waktu penyelesaian <br>(Jam)</th>
+                                    <th>Rata-rata <br> waktu Penyelesaian <br>(Jam)</th>
+                                    <th>Rata-rata <br> waktu Respon <br> (Jam)</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                            @php $count = 1 @endphp
+                            <tbody id="tableBody">
+                                @php $count = 1 @endphp
                                 @foreach($opdAverages as $index => $opdAverage)
-                                    <tr>
-                                        <td>{{ $count++ }}</td>
-                                        <td>{{ $opdAverage['opd_name'] }}</td>
-                                        <td>{{ $opdAverage['count_laporan_selesai']}}</td>
-                                        <td>{{ $opdAverage['respons_duration'] }}</td>
-                                        <td>{{ $opdAverage['completed_duration'] }}</td>
-                                        <td>{{ $opdAverage['average_duration'] }}</td>
-                                        <td>{{ $opdAverage['rataRataWaktuRespon'] }}</td>
-                                    </tr>
+                                <tr>
+                                    <td>{{ $count++ }}</td>
+                                    <td>{{ $opdAverage['opd_name'] }}</td>
+                                    <td>{{ $opdAverage['count_laporan_selesai']}}</td>
+                                    <td>{{ $opdAverage['respons_duration'] }}</td>
+                                    <td>{{ $opdAverage['completed_duration'] }}</td>
+                                    <td>{{ $opdAverage['average_duration'] }}</td>
+                                    <td>{{ $opdAverage['rataRataWaktuRespon'] }}</td>
+                                </tr>
                                 @endforeach
                             </tbody>
                         </table>

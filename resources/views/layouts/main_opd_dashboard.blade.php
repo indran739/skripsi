@@ -142,6 +142,58 @@ $(function () {
 </script>
 
 <script>
+
+document.getElementById('tahunSelectTable').addEventListener('change', function() {
+    var selectedYear = this.value;
+
+    // Periksa apakah nilai yang dipilih adalah "-- Filter Tahun --"
+    if (selectedYear === '-- Filter Tahun --') {
+        // Ambil tahun saat ini
+        var currentYear = new Date().getFullYear();
+
+        // Kirim permintaan AJAX untuk mendapatkan data awal dari tahun sekarang
+        $.ajax({
+            url: '/admininspektorat/get-opd-averages', // Sesuaikan dengan URL endpoint Anda
+            type: 'GET',
+            data: { year: currentYear },
+            success: function(data) {
+                // Perbarui tabel dengan data yang diterima dari server
+                $('#tableBody').html(''); // Kosongkan isi tabel
+                $.each(data, function(index, opdAverage) {
+                    var rowNumber = index + 1; // Nomor urut, dimulai dari 1
+                    $('#tableBody').append('<tr><td>' + rowNumber + '</td><td>' + opdAverage.opd_name + '</td><td>' + opdAverage.count_laporan_selesai + '</td><td>' + opdAverage.respons_duration + '</td><td>' + opdAverage.completed_duration + '</td><td>' + opdAverage.average_duration + '</td><td>' + opdAverage.rataRataWaktuRespon + '</td></tr>'); // Tambahkan baris tabel baru dengan data opdAverage
+                });
+            },
+            error: function(error) {
+                console.error('Error:', error);
+            }
+        });
+
+        return; // Keluar dari fungsi karena tidak perlu mengirim permintaan AJAX
+    }
+
+    // Jika nilai yang dipilih bukan "-- Filter Tahun --", kirim permintaan AJAX ke server
+    $.ajax({
+        url: '/admininspektorat/get-opd-averages', // Sesuaikan dengan URL endpoint Anda
+        type: 'GET',
+        data: { year: selectedYear },
+        success: function(data) {
+            // Perbarui tabel dengan data yang diterima dari server
+            $('#tableBody').html(''); // Kosongkan isi tabel
+            $.each(data, function(index, opdAverage) {
+                var rowNumber = index + 1; // Nomor urut, dimulai dari 1
+                $('#tableBody').append('<tr><td>' + rowNumber + '</td><td>' + opdAverage.opd_name + '</td><td>' + opdAverage.count_laporan_selesai + '</td><td>' + opdAverage.respons_duration + '</td><td>' + opdAverage.completed_duration + '</td><td>' + opdAverage.average_duration + '</td><td>' + opdAverage.rataRataWaktuRespon + '</td></tr>'); // Tambahkan baris tabel baru dengan data opdAverage
+            });
+        },
+        error: function(error) {
+            console.error('Error:', error);
+        }
+    });
+});
+
+</script>
+
+<script>
         var barChartCanvasOpd;
         var myBarChartOpd; // Variabel untuk menyimpan instance grafik
     

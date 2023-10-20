@@ -52,7 +52,7 @@
                     </div>
                     <div class="col-md-6">
                         <select id="tahunSelectOpd" class="form-control">
-                            <option selected="selected">Filter Tahun</option>
+                            <option selected="selected">-- Filter Tahun --</option>
                             <option value="2022">2022</option>
                             <!-- Tambahkan opsi tahun lainnya sesuai kebutuhan -->
                         </select>
@@ -64,6 +64,50 @@
                     </div>
                     <div class="col-md-6">
                         <canvas id="opdPengaduan" width="400px" height="300px"></canvas>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <select id="tahunSelectTable" class="form-control">
+                            <option selected="selected">-- Filter Tahun --</option>
+                            <option value="2022">2022</option>
+                            <!-- Tambahkan opsi tahun lainnya sesuai kebutuhan -->
+                        </select>
+                    </div>
+                </div>
+                    <div class="col-lg-12">
+                        <div class="box">
+                            <div class="box-body">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                        <th>No.</th>
+                                        <th>Nama OPD</th>
+                                        <th>Total Pengaduan Selesai</th>
+                                        <th>Total <br>Selisih waktu respon <br>(Jam)</th>
+                                        <th>Total <br>Selisih waktu penyelesaian <br>(Jam)</th>
+                                        <th>Rata-rata <br> waktu Penyelesaian <br>(Jam)</th>
+                                        <th>Rata-rata <br> waktu Respon <br> (Jam)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tableBody">
+                                    @php $count = 1 @endphp
+                                        @foreach($opdAverages as $index => $opdAverage)
+                                            <tr>
+                                                <td>{{ $count++ }}</td>
+                                                <td>{{ $opdAverage['opd_name'] }}</td>
+                                                <td>{{ $opdAverage['count_laporan_selesai']}}</td>
+                                                <td>{{ $opdAverage['respons_duration'] }}</td>
+                                                <td>{{ $opdAverage['completed_duration'] }}</td>
+                                                <td>{{ $opdAverage['average_duration'] }}</td>
+                                                <td>{{ $opdAverage['rataRataWaktuRespon'] }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -138,52 +182,143 @@
     })
 </script>
 
+<script>
+
+document.getElementById('tahunSelectTable').addEventListener('change', function() {
+    var selectedYear = this.value;
+
+    // Periksa apakah nilai yang dipilih adalah "-- Filter Tahun --"
+    if (selectedYear === '-- Filter Tahun --') {
+        // Ambil tahun saat ini
+        var currentYear = new Date().getFullYear();
+
+        // Kirim permintaan AJAX untuk mendapatkan data awal dari tahun sekarang
+        $.ajax({
+            url: '/admininspektorat/get-opd-averages', // Sesuaikan dengan URL endpoint Anda
+            type: 'GET',
+            data: { year: currentYear },
+            success: function(data) {
+                // Perbarui tabel dengan data yang diterima dari server
+                $('#tableBody').html(''); // Kosongkan isi tabel
+                $.each(data, function(index, opdAverage) {
+                    var rowNumber = index + 1; // Nomor urut, dimulai dari 1
+                    $('#tableBody').append('<tr><td>' + rowNumber + '</td><td>' + opdAverage.opd_name + '</td><td>' + opdAverage.count_laporan_selesai + '</td><td>' + opdAverage.respons_duration + '</td><td>' + opdAverage.completed_duration + '</td><td>' + opdAverage.average_duration + '</td><td>' + opdAverage.rataRataWaktuRespon + '</td></tr>'); // Tambahkan baris tabel baru dengan data opdAverage
+                });
+            },
+            error: function(error) {
+                console.error('Error:', error);
+            }
+        });
+
+        return; // Keluar dari fungsi karena tidak perlu mengirim permintaan AJAX
+    }
+
+    // Jika nilai yang dipilih bukan "-- Filter Tahun --", kirim permintaan AJAX ke server
+    $.ajax({
+        url: '/admininspektorat/get-opd-averages', // Sesuaikan dengan URL endpoint Anda
+        type: 'GET',
+        data: { year: selectedYear },
+        success: function(data) {
+            // Perbarui tabel dengan data yang diterima dari server
+            $('#tableBody').html(''); // Kosongkan isi tabel
+            $.each(data, function(index, opdAverage) {
+                var rowNumber = index + 1; // Nomor urut, dimulai dari 1
+                $('#tableBody').append('<tr><td>' + rowNumber + '</td><td>' + opdAverage.opd_name + '</td><td>' + opdAverage.count_laporan_selesai + '</td><td>' + opdAverage.respons_duration + '</td><td>' + opdAverage.completed_duration + '</td><td>' + opdAverage.average_duration + '</td><td>' + opdAverage.rataRataWaktuRespon + '</td></tr>'); // Tambahkan baris tabel baru dengan data opdAverage
+            });
+        },
+        error: function(error) {
+            console.error('Error:', error);
+        }
+    });
+});
+
+</script>
+
 
 <script>
-    var opdCounts = @json($opdCounts); // Mengonversi data PHP ke JSON
-    var ctx = document.getElementById('opdPengaduan').getContext('2d');
+        var barChartCanvasOpd;
+        var myBarChartOpd; // Variabel untuk menyimpan instance grafik
+    
+        var options = {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        };
 
-    var labels = Object.keys(opdCounts);
-    var data = {
-        labels: labels,
-        datasets: [{
-            label: 'Selesai',
-            backgroundColor: 'rgba(54, 162, 235, 0.7)', // Warna latar belakang batang grafik dengan transparansi
-            borderColor: 'rgba(54, 162, 235, 1)', // Warna garis batang grafik
-            borderWidth: 1,
-            data: labels.map(opd => opdCounts[opd]['Selesai'])
-        }, {
-            label: 'Tindak Lanjut',
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 1,
-            data: labels.map(opd => opdCounts[opd]['Tindak Lanjut'])
-        }, {
-            label: 'Belum Ditindak (Terdisposisi, Valid, Invalid)',
-            backgroundColor: 'rgba(255, 206, 86, 0.2)',
-            borderColor: 'rgba(255, 206, 86, 1)',
-            borderWidth: 1,
-            data: labels.map(opd => opdCounts[opd]['Belum Ditindak'])
-        }]
-    };
+        // Mengambil data awal untuk tahun ini saat halaman dimuat
+        $(document).ready(function() {
+            barChartCanvasOpd = document.getElementById('opdPengaduan').getContext('2d'); // Inisialisasi variabel di sini
+            fetchDataAndUpdateOPDChart();
+        });
 
-    var options = {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
+        // Event listener untuk perubahan pada elemen form select
+        document.getElementById('tahunSelectOpd').addEventListener('change', function () {
+            fetchDataAndUpdateOPDChart();
+        });
+
+
+        function fetchDataAndUpdateOPDChart() {
+        var selectedYearOpd = document.getElementById('tahunSelectOpd').value;
+
+        if (selectedYearOpd === "-- Filter Tahun --") {
+            selectedYearOpd = new Date().getFullYear().toString();
         }
-    };
 
-    var myBarChart = new Chart(ctx, {
-        type: 'bar',
-        data: data,
-        options: options
-    });
+        $.ajax({
+            url: '/admininspektorat/chart-data-opd',
+            type: 'GET',
+            data: { yearOpd: selectedYearOpd },
+            success: function (response) {
+                console.log(response); // Tampilkan respons dari server di konsol
+                if (!response || Object.keys(response).length === 0) {
+                    console.error('Data response kosong atau tidak terdefinisi.');
+                    return;
+                }
 
+                if (myBarChartOpd) {
+                    myBarChartOpd.destroy();
+                }
 
+                var labels = Object.keys(response);
+                var updatedData = {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Selesai',
+                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1,
+                        data: labels.map(opd => response[opd] ? response[opd]['Selesai'] : 0) // Periksa apakah response[opd] terdefinisi
+                    }, {
+                        label: 'Tindak Lanjut',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1,
+                        data: labels.map(opd => response[opd] ? response[opd]['Tindak Lanjut'] : 0) // Periksa apakah response[opd] terdefinisi
+                    }, {
+                        label: 'Belum Ditindak (Terdisposisi, Valid, Invalid)',
+                        backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                        borderColor: 'rgba(255, 206, 86, 1)',
+                        borderWidth: 1,
+                        data: labels.map(opd => response[opd] ? response[opd]['Belum Ditindak'] : 0) // Periksa apakah response[opd] terdefinisi
+                    }]
+                };
+
+                // Buat grafik baru dengan data yang diperbarui
+                myBarChartOpd = new Chart(barChartCanvasOpd, {
+                    type: 'bar',
+                    data: updatedData,
+                    options: options
+                });
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
 </script>
 
 <script>
@@ -274,49 +409,6 @@
             });
         }
 </script>
-<script>
-    var opdCounts = @json($opdCounts); // Mengonversi data PHP ke JSON
-        var ctx = document.getElementById('opdPengaduan').getContext('2d');
 
-        var labels = Object.keys(opdCounts);
-        var data = {
-            labels: labels,
-            datasets: [{
-                label: 'Selesai',
-                backgroundColor: 'rgba(54, 162, 235, 0.7)', // Warna latar belakang batang grafik dengan transparansi
-                    borderColor: 'rgba(54, 162, 235, 1)', // Warna garis batang grafik
-                borderWidth: 1,
-                data: labels.map(opd => opdCounts[opd]['Selesai'])
-            }, {
-                label: 'Tindak Lanjut',
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 1,
-                data: labels.map(opd => opdCounts[opd]['Tindak Lanjut'])
-            }, {
-                label: 'Belum Ditindak (Terdisposisi, Valid, Invalid)',
-                backgroundColor: 'rgba(255, 206, 86, 0.2)',
-                borderColor: 'rgba(255, 206, 86, 1)',
-                borderWidth: 1,
-                data: labels.map(opd => opdCounts[opd]['Belum Ditindak'])
-            }]
-        };
-
-        var options = {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
-        };
-
-        var myBarChart = new Chart(ctx, {
-            type: 'bar',
-            data: data,
-            options: options
-        });
-</script>
 </html>
 

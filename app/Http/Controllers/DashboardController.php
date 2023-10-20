@@ -61,8 +61,10 @@ class DashboardController extends Controller
             $data[] = ['opd' => $opd->name, 'total_selesai' => $totalSelesai];
         }
 
-
         $opds = OPD::all();
+
+        // Ambil tahun dari permintaan (jika tidak ada, gunakan tahun sekarang)
+        $selectedYearOpd = Carbon::now()->year;
         $opdCounts = [];
 
         foreach ($opds as $opd) {
@@ -73,7 +75,7 @@ class DashboardController extends Controller
             ->where('status_selesai', 'Y')
             ->where('validasi_laporan', 'Y')
             ->where('proses_tindak', 'Y')
-            ->whereYear('tanggal_lapor', Carbon::now()->year)
+            ->whereYear('tanggal_lapor', $selectedYearOpd)
             ->count();
 
             $countLaporanTindak = Pengaduan::whereHas('opd', function ($query) use ($opd) {
@@ -83,7 +85,7 @@ class DashboardController extends Controller
             ->where('status_selesai', NULL)
             ->where('validasi_laporan', 'Y')
             ->where('proses_tindak', 'Y')
-            ->whereYear('tanggal_lapor', Carbon::now()->year)
+            ->whereYear('tanggal_lapor', $selectedYearOpd)
             ->count();
 
             $countLaporanBelum = Pengaduan::whereHas('opd', function ($query) use ($opd) {
@@ -94,7 +96,7 @@ class DashboardController extends Controller
             ->whereNotNull('validasi_laporan')
             ->where('disposisi_opd', '!=', 'P')
             ->where('disposisi_opd', '!=', 'N')
-            ->whereYear('tanggal_lapor', Carbon::now()->year)
+            ->whereYear('tanggal_lapor', $selectedYearOpd)
             ->count();
 
             // Hanya menyimpan data OPD yang memiliki pengaduan
@@ -108,6 +110,80 @@ class DashboardController extends Controller
         }   
 
 
+        $opdAverages = [];
+
+        foreach ($opds as $opd) {
+            // $completedPengaduan = Pengaduan::where('status_selesai', 'Y')->where('id_opd_fk', $opd->id)->get();
+            $completedPengaduan = Pengaduan::where('status_selesai', 'Y')
+            ->where('id_opd_fk', $opd->id)
+            ->whereYear('tanggal_lapor', Carbon::now()->year)
+            ->get();
+
+            $totalDuration = 0;
+            $completedCount = $completedPengaduan->count();
+
+            foreach ($completedPengaduan as $pengaduan) {
+                $createdAt = Carbon::parse($pengaduan->tanggal_tindak);
+                $resolvedAt = Carbon::parse($pengaduan->tgl_dinyatakan_selesai);
+                $duration = $resolvedAt->diffInHours($createdAt);
+                $totalDuration += $duration;
+            }
+            
+            $pengaduan = Pengaduan::whereNotNull('tanggal_validasi')
+            ->where('status_selesai', 'Y')
+            ->where('id_opd_fk', $opd->id)
+            ->whereYear('tanggal_lapor', Carbon::now()->year)
+            ->get();
+
+            $totalWaktuRespon = 0;
+            $jumlahPengaduan = 0;
+
+            foreach ($pengaduan as $aduan) {
+                $waktuPenerimaan = Carbon::parse($aduan->tanggal_disposisi);
+                $waktuValidasi = Carbon::parse($aduan->tanggal_validasi);
+
+                // Menghitung selisih waktu dalam jam dari penerimaan hingga validasi
+                $selisihValidasi = $waktuPenerimaan->diffInHours($waktuValidasi);
+
+                // Menambahkan selisih waktu ke total waktu respon
+                $totalWaktuRespon += $selisihValidasi;// Rata-rata waktu respon disposisi dan validasi
+                $jumlahPengaduan++;
+            }
+
+            // Menghitung rata-rata waktu respon
+            $rataRataWaktuRespon = $jumlahPengaduan > 0 ? $totalWaktuRespon / $jumlahPengaduan : 0;
+            $rataRataWaktuRespon = number_format( $rataRataWaktuRespon, 1);
+
+            // Menghitung rata-rata waktu penyelesaian
+            $averageDuration = ($completedCount > 0) ? ($totalDuration / $completedCount) : 0;
+            $averageDuration = number_format($averageDuration, 1);
+            
+            $totalDuration = number_format($totalDuration, 1);
+            $totalWaktuRespon = number_format($totalWaktuRespon, 1);
+
+            $count_laporan_diselesai = Pengaduan::where('disposisi_opd','Y')
+            ->where('status_selesai','Y')
+            ->where('validasi_laporan','Y')
+            ->where('proses_tindak','Y')
+            ->where('id_opd_fk', $opd->id)
+            ->whereYear('tanggal_lapor', Carbon::now()->year)
+            ->get()
+            ->count();
+
+            
+            // Hanya simpan data jika rata-rata waktu penyelesaian lebih dari 0
+            if ($averageDuration > 0 && $rataRataWaktuRespon > 0 && $totalDuration > 0 && $totalWaktuRespon > 0 && $count_laporan_diselesai > 0) {
+                $opdAverages[] = [
+                    'opd_name' => $opd->name,
+                    'average_duration' => $averageDuration,
+                    'completed_duration' => $totalDuration,
+                    'respons_duration' => $totalWaktuRespon,
+                    'rataRataWaktuRespon' => $rataRataWaktuRespon,
+                    'count_laporan_selesai' => $count_laporan_diselesai,
+                ];
+            }
+        }
+
         // Mengembalikan data ke tampilan (view)
         return view('admininspektorat.dashboardgrafik', [
             'categoryNames' => $categoryNames,
@@ -115,7 +191,8 @@ class DashboardController extends Controller
             'data' => $data,
             'selectedYear' => $selectedYear,
             'active' => 'beranda',
-            'opdCounts' => $opdCounts
+            'opdCounts' => $opdCounts,
+            'opdAverages' => $opdAverages,
         ]);
 
     }
@@ -159,37 +236,143 @@ class DashboardController extends Controller
 
 public function chartDataOpd(Request $request)
 {
-    // Ambil tahun dari permintaan (jika tidak ada, gunakan tahun sekarang)
-    $selectedYear = $request->input('year', Carbon::now()->year);
+   // Ambil tahun dari permintaan (jika tidak ada, gunakan tahun sekarang)
+   $selectedYearOpd = $request->input('yearOpd', Carbon::now()->year);
 
-    // Kueri database berdasarkan tahun yang dipilih
-    $opdPengaduans = Opd::withCount([
-        'pengaduan as selesai' => function ($query) use ($selectedYear) {
-            $query->whereYear('tanggal_lapor', $selectedYear)
-                  ->where('status_selesai', 'Y')
-                  ->where('disposisi_opd', 'Y')
-                  ->where('validasi_laporan', 'Y')
-                  ->where('proses_tindak', 'Y');
-        },
-        'pengaduan as tindakLanjut' => function ($query) use ($selectedYear) {
-            $query->whereYear('tanggal_lapor', $selectedYear)
-                  ->whereNull('status_selesai')
-                  ->where('disposisi_opd', 'Y')
-                  ->where('validasi_laporan', 'Y')
-                  ->where('proses_tindak', 'Y');
-        },
-        'pengaduan as belumDitindak' => function ($query) use ($selectedYear) {
-            $query->whereYear('tanggal_lapor', $selectedYear)
-                  ->whereNull('status_selesai')
-                  ->where('proses_tindak', 'P')
-                  ->whereNotNull('validasi_laporan')
-                  ->whereNotIn('disposisi_opd', ['P', 'N']);
-        }
-    ])->get();
+   // Kueri database berdasarkan tahun yang dipilih
+   $opds = OPD::all();
 
-    // Mengembalikan data dalam format JSON untuk grafik OPD Pengaduan
-    return response()->json($opdPengaduans);
+   $opdCounts = [];
+
+   foreach ($opds as $opd) {
+       $countLaporanSelesai = Pengaduan::whereHas('opd', function ($query) use ($opd) {
+           $query->where('id', $opd->id);
+       })
+       ->where('disposisi_opd', 'Y')
+       ->where('status_selesai', 'Y')
+       ->where('validasi_laporan', 'Y')
+       ->where('proses_tindak', 'Y')
+       ->whereYear('tanggal_lapor', $selectedYearOpd)
+       ->count();
+
+       $countLaporanTindak = Pengaduan::whereHas('opd', function ($query) use ($opd) {
+           $query->where('id', $opd->id);
+       })
+       ->where('disposisi_opd', 'Y')
+       ->where('status_selesai', NULL)
+       ->where('validasi_laporan', 'Y')
+       ->where('proses_tindak', 'Y')
+       ->whereYear('tanggal_lapor', $selectedYearOpd)
+       ->count();
+
+       $countLaporanBelum = Pengaduan::whereHas('opd', function ($query) use ($opd) {
+           $query->where('id', $opd->id);
+       })
+       ->where('status_selesai', NULL)
+       ->where('proses_tindak', 'P')
+       ->whereNotNull('validasi_laporan')
+       ->where('disposisi_opd', '!=', 'P')
+       ->where('disposisi_opd', '!=', 'N')
+       ->whereYear('tanggal_lapor', $selectedYearOpd)
+       ->count();
+
+       // Hanya menyimpan data OPD yang memiliki pengaduan
+       if ($countLaporanSelesai > 0 || $countLaporanTindak > 0 || $countLaporanBelum > 0) {
+           $opdCounts[$opd->name] = [
+               'Selesai' => $countLaporanSelesai,
+               'Tindak Lanjut' => $countLaporanTindak,
+               'Belum Ditindak' => $countLaporanBelum,
+           ];
+       }
+   }
+
+   return response()->json($opdCounts);
+
+
 }
 
+
+public function getOpdAverages(Request $request)
+    {
+        $selectedYear = $request->input('year');
+
+        $opds = OPD::all();
+
+        $opdAverages = []; // Logika pengambilan data berdasarkan tahun
+
+        foreach ($opds as $opd) {
+            // $completedPengaduan = Pengaduan::where('status_selesai', 'Y')->where('id_opd_fk', $opd->id)->get();
+            $completedPengaduan = Pengaduan::where('status_selesai', 'Y')
+            ->where('id_opd_fk', $opd->id)
+            ->whereYear('tanggal_lapor', $selectedYear)
+            ->get();
+
+            $totalDuration = 0;
+            $completedCount = $completedPengaduan->count();
+
+            foreach ($completedPengaduan as $pengaduan) {
+                $createdAt = Carbon::parse($pengaduan->tanggal_tindak);
+                $resolvedAt = Carbon::parse($pengaduan->tgl_dinyatakan_selesai);
+                $duration = $resolvedAt->diffInHours($createdAt);
+                $totalDuration += $duration;
+            }
+            
+            $pengaduan = Pengaduan::whereNotNull('tanggal_validasi')
+            ->where('status_selesai', 'Y')
+            ->where('id_opd_fk', $opd->id)
+            ->whereYear('tanggal_lapor', $selectedYear)
+            ->get();
+
+            $totalWaktuRespon = 0;
+            $jumlahPengaduan = 0;
+
+            foreach ($pengaduan as $aduan) {
+                $waktuPenerimaan = Carbon::parse($aduan->tanggal_disposisi);
+                $waktuValidasi = Carbon::parse($aduan->tanggal_validasi);
+
+                // Menghitung selisih waktu dalam jam dari penerimaan hingga validasi
+                $selisihValidasi = $waktuPenerimaan->diffInHours($waktuValidasi);
+
+                // Menambahkan selisih waktu ke total waktu respon
+                $totalWaktuRespon += $selisihValidasi;// Rata-rata waktu respon disposisi dan validasi
+                $jumlahPengaduan++;
+            }
+
+            // Menghitung rata-rata waktu respon
+            $rataRataWaktuRespon = $jumlahPengaduan > 0 ? $totalWaktuRespon / $jumlahPengaduan : 0;
+            $rataRataWaktuRespon = number_format( $rataRataWaktuRespon, 1);
+
+            // Menghitung rata-rata waktu penyelesaian
+            $averageDuration = ($completedCount > 0) ? ($totalDuration / $completedCount) : 0;
+            $averageDuration = number_format($averageDuration, 1);
+            
+            $totalDuration = number_format($totalDuration, 1);
+            $totalWaktuRespon = number_format($totalWaktuRespon, 1);
+
+            $count_laporan_diselesai = Pengaduan::where('disposisi_opd','Y')
+            ->where('status_selesai','Y')
+            ->where('validasi_laporan','Y')
+            ->where('proses_tindak','Y')
+            ->where('id_opd_fk', $opd->id)
+            ->whereYear('tanggal_lapor', $selectedYear)
+            ->get()
+            ->count();
+
+            
+            // Hanya simpan data jika rata-rata waktu penyelesaian lebih dari 0
+            if ($averageDuration > 0 && $rataRataWaktuRespon > 0 && $totalDuration > 0 && $totalWaktuRespon > 0 && $count_laporan_diselesai > 0) {
+                $opdAverages[] = [
+                    'opd_name' => $opd->name,
+                    'average_duration' => $averageDuration,
+                    'completed_duration' => $totalDuration,
+                    'respons_duration' => $totalWaktuRespon,
+                    'rataRataWaktuRespon' => $rataRataWaktuRespon,
+                    'count_laporan_selesai' => $count_laporan_diselesai,
+                ];
+            }
+        }
+
+        return response()->json($opdAverages);
+    }
 
 }
