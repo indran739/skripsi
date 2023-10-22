@@ -112,11 +112,14 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/cetak-pdf', [PDFController::class, 'cetakPDF']);
         Route::post('/cetak-laporan-belumtanggap', [PDFController::class, 'cetakLaporanBelumTanggap']);
         Route::get('/cetak-laporan-kinerja', [PDFController::class, 'cetakLaporanKinerja']);
+        Route::get('/search', [Admin::class, 'search']);
 
         Route::get('/admininspektorat/chart', [DashboardController::class, 'index']);
         Route::get('/admininspektorat/chart-data', [DashboardController::class, 'chartData']);
         Route::get('/admininspektorat/chart-data-opd', [DashboardController::class, 'chartDataOpd']);
         Route::get('/admininspektorat/get-opd-averages', [DashboardController::class, 'getOpdAverages']);
+        Route::get('/admininspektorat/search', [DashboardController::class, 'view_search']);
+        Route::get('/search', [DashboardController::class, 'search']);
 
     });
 
@@ -136,6 +139,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('laporanselesaiopd/filter', [OpdController::class, 'filterLaporanSelesai'])->name('laporanselesaiopd.filter');
         Route::post('/cetak-laporan-belumtanggapopd', [PDFController::class, 'cetakLaporanBelumTanggapOpd']);
         Route::post('/cetak-laporan-selesai-opd', [PDFController::class, 'cetakLaporanSelesaiOpd']);
+        Route::get('/searchopd', [OpdController::class, 'searchOpd']);
     });
 
     Route::middleware(['pengadu'])->group(function () {

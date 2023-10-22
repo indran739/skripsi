@@ -109,6 +109,45 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                        <form id="searchForm">
+                            <input type="text" id="searchTerm" class="form-control" placeholder="Cari berdasarkan isi laporan...">
+                        </form>
+
+                        </div>
+                    </div>
+                   
+                    <div class="col-lg-12">
+                        <div class="box">
+                            <div class="box-body">
+                            <table class="table table-hover text-nowrap" id="laporanTable">
+                                <thead>
+                                    <tr>
+                                    <th>Isi Laporan</th>
+                                    <th>Tanggal Selesai</th>
+                                    <th>Kategori</th>
+                                    <th>OPD Tujuan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                            @if(count($laporans) > 0)
+                                @foreach($laporans as $laporan)
+                                    <tr>
+                                    <td>{{ Str::limit($laporan->isi_laporan, 50) }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($laporan->updated_at)->format('d F Y') }}</td>
+                                    <td>{{ $laporan->category->name }}</td>
+                                    <td>{{ $laporan->opd->name }}</td>
+                                    </tr>
+                                @endforeach
+                                @else
+                                <tr> <td colspan="7" style="text-align: center;">No Data</td> </tr>
+                                @endif
+                                </tbody>
+                            </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -181,6 +220,27 @@
       theme: 'bootstrap4'
     })
 </script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('#searchTerm').on('keyup', function() {
+        var searchTerm = $(this).val();
+
+        $.ajax({
+            type: 'GET',
+            url: '/admininspektorat/search',
+            data: { searchTerm: searchTerm },
+            success: function(data) {
+                $('#laporanTable tbody').html(data);
+            }
+        });
+    });
+});
+
+</script>
+
 
 <script>
 

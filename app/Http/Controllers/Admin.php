@@ -443,6 +443,20 @@ class Admin extends Controller
         ]);
     }
 
+    public function search(Request $request)
+    {
+        $searchTerm = $request->input('searchTerm');
+    
+        $results = Pengaduan::where('status_selesai', 'Y')
+            ->where('isi_laporan', 'like', '%' . $searchTerm . '%')
+            ->with('category', 'opd')
+            ->orderBy('tanggal_lapor', 'desc')
+            ->get();
+        return response()->json(['results' => $results]);
+    }
+
+    
+
     public function filterLaporanSelesai(Request $request) 
     {
         $idOpd = $request->input('id_opd_fk');

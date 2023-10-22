@@ -195,6 +195,23 @@ class OpdController extends Controller
         ]);
     }
     
+    
+    public function searchOpd(Request $request)
+    {
+        $searchTerm = $request->input('searchTerm');
+        
+        $idOpd = Auth::user()->id_opd_fk;
+
+        $results = Pengaduan::where('status_selesai', 'Y')
+            ->where('isi_laporan', 'like', '%' . $searchTerm . '%')
+            ->where('id_opd_fk',$idOpd)
+            ->with('category', 'opd')
+            ->orderBy('tanggal_lapor', 'desc')
+            ->get();
+        return response()->json(['results' => $results]);
+    }
+
+
     public function filterLaporanSelesai(Request $request) 
     {
         $idCategory = $request->input('id_category_fk');

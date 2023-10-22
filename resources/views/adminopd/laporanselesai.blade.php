@@ -37,14 +37,8 @@
                                 </button>
                             </div>
                             <div class="col-4">
-                                <div class="input-group input-group-sm" style="width: 100%;">
-                                    <input type="text" name="table_search" class="form-control d-flex justofy-content-center" placeholder="Search">
-
-                                    <div class="input-group-append">
-                                    <button type="submit" class="btn btn-default">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                    </div>
+                                <div class="input-group input-group-md" style="width: 100%;">
+                                    <input type="text" id="searchTerm" class="form-control" placeholder="Cari berdasarkan isi laporan...">
                                 </div>
                             </div>
                         </div>
@@ -77,7 +71,7 @@
                             <th style="text-align: center;">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="bodyTable">
                     @if(count($laporans) > 0)
                         @php
                             $no = ($laporans->currentPage() - 1) * $laporans->perPage() + 1;
@@ -150,6 +144,74 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 
 <script>
+$(document).ready(function () {
+    $('#searchTerm').on('input', function () {
+        var searchTerm = $(this).val();
+        $.ajax({
+            url: '/searchopd', // Ganti dengan URL yang sesuai dengan endpoint pencarian
+            method: 'GET',
+            data: { searchTerm: searchTerm },
+            success: function (data) {
+                // Perbarui tampilan dengan hasil pencarian
+                var results = data.results;
+                var tableBody = $('#bodyTable');
+                tableBody.empty();
+
+                if (results.length > 0) {
+                    $.each(results, function (index, result) {
+                        var formattedDate = result.tgl_dinyatakan_selesai ? new Date(result.tgl_dinyatakan_selesai).toLocaleDateString('en-GB', {
+                                    day: 'numeric',
+                                    month: 'long',
+                                    year: 'numeric'
+                                }) : '';
+                        var formattedTindakDate = result.tanggal_tindak ? new Date(result.tanggal_tindak).toLocaleDateString('en-GB', {
+                                    day: 'numeric',
+                                    month: 'long',
+                                    year: 'numeric'
+                                }) : '';
+
+                        var rowNumber = index + 1; // Nomor urut, dimulai dari 1
+                        var row = '<tr>';
+                        row += '<td>' + rowNumber + '</td>';
+                        row += '<td>' + result.isi_laporan + '</td>';
+                        row += '<td>' + formattedTindakDate + '</td>'; // Menggunakan tanggal yang sudah diformat
+                        row += '<td>' + formattedDate + '</td>'; // Menggunakan tanggal yang sudah diformat
+                        row += '<td>' + result.category.name + '</td>';
+                        row += '<td>' + getStatusBadge(result.status_selesai) + '</td>';
+                        row += '<td style="text-align: center;" colspan="2"><button type="button" class="btn bg-gradient-info"><a href="/detailpengaduanopd/' + result.id + '" style="text-decoration: none; color:white;"><i class="fas fa-eye"></i></a></button> </td>';
+                        row += '</tr>';
+                        tableBody.append(row);
+                    });
+                } else {
+                    var noData = '<tr><td colspan="7" style="text-align: center;">No Data</td></tr>';
+                    tableBody.append(noData);
+                }
+            },
+            error: function (error) {
+                console.log('Error:', error);
+            }
+        });
+    });
+
+    function getStatusBadge(status_selesai, proses_tindak, validasi_laporan, disposisi_opd) {
+            if (status_selesai === 'Y') {
+                return '<div><span class="badge badge-success">Selesai</span></div>';
+            } else if (proses_tindak === 'Y') {
+                return '<div><span class="badge badge-dark">Ditindak</span></div>';
+            } else if (validasi_laporan === 'Y') {
+                return '<div><span class="badge badge-info">Valid</span></div>';
+            } else if (disposisi_opd === 'Y') {
+                return '<div class=""><span class="badge badge-primary">Disposisi</span></div>';
+            } else {
+                return '<div class=""><span class="badge badge-warning">Proses Disposisi</span></div>';
+            }
+        }
+
+});
+
+</script>
+
+<script>
     $(document).ready(function(){
         // Inisialisasi Select2 untuk elemen select form
         $('.select2').select2();
@@ -198,7 +260,7 @@
                                     '<td>' + formattedDateUpdated + '</td>' +
                                     '<td>' + (laporan.category && laporan.category.name ? laporan.category.name : '') + '</td>' +
                                     '<td>' + getStatusBadge(laporan.status_selesai) + '</td>' +
-                                    '<td style="text-align: center;" colspan="2"><button type="button" class="btn bg-gradient-info"><a href="/detailpengaduanadmin/' + laporan.id + '" style="text-decoration: none; color:white;"><i class="fas fa-eye"></i></a></button></td>' +
+                                    '<td style="text-align: center;" colspan="2"><button type="button" class="btn bg-gradient-info"><a href="/detailpengaduanopd/' + laporan.id + '" style="text-decoration: none; color:white;"><i class="fas fa-eye"></i></a></button></td>' +
                                     '</tr>';
                             });
                         } else {

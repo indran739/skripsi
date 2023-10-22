@@ -184,6 +184,7 @@ class DashboardController extends Controller
             }
         }
 
+
         // Mengembalikan data ke tampilan (view)
         return view('admininspektorat.dashboardgrafik', [
             'categoryNames' => $categoryNames,
@@ -193,9 +194,12 @@ class DashboardController extends Controller
             'active' => 'beranda',
             'opdCounts' => $opdCounts,
             'opdAverages' => $opdAverages,
+            'laporans' => $laporans,
         ]);
 
     }
+
+    
 
     public function chartData(Request $request)
 {
@@ -222,10 +226,6 @@ class DashboardController extends Controller
         $categoryCounts[] = $count;
         $categoryNames[] = $category->name;
     }
-
-
-
-  
 
     // Mengembalikan data dalam format JSON untuk pembaruan kedua grafik
     return response()->json([
@@ -374,5 +374,25 @@ public function getOpdAverages(Request $request)
 
         return response()->json($opdAverages);
     }
+
+    public function view_search()
+{
+    $laporans = Pengaduan::where('status_selesai', 'Y')->orderBy('tanggal_lapor', 'desc')->get();
+
+    return view('admininspektorat.search', compact('laporans'));
+}
+
+public function search(Request $request)
+{
+    $searchTerm = $request->input('searchTerm');
+
+    $results = Pengaduan::where('status_selesai', 'Y')
+        ->where('isi_laporan', 'like', '%' . $searchTerm . '%')
+        ->with('category', 'opd')
+        ->orderBy('tanggal_lapor', 'desc')
+        ->get();
+    return response()->json(['results' => $results]);
+}
+
 
 }
