@@ -181,7 +181,7 @@
                                     <span class="username">
                                         <a href="#">{{ $tanggapan->user->name }}</a>
                                     </span>
-                                    <span class="description">Memberi tanggapan - {{ \Carbon\Carbon::parse($tanggapan->created_at)->format('d F Y, H:i') }}</span>
+                                    <span class="description">Memberi tanggapan - {{ \Carbon\Carbon::parse($tanggapan->created_at)->diffForHumans() }}</span>
                                     </div>
                                     <!-- /.user-block -->
                                     <p>

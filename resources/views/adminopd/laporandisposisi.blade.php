@@ -101,7 +101,7 @@
                 <div class="card-header p-0 border-bottom-0">
                     <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" style="color: black;text-decoration: none;" id="custom-tabs-four-pending-tab" data-toggle="pill" href="#custom-tabs-four-pending" role="tab" aria-controls="custom-tabs-four-pending" aria-selected="true"><i class="fas fa-clock mr-2"></i>Pending</a>
+                        <a class="nav-link active" style="color: black;text-decoration: none;" id="custom-tabs-four-pending-tab" data-toggle="pill" href="#custom-tabs-four-pending" role="tab" aria-controls="custom-tabs-four-pending" aria-selected="true"><i class="fas fa-clock mr-2"></i>Terdisposisi</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" style="color: black;text-decoration: none;" id="custom-tabs-four-invalid-tab" data-toggle="pill" href="#custom-tabs-four-invalid" role="tab" aria-controls="custom-tabs-four-invalid" aria-selected="false"><i class="fas fa-times-circle mr-2"></i></i>Tidak Valid</a>
@@ -419,6 +419,7 @@
                                             <th>No</th>
                                             <th>Isi Laporan</th>
                                             <th>Tanggal Lapor</th>
+                                            <th>Tanggal Tindak</th>
                                             <th>Kategori</th>
                                             <th class="">Status</th>
                                             <th style="text-align: center;">Aksi</th>
@@ -434,6 +435,7 @@
                                             <td>{{ $no++ }}</td>
                                             <td>{{ Str::limit($laporan->isi_laporan, 20) }}</td>
                                             <td>{{ \Carbon\Carbon::parse($laporan->tanggal_lapor)->format('d F Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($laporan->tanggal_tindak)->format('d F Y') }}</td>
                                             <td>{{ $laporan->category->name }}</td>
                                             
                                             @if ($laporan->status_selesai == 'Y')

@@ -114,12 +114,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/cetak-laporan-kinerja', [PDFController::class, 'cetakLaporanKinerja']);
         Route::get('/search', [Admin::class, 'search']);
 
-        Route::get('/admininspektorat/chart', [DashboardController::class, 'index']);
-        Route::get('/admininspektorat/chart-data', [DashboardController::class, 'chartData']);
-        Route::get('/admininspektorat/chart-data-opd', [DashboardController::class, 'chartDataOpd']);
-        Route::get('/admininspektorat/get-opd-averages', [DashboardController::class, 'getOpdAverages']);
-        Route::get('/admininspektorat/search', [DashboardController::class, 'view_search']);
-        Route::get('/search', [DashboardController::class, 'search']);
+        // Route::get('/admininspektorat/chart', [DashboardController::class, 'index']);
+        // Route::get('/admininspektorat/chart-data', [DashboardController::class, 'chartData']);
+        // Route::get('/admininspektorat/chart-data-opd', [DashboardController::class, 'chartDataOpd']);
+        // Route::get('/admininspektorat/get-opd-averages', [DashboardController::class, 'getOpdAverages']);
+        // Route::get('/admininspektorat/search', [DashboardController::class, 'view_search']);
+        // Route::get('/search', [DashboardController::class, 'search']);
 
     });
 
@@ -163,6 +163,7 @@ Route::middleware(['auth'])->group(function () {
         Route::put('editlaporan/{id_pengaduan}', [Pengadu::class, 'update_pengaduan']);
         Route::get('editpengaduaninvalid/{id_pengaduan}', [Pengadu::class, 'view_edit_pengaduan_invalid']);
         Route::put('editlaporaninvalid/{id_pengaduan}', [Pengadu::class, 'update_pengaduan_invalid']);
+        Route::get('/search-pengadu', [Pengadu::class, 'search']);
     });
 
 });

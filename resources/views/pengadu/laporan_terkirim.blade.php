@@ -25,7 +25,7 @@
                 <div class="card-header p-0 border-bottom-0">
                     <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" style="color: black;text-decoration: none;" id="custom-tabs-four-pending-tab" data-toggle="pill" href="#custom-tabs-four-pending" role="tab" aria-controls="custom-tabs-four-pending" aria-selected="true"><i class="fas fa-clock mr-2"></i>Pending</a>
+                        <a class="nav-link active" style="color: black;text-decoration: none;" id="custom-tabs-four-pending-tab" data-toggle="pill" href="#custom-tabs-four-pending" role="tab" aria-controls="custom-tabs-four-pending" aria-selected="true"><i class="fas fa-clock mr-2"></i>Menunggu</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" style="color: black;text-decoration: none;" id="custom-tabs-four-tolak-tab" data-toggle="pill" href="#custom-tabs-four-tolak" role="tab" aria-controls="custom-tabs-four-tolak" aria-selected="false"><i class="fas fa-exclamation-circle mr-2"></i>Ditolak</a>

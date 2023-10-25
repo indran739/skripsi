@@ -45,17 +45,12 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <select id="tahunSelect" class="form-control">
-                            <option selected="selected">Filter Tahun</option>
+                            <option selected="selected">-- Filter Tahun --</option>
                             <option value="2022">2022</option>
                             <!-- Tambahkan opsi tahun lainnya sesuai kebutuhan -->
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <select id="tahunSelectOpd" class="form-control">
-                            <option selected="selected">-- Filter Tahun --</option>
-                            <option value="2022">2022</option>
-                            <!-- Tambahkan opsi tahun lainnya sesuai kebutuhan -->
-                        </select>
                     </div>
                 </div>
                 <div class="row">
@@ -69,11 +64,6 @@
                 <div class="row mt-5">
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <select id="tahunSelectTable" class="form-control">
-                            <option selected="selected">-- Filter Tahun --</option>
-                            <option value="2022">2022</option>
-                            <!-- Tambahkan opsi tahun lainnya sesuai kebutuhan -->
-                        </select>
                     </div>
                 </div>
                     <div class="col-lg-12">
@@ -118,36 +108,6 @@
                         </div>
                     </div>
                    
-                    <div class="col-lg-12">
-                        <div class="box">
-                            <div class="box-body">
-                            <table class="table table-hover text-nowrap" id="laporanTable">
-                                <thead>
-                                    <tr>
-                                    <th>Isi Laporan</th>
-                                    <th>Tanggal Selesai</th>
-                                    <th>Kategori</th>
-                                    <th>OPD Tujuan</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                            @if(count($laporans) > 0)
-                                @foreach($laporans as $laporan)
-                                    <tr>
-                                    <td>{{ Str::limit($laporan->isi_laporan, 50) }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($laporan->updated_at)->format('d F Y') }}</td>
-                                    <td>{{ $laporan->category->name }}</td>
-                                    <td>{{ $laporan->opd->name }}</td>
-                                    </tr>
-                                @endforeach
-                                @else
-                                <tr> <td colspan="7" style="text-align: center;">No Data</td> </tr>
-                                @endif
-                                </tbody>
-                            </table>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -223,28 +183,11 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script>
-$(document).ready(function() {
-    $('#searchTerm').on('keyup', function() {
-        var searchTerm = $(this).val();
-
-        $.ajax({
-            type: 'GET',
-            url: '/admininspektorat/search',
-            data: { searchTerm: searchTerm },
-            success: function(data) {
-                $('#laporanTable tbody').html(data);
-            }
-        });
-    });
-});
-
-</script>
 
 
 <script>
 
-document.getElementById('tahunSelectTable').addEventListener('change', function() {
+document.getElementById('tahunSelect').addEventListener('change', function() {
     var selectedYear = this.value;
 
     // Periksa apakah nilai yang dipilih adalah "-- Filter Tahun --"
@@ -316,22 +259,22 @@ document.getElementById('tahunSelectTable').addEventListener('change', function(
         });
 
         // Event listener untuk perubahan pada elemen form select
-        document.getElementById('tahunSelectOpd').addEventListener('change', function () {
+        document.getElementById('tahunSelect').addEventListener('change', function () {
             fetchDataAndUpdateOPDChart();
         });
 
 
         function fetchDataAndUpdateOPDChart() {
-        var selectedYearOpd = document.getElementById('tahunSelectOpd').value;
+        var selectedYear = document.getElementById('tahunSelect').value;
 
-        if (selectedYearOpd === "-- Filter Tahun --") {
-            selectedYearOpd = new Date().getFullYear().toString();
+        if (selectedYear=== "-- Filter Tahun --") {
+            selectedYear = new Date().getFullYear().toString();
         }
 
         $.ajax({
             url: '/admininspektorat/chart-data-opd',
             type: 'GET',
-            data: { yearOpd: selectedYearOpd },
+            data: { year: selectedYear },
             success: function (response) {
                 console.log(response); // Tampilkan respons dari server di konsol
                 if (!response || Object.keys(response).length === 0) {
@@ -437,7 +380,7 @@ document.getElementById('tahunSelectTable').addEventListener('change', function(
             var selectedYear = document.getElementById('tahunSelect').value;
 
             // Jika nilai yang dipilih adalah "Filter Tahun", ganti nilainya dengan tahun sekarang
-            if (selectedYear === "Filter Tahun") {
+            if (selectedYear === "-- Filter Tahun --") {
                 selectedYear = new Date().getFullYear().toString();
             }
 

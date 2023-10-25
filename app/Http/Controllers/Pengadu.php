@@ -35,12 +35,26 @@ class Pengadu extends Controller
     }
 
     public function index() {
-        $laporans = Pengaduan::orderBy('tanggal_lapor', 'desc')->where('status_selesai','Y')->paginate(5);
+        $laporans = Pengaduan::orderBy('tanggal_lapor', 'desc')->where('status_selesai','Y')->whereYear('tanggal_lapor', Carbon::now())->paginate(10);
     
         return view('pengadu.beranda', [
             'laporans' => $laporans,
             'active' => 'beranda',
+            'categories' => Category::all(),
+            'opds' => Opd::where('name', '!=', 'pengadu')->where('name', '!=', 'Inspektorat Kabupaten Gunung Mas')->get(['id', 'name']),
         ]);
+    }
+    
+    public function search(Request $request)
+    {
+        $searchTerm = $request->input('searchTerm');
+    
+        $results = Pengaduan::where('status_selesai', 'Y')
+            ->where('isi_laporan', 'like', '%' . $searchTerm . '%')
+            ->with('category', 'opd', 'user')
+            ->orderBy('tanggal_lapor', 'desc')
+            ->get();
+        return response()->json(['results' => $results]);
     }
 
     public function view_form() {
@@ -56,13 +70,44 @@ class Pengadu extends Controller
     public function view_laporan_terkirim() {
         $iduser = Auth::user()->id;
 
-        $laporans_pending = Pengaduan::where('id_user_fk', $iduser)->where('disposisi_opd', 'P')->whereNull('status_selesai')->orderBy('tanggal_lapor', 'desc')->paginate(5);
-        $laporans_tolak = Pengaduan::where('id_user_fk', $iduser)->where('disposisi_opd', 'N')->whereNull('status_selesai')->orderBy('tanggal_lapor', 'desc')->paginate(5);
-        $laporans_disposisi = Pengaduan::where('id_user_fk', $iduser)->where('disposisi_opd', 'Y')->where('validasi_laporan', 'P')->whereNull('status_selesai')->orderBy('tanggal_lapor', 'desc')->paginate(5);
-        $laporans_invalid = Pengaduan::where('id_user_fk', $iduser)->where('validasi_laporan', 'N')->whereNull('status_selesai')->orderBy('tanggal_lapor', 'desc')->paginate(5);
-        $laporans_valid = Pengaduan::where('id_user_fk', $iduser)->where('validasi_laporan', 'Y')->where('proses_tindak', 'P')->whereNull('status_selesai')->orderBy('tanggal_lapor', 'desc')->paginate(5);
-        $laporans_tindak = Pengaduan::where('id_user_fk', $iduser)->where('proses_tindak', 'Y')->whereNull('status_selesai')->orderBy('tanggal_lapor', 'desc')->paginate(5);
+        $laporans_pending = Pengaduan::where('id_user_fk', $iduser)
+        ->where('disposisi_opd', 'P')
+        ->whereNull('status_selesai')
+        ->orderBy('tanggal_lapor', 'desc')
+        ->paginate(5);
 
+        $laporans_tolak = Pengaduan::where('id_user_fk', $iduser)
+        ->where('disposisi_opd', 'N')
+        ->whereNull('status_selesai')
+        ->orderBy('tanggal_lapor', 'desc')
+        ->paginate(5);
+
+        $laporans_disposisi = Pengaduan::where('id_user_fk', $iduser)
+        ->where('disposisi_opd', 'Y')
+        ->where('validasi_laporan', 'P')
+        ->whereNull('status_selesai')
+        ->orderBy('tanggal_lapor', 'desc')
+        ->paginate(5);
+
+        $laporans_invalid = Pengaduan::where('id_user_fk', $iduser)
+        ->where('validasi_laporan', 'N')
+        ->whereNull('status_selesai')
+        ->orderBy('tanggal_lapor', 'desc')
+        ->paginate(5);
+
+        $laporans_valid = Pengaduan::where('id_user_fk', $iduser)
+        ->where('validasi_laporan', 'Y')
+        ->where('proses_tindak', 'P')
+        ->whereNull('status_selesai')
+        ->orderBy('tanggal_lapor', 'desc')
+        ->paginate(5);
+
+        $laporans_tindak = Pengaduan::where('id_user_fk', $iduser)
+        ->where('proses_tindak', 'Y')
+        ->whereNull('status_selesai')
+        ->orderBy('tanggal_lapor', 'desc')
+        ->paginate(5);
+        
         return view('pengadu.laporan_terkirim', [
             'laporans_pending' => $laporans_pending,
             'laporans_tolak' => $laporans_tolak,

@@ -145,7 +145,7 @@ $(function () {
 
 <script>
 
-document.getElementById('tahunSelectTable').addEventListener('change', function() {
+document.getElementById('tahunSelect').addEventListener('change', function() {
     var selectedYear = this.value;
 
     // Periksa apakah nilai yang dipilih adalah "-- Filter Tahun --"
@@ -216,22 +216,22 @@ document.getElementById('tahunSelectTable').addEventListener('change', function(
         });
 
         // Event listener untuk perubahan pada elemen form select
-        document.getElementById('tahunSelectOpd').addEventListener('change', function () {
+        document.getElementById('tahunSelect').addEventListener('change', function () {
             fetchDataAndUpdateOPDChart();
         });
 
 
         function fetchDataAndUpdateOPDChart() {
-        var selectedYearOpd = document.getElementById('tahunSelectOpd').value;
+        var selectedYear = document.getElementById('tahunSelect').value;
 
-        if (selectedYearOpd === "-- Filter Tahun --") {
-            selectedYearOpd = new Date().getFullYear().toString();
+        if (selectedYear === "-- Filter Tahun --") {
+            selectedYear = new Date().getFullYear().toString();
         }
 
         $.ajax({
             url: '/admininspektorat/chart-opd',
             type: 'GET',
-            data: { yearOpd: selectedYearOpd },
+            data: { year: selectedYear },
             success: function (response) {
                 console.log(response); // Tampilkan respons dari server di konsol
                 if (!response || Object.keys(response).length === 0) {
@@ -248,19 +248,19 @@ document.getElementById('tahunSelectTable').addEventListener('change', function(
                     labels: labels,
                     datasets: [{
                         label: 'Selesai',
-                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                        backgroundColor: 'rgba(60, 179, 113, 1)',
                         borderColor: 'rgba(54, 162, 235, 1)',
                         borderWidth: 1,
                         data: labels.map(opd => response[opd] ? response[opd]['Selesai'] : 0) // Periksa apakah response[opd] terdefinisi
                     }, {
                         label: 'Tindak Lanjut',
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        backgroundColor: 'rgba(112, 128, 144, 1 )',
                         borderColor: 'rgba(255, 99, 132, 1)',
                         borderWidth: 1,
                         data: labels.map(opd => response[opd] ? response[opd]['Tindak Lanjut'] : 0) // Periksa apakah response[opd] terdefinisi
                     }, {
                         label: 'Belum Ditindak (Terdisposisi, Valid, Invalid)',
-                        backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                        backgroundColor: 'rgba(255, 255, 0, 1)',
                         borderColor: 'rgba(255, 206, 86, 1)',
                         borderWidth: 1,
                         data: labels.map(opd => response[opd] ? response[opd]['Belum Ditindak'] : 0) // Periksa apakah response[opd] terdefinisi
@@ -282,92 +282,73 @@ document.getElementById('tahunSelectTable').addEventListener('change', function(
 </script>
 
 <script>
-        // JavaScript section
-        var barChartCanvas = document.getElementById('barChartKate').getContext('2d');
-        var myBarChart;
+    // JavaScript section
+    var pieChartCanvas = document.getElementById('pieChartKate').getContext('2d');
+    var myPieChart;
 
-        var barData = {
-            labels: [],
-            datasets: [{
-                label: 'Total Pengaduan',
-                data: [],
-                backgroundColor: 'rgba(54, 162, 235, 0.7)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            }]
-        };
+    var pieData = {
+        labels: [],
+        datasets: [{
+            data: [],
+            backgroundColor: ['rgba(255, 99, 132, 0.7)', 'rgba(255, 159, 64, 0.7)', 'rgba(255, 205, 86, 0.7)', 'rgba(75, 192, 192, 0.7)', 'rgba(54, 162, 235, 0.7)', 'rgba(0, 0, 255, 1)', 'rgba(127, 255, 0, 1)', 'rgba(139, 0, 139, 1)'],
+            borderColor: 'rgba(255, 255, 255, 1)',
+            borderWidth: 1
+        }]
+    };
 
-        var barOptions = {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        fontColor: '#333'
-                    },
-                    gridLines: {
-                        color: 'rgba(0, 0, 0, 0.1)'
-                    }
-                }],
-                xAxes: [{
-                    ticks: {
-                        fontColor: '#333'
-                    },
-                    gridLines: {
-                        color: 'rgba(0, 0, 0, 0.1)'
-                    }
-                }]
-            },
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: {
-                duration: 1500,
-                easing: 'easeInOutQuart'
-            }
-        };
-
-        // Mengambil data awal untuk tahun sekarang saat halaman dimuat
-        fetchDataAndUpdateChart();
-
-        // Event listener untuk perubahan pada elemen form select
-        document.getElementById('tahunSelect').addEventListener('change', function () {
-            fetchDataAndUpdateChart();
-        });
-
-        function fetchDataAndUpdateChart() {
-            var selectedYear = document.getElementById('tahunSelect').value;
-
-            // Jika nilai yang dipilih adalah "Filter Tahun", ganti nilainya dengan tahun sekarang
-            if (selectedYear === "-- Filter Tahun --") {
-                selectedYear = new Date().getFullYear().toString();
-            }
-
-            // Kirim permintaan AJAX ke server dengan tahun yang dipilih
-            $.ajax({
-                url: '/admininspektorat/chart-data',
-                type: 'GET',
-                data: { year: selectedYear },
-                success: function (response) {
-                    // Hancurkan instansi grafik sebelum membuat yang baru
-                    if (myBarChart) {
-                        myBarChart.destroy();
-                    }
-
-                    // Perbarui data grafik dengan data baru dari server
-                    barData.labels = response.categoryNames;
-                    barData.datasets[0].data = response.categoryCounts;
-
-                    // Buat grafik baru dengan data yang diperbarui
-                    myBarChart = new Chart(barChartCanvas, {
-                        type: 'bar',
-                        data: barData,
-                        options: barOptions
-                    });
-                },
-                error: function (error) {
-                    console.error(error);
-                }
-            });
+    var pieOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: {
+            duration: 1500,
+            easing: 'easeInOutQuart'
         }
+    };
+
+    // Mengambil data awal untuk tahun sekarang saat halaman dimuat
+    fetchDataAndUpdateChart();
+
+    // Event listener untuk perubahan pada elemen form select
+    document.getElementById('tahunSelect').addEventListener('change', function () {
+        fetchDataAndUpdateChart();
+    });
+
+    function fetchDataAndUpdateChart() {
+        var selectedYear = document.getElementById('tahunSelect').value;
+
+        // Jika nilai yang dipilih adalah "Filter Tahun", ganti nilainya dengan tahun sekarang
+        if (selectedYear === "-- Filter Tahun --") {
+            selectedYear = new Date().getFullYear().toString();
+        }
+
+        // Kirim permintaan AJAX ke server dengan tahun yang dipilih
+        $.ajax({
+            url: '/admininspektorat/chart-data',
+            type: 'GET',
+            data: { year: selectedYear },
+            success: function (response) {
+                // Hancurkan instansi grafik sebelum membuat yang baru
+                if (myPieChart) {
+                    myPieChart.destroy();
+                }
+
+                // Perbarui data grafik dengan data baru dari server
+                pieData.labels = response.categoryNames;
+                pieData.datasets[0].data = response.categoryCounts;
+
+                // Buat grafik baru dengan data yang diperbarui
+                myPieChart = new Chart(pieChartCanvas, {
+                    type: 'pie',
+                    data: pieData,
+                    options: pieOptions
+                });
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
 </script>
+
 </body>
 </html>

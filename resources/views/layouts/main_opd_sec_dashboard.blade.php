@@ -160,39 +160,17 @@ $(function () {
 });
 </script>
 <script>
-    var barChartCanvas = document.getElementById('barChartKate').getContext('2d');
-    var barData = {
+    var pieChartCanvas = document.getElementById('pieChartKate').getContext('2d');
+    var pieData = {
         labels: @json($categoryNames),
         datasets: [{
-            label: 'Jumlah Pengaduan',
             data: @json($categoryCounts),
-            backgroundColor: 'rgba(54, 162, 235, 0.7)',
-            borderColor: 'rgba(54, 162, 235, 1)',
+            backgroundColor: ['rgba(255, 99, 132, 0.7)', 'rgba(255, 159, 64, 0.7)', 'rgba(255, 205, 86, 0.7)', 'rgba(75, 192, 192, 0.7)', 'rgba(54, 162, 235, 0.7)'],
+            borderColor: 'rgba(255, 255, 255, 1)',
             borderWidth: 1
         }]
     };
-    var barOptions = {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true,
-                    fontColor: '#333'
-                },
-                gridLines: {
-                    color: 'rgba(0, 0, 0, 0.1)'
-                }
-            }],
-            xAxes: [{
-                ticks: {
-                    fontColor: '#333',
-                    autoSkip: true, // Mengaktifkan otomatis melewatkan label agar terlihat rapi
-                    maxTicksLimit: 10 // Maksimal jumlah label yang ditampilkan pada sumbu X
-                },
-                gridLines: {
-                    color: 'rgba(0, 0, 0, 0.1)'
-                }
-            }]
-        },
+    var pieOptions = {
         responsive: true,
         maintainAspectRatio: false,
         animation: {
@@ -200,12 +178,13 @@ $(function () {
             easing: 'easeInOutQuart'
         }
     };
-    new Chart(barChartCanvas, {
-        type: 'bar',
-        data: barData,
-        options: barOptions
+    new Chart(pieChartCanvas, {
+        type: 'pie',
+        data: pieData,
+        options: pieOptions
     });
 </script>
+
 
 
 <!-- 

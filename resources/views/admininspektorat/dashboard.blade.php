@@ -6,6 +6,11 @@
         <div class="row mb-2">
           <div class="col-sm-6">
             <h1 class="m-0">Selamat Datang Admin Inspektorat </h1>
+
+              <select id="tahunSelect" style="width:20%;" class="form-control mt-3">
+                  <option selected="selected"> -- Filter Tahun -- </option>
+                  <option value="2022">2022</option>
+              </select>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -18,64 +23,6 @@
     </div>
     <!-- /.content-header -->
 <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
-        <div class="row">
-          <div class="col-lg-3 col-6">
-              <div class="small-box bg-warning">
-                <div class="inner">
-                  <h3>{{ $count_laporanmasuk }}<sup></sup></h3>
-
-                  <p>Jumlah Laporan Menunggu</p>
-                </div>
-                <div class="icon">
-                <i class="fas fa-clock mr-2"></i>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-6">
-              <div class="small-box bg-primary">
-                <div class="inner">
-                  <h3>{{ $count_laporandisposisi }}<sup></sup></h3>
-
-                  <p>Jumlah Terdisposisi</p>
-                </div>
-                <div class="icon">
-                  <i class="fas fa-paper-plane mr-2"></i>
-                </div>
-              </div>
-            </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-danger">
-              <div class="inner">
-                <h3>{{ $count_laporantolak }}</h3>
-
-                <p>Jumlah Laporan Ditolak</p>
-              </div>
-              <div class="icon">
-                <i class="fas fa-exclamation-circle mr-2"></i>
-              </div>
-            </div>
-          </div>
-          <!-- ./col -->
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-lightblue">
-              <div class="inner">
-                <h3>{{ $count_pengadu }}</h3>
-                
-                <p>Jumlah User Pengadu</p>
-              </div>
-              <div class="icon">
-                <i class="fas fa-user"></i>
-              </div>
-            </div>
-          </div>
-          <!-- ./col -->
-        <!-- /.row -->
-
         <!-- Main row -->
         <div class="row">
           <!-- Left col -->
@@ -88,14 +35,8 @@
                   
                 </div>
                 <div class="row mb-2 mt-3 ml-3">
-                    <div class="col-12">
-                        <select id="tahunSelect" style="width:20%;" class="form-control">
-                            <option selected="selected"> -- Filter Tahun -- </option>
-                            <option value="2022">2022</option>
-                        </select>
-                    </div>
                 <div class="card-body" style="width: 100%; margin: auto;">
-                  <canvas id="barChartKate" style="min-height: 329px; margin: auto;"></canvas>
+                  <canvas id="pieChartKate" style="min-height: 329px; margin: auto;"></canvas>
                 </div>
                 <!-- /.card-body -->
               </div>
@@ -111,12 +52,6 @@
                 </div>
                 <div class="card-body">
                 <div class="row mb-3">
-                    <div class="col-12">
-                      <select id="tahunSelectOpd" style="width:21%;" class="form-control">
-                          <option selected="selected"> -- Filter Tahun -- </option>
-                          <option value="2022">2022</option>
-                      </select>
-                    </div>
                   </div>   
                 <div class="box">
                     <div class="box-body" style="width: 100%; margin: auto;">
@@ -146,11 +81,6 @@
                 <div class="card-body">
                   <div class="row mb-3">
                     <div class="col-8">
-                        <select id="tahunSelectTable" style="width:15%;" class="form-control">
-                            <option selected="selected">-- Filter Tahun --</option>
-                            <option value="2022">2022</option>
-                            <!-- Tambahkan opsi tahun lainnya sesuai kebutuhan -->
-                        </select>
                     </div>
                   </div>
                

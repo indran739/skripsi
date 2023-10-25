@@ -75,7 +75,7 @@ class DashboardController extends Controller
             ->where('status_selesai', 'Y')
             ->where('validasi_laporan', 'Y')
             ->where('proses_tindak', 'Y')
-            ->whereYear('tanggal_lapor', $selectedYearOpd)
+            ->whereYear('tanggal_lapor', $selectedYear)
             ->count();
 
             $countLaporanTindak = Pengaduan::whereHas('opd', function ($query) use ($opd) {
@@ -85,7 +85,7 @@ class DashboardController extends Controller
             ->where('status_selesai', NULL)
             ->where('validasi_laporan', 'Y')
             ->where('proses_tindak', 'Y')
-            ->whereYear('tanggal_lapor', $selectedYearOpd)
+            ->whereYear('tanggal_lapor', $selectedYear)
             ->count();
 
             $countLaporanBelum = Pengaduan::whereHas('opd', function ($query) use ($opd) {
@@ -96,7 +96,7 @@ class DashboardController extends Controller
             ->whereNotNull('validasi_laporan')
             ->where('disposisi_opd', '!=', 'P')
             ->where('disposisi_opd', '!=', 'N')
-            ->whereYear('tanggal_lapor', $selectedYearOpd)
+            ->whereYear('tanggal_lapor', $selectedYear)
             ->count();
 
             // Hanya menyimpan data OPD yang memiliki pengaduan
@@ -116,7 +116,7 @@ class DashboardController extends Controller
             // $completedPengaduan = Pengaduan::where('status_selesai', 'Y')->where('id_opd_fk', $opd->id)->get();
             $completedPengaduan = Pengaduan::where('status_selesai', 'Y')
             ->where('id_opd_fk', $opd->id)
-            ->whereYear('tanggal_lapor', Carbon::now()->year)
+            ->whereYear('tanggal_lapor', $selectedYear)
             ->get();
 
             $totalDuration = 0;
@@ -132,7 +132,7 @@ class DashboardController extends Controller
             $pengaduan = Pengaduan::whereNotNull('tanggal_validasi')
             ->where('status_selesai', 'Y')
             ->where('id_opd_fk', $opd->id)
-            ->whereYear('tanggal_lapor', Carbon::now()->year)
+            ->whereYear('tanggal_lapor', $selectedYear)
             ->get();
 
             $totalWaktuRespon = 0;
@@ -166,7 +166,7 @@ class DashboardController extends Controller
             ->where('validasi_laporan','Y')
             ->where('proses_tindak','Y')
             ->where('id_opd_fk', $opd->id)
-            ->whereYear('tanggal_lapor', Carbon::now()->year)
+            ->whereYear('tanggal_lapor', $selectedYear)
             ->get()
             ->count();
 
@@ -194,7 +194,6 @@ class DashboardController extends Controller
             'active' => 'beranda',
             'opdCounts' => $opdCounts,
             'opdAverages' => $opdAverages,
-            'laporans' => $laporans,
         ]);
 
     }
@@ -237,7 +236,7 @@ class DashboardController extends Controller
 public function chartDataOpd(Request $request)
 {
    // Ambil tahun dari permintaan (jika tidak ada, gunakan tahun sekarang)
-   $selectedYearOpd = $request->input('yearOpd', Carbon::now()->year);
+   $selectedYearOpd = $request->input('year', Carbon::now()->year);
 
    // Kueri database berdasarkan tahun yang dipilih
    $opds = OPD::all();
@@ -374,25 +373,6 @@ public function getOpdAverages(Request $request)
 
         return response()->json($opdAverages);
     }
-
-    public function view_search()
-{
-    $laporans = Pengaduan::where('status_selesai', 'Y')->orderBy('tanggal_lapor', 'desc')->get();
-
-    return view('admininspektorat.search', compact('laporans'));
-}
-
-public function search(Request $request)
-{
-    $searchTerm = $request->input('searchTerm');
-
-    $results = Pengaduan::where('status_selesai', 'Y')
-        ->where('isi_laporan', 'like', '%' . $searchTerm . '%')
-        ->with('category', 'opd')
-        ->orderBy('tanggal_lapor', 'desc')
-        ->get();
-    return response()->json(['results' => $results]);
-}
 
 
 }

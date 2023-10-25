@@ -24,35 +24,6 @@ class Admin extends Controller
         
         $count_users = User::where('role','pengadu')->where('verification','Y')->get()->count();
 
-        $count_laporan_masuk = Pengaduan::where('disposisi_opd','P')
-        ->where('status_selesai',NULL)
-        ->where('validasi_laporan','P')
-        ->where('proses_tindak','P')
-        ->whereYear('tanggal_lapor', Carbon::now()->year)
-        ->get()
-        ->count();
-
-        $count_laporan_disposisi = Pengaduan::where('disposisi_opd','Y')
-        ->where('status_selesai',NULL)->where('validasi_laporan','P')
-        ->where('proses_tindak','P')
-        ->whereYear('tanggal_lapor', Carbon::now()->year)
-        ->get()
-        ->count();
-
-        $count_laporan_tolak = Pengaduan::where('disposisi_opd','N')
-        ->where('status_selesai',NULL)->where('validasi_laporan','P')
-        ->where('proses_tindak','P')
-        ->whereYear('tanggal_lapor', Carbon::now()->year)
-        ->get()
-        ->count();
-
-        $count_laporan_selesai = Pengaduan::where('disposisi_opd','Y')
-        ->where('status_selesai','Y')
-        ->where('validasi_laporan','Y')
-        ->where('proses_tindak','Y')
-        ->whereYear('tanggal_lapor', Carbon::now()->year)
-        ->get()
-        ->count();
     
         // Ambil tahun dari permintaan (jika tidak ada, gunakan tahun sekarang)
         $selectedYear = Carbon::now()->year;
@@ -101,7 +72,6 @@ class Admin extends Controller
             $opds = OPD::all();
 
             // Ambil tahun dari permintaan (jika tidak ada, gunakan tahun sekarang)
-            $selectedYearOpd = Carbon::now()->year;
             $opdCounts = [];
 
             foreach ($opds as $opd) {
@@ -112,7 +82,7 @@ class Admin extends Controller
                 ->where('status_selesai', 'Y')
                 ->where('validasi_laporan', 'Y')
                 ->where('proses_tindak', 'Y')
-                ->whereYear('tanggal_lapor', $selectedYearOpd)
+                ->whereYear('tanggal_lapor', $selectedYear)
                 ->count();
 
                 $countLaporanTindak = Pengaduan::whereHas('opd', function ($query) use ($opd) {
@@ -122,7 +92,7 @@ class Admin extends Controller
                 ->where('status_selesai', NULL)
                 ->where('validasi_laporan', 'Y')
                 ->where('proses_tindak', 'Y')
-                ->whereYear('tanggal_lapor', $selectedYearOpd)
+                ->whereYear('tanggal_lapor', $selectedYear)
                 ->count();
 
                 $countLaporanBelum = Pengaduan::whereHas('opd', function ($query) use ($opd) {
@@ -133,7 +103,7 @@ class Admin extends Controller
                 ->whereNotNull('validasi_laporan')
                 ->where('disposisi_opd', '!=', 'P')
                 ->where('disposisi_opd', '!=', 'N')
-                ->whereYear('tanggal_lapor', $selectedYearOpd)
+                ->whereYear('tanggal_lapor', $selectedYear)
                 ->count();
 
                 // Hanya menyimpan data OPD yang memiliki pengaduan
@@ -157,7 +127,7 @@ class Admin extends Controller
                 // $completedPengaduan = Pengaduan::where('status_selesai', 'Y')->where('id_opd_fk', $opd->id)->get();
                 $completedPengaduan = Pengaduan::where('status_selesai', 'Y')
                 ->where('id_opd_fk', $opd->id)
-                ->whereYear('tanggal_lapor', Carbon::now()->year)
+                ->whereYear('tanggal_lapor', $selectedYear)
                 ->get();
 
                 $totalDuration = 0;
@@ -173,7 +143,7 @@ class Admin extends Controller
                 $pengaduan = Pengaduan::whereNotNull('tanggal_validasi')
                 ->where('status_selesai', 'Y')
                 ->where('id_opd_fk', $opd->id)
-                ->whereYear('tanggal_lapor', Carbon::now()->year)
+                ->whereYear('tanggal_lapor', $selectedYear)
                 ->get();
 
                 $totalWaktuRespon = 0;
@@ -227,12 +197,7 @@ class Admin extends Controller
 //<---------------------------------------------------------------End Rata rata waktu----------------------------------------------------------------------------->//
         return view('admininspektorat.dashboard', [
             'count_pengadu' => $count_users,
-            'count_laporanmasuk' => $count_laporan_masuk,
-            'count_laporandisposisi' => $count_laporan_disposisi,
-            'count_laporantolak' => $count_laporan_tolak,
-            'count_laporanselesai' => $count_laporan_selesai,
             'selectedYear' => $selectedYear,
-            'selectedYearOpd' => $selectedYearOpd,
             'active' => 'beranda',
             'opdAverages' => $opdAverages,
             'opdCounts' => $opdCounts
@@ -274,7 +239,7 @@ class Admin extends Controller
     public function chartPengaduanOPD(Request $request)
     {
         // Ambil tahun dari permintaan (jika tidak ada, gunakan tahun sekarang)
-        $selectedYearOpd = $request->input('yearOpd', Carbon::now()->year);
+        $selectedYear = $request->input('year', Carbon::now()->year);
 
         // Kueri database berdasarkan tahun yang dipilih
         $opds = OPD::all();
@@ -289,7 +254,7 @@ class Admin extends Controller
             ->where('status_selesai', 'Y')
             ->where('validasi_laporan', 'Y')
             ->where('proses_tindak', 'Y')
-            ->whereYear('tanggal_lapor', $selectedYearOpd)
+            ->whereYear('tanggal_lapor', $selectedYear)
             ->count();
 
             $countLaporanTindak = Pengaduan::whereHas('opd', function ($query) use ($opd) {
@@ -299,7 +264,7 @@ class Admin extends Controller
             ->where('status_selesai', NULL)
             ->where('validasi_laporan', 'Y')
             ->where('proses_tindak', 'Y')
-            ->whereYear('tanggal_lapor', $selectedYearOpd)
+            ->whereYear('tanggal_lapor', $selectedYear)
             ->count();
 
             $countLaporanBelum = Pengaduan::whereHas('opd', function ($query) use ($opd) {
@@ -310,7 +275,7 @@ class Admin extends Controller
             ->whereNotNull('validasi_laporan')
             ->where('disposisi_opd', '!=', 'P')
             ->where('disposisi_opd', '!=', 'N')
-            ->whereYear('tanggal_lapor', $selectedYearOpd)
+            ->whereYear('tanggal_lapor', $selectedYear)
             ->count();
 
             // Hanya menyimpan data OPD yang memiliki pengaduan
