@@ -31,7 +31,7 @@
             <!-- PIE CHART -->
             <div class="card">
                 <div class="card-header" style="background-color:#4030A3;">
-                  <h3 class="card-title text-white">Total Pengaduan Selesai Per Kategori</h3>
+                  <h3 class="card-title text-white">Total Pengaduan Selesai Per Kategori </h3>
                   
                 </div>
                 <div class="row mb-2 mt-3 ml-3">

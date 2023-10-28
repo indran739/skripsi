@@ -58,7 +58,7 @@
                         <div class="form-group row">
                             <label for="" class="col-sm-2 col-form-label">Isi Laporan</label>
                             <div class="col-sm-10">
-                                <textarea class="form-control @error('isi_laporan') is-invalid @enderror" rows="3" placeholder=""  style="width: 100%;" name="isi_laporan" value="{{ old('isi_laporan') }}" required></textarea>
+                                <textarea class="form-control @error('isi_laporan') is-invalid @enderror" rows="3" placeholder="Ketik isi laporan anda..."  style="width: 100%;" name="isi_laporan" value="{{ old('isi_laporan') }}" required></textarea>
                                 @error('isi_laporan')
                                 <div class="invalid-feedback">
                                     {{ $message }}  
@@ -101,7 +101,7 @@
                         <div class="form-group row">
                             <label for="" class="col-sm-2 col-form-label">Lokasi Detail</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" placeholder="" name="lokasi_kejadian"  style="width: 100%;" required value="{{ old('lokasi_kejadian') }}">
+                                    <input type="text" class="form-control" placeholder="Ketik Detail Lokasi.." name="lokasi_kejadian"  style="width: 100%;" required value="{{ old('lokasi_kejadian') }}">
                                 </div>
                         </div>
                         <!-- <div class="form-group row">
@@ -146,6 +146,7 @@
                                 <div class="col-sm-10">
                                     <div class="custom-file" style="width: 15%;">
                                         <input type="file" class="custom-file-input" id="customFile" name="lampiran">
+                                        <p class="d-flex justify-content-start mb-2 text-red">*jika ada</p>
                                         <label class="custom-file-label" for="customFile">Choose File</label>
                                     </div>
                                 </div>
@@ -155,6 +156,7 @@
                                 <div class="col-sm-10">
                                     <div class="custom-file" style="width: 15%;">
                                         <input type="file" class="custom-file-input" id="customFile" name="first_image">
+                                        <p class="d-flex justify-content-start mb-2 text-red" class="text-red">*jika ada</p>
                                         <label class="custom-file-label" for="customFile">Choose File</label>
                                     </div>
                                 </div>
@@ -164,6 +166,7 @@
                                 <div class="col-sm-10">
                                     <div class="custom-file" style="width: 15%;">
                                         <input type="file" class="custom-file-input" id="customFile" name="sec_image">
+                                        <p class="d-flex justify-content-start mb-2 text-red" class="text-red">*jika ada</p>
                                         <label class="custom-file-label" for="customFile">Choose File</label>
                                     </div>
                                 </div>

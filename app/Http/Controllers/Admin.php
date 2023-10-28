@@ -728,4 +728,15 @@ public function suspend_akun(Request $request, $id_user)
         return redirect('/userpengadu')->with('suspended', 'Data berhasil diperbarui');
 }
 
+public function delete_user($id_user)
+{
+// Temukan item berdasarkan ID
+$user = User::find($id_user);
+
+// Hapus item
+$user->delete();
+
+// Redirect dengan pesan sukses
+return redirect()->back()->with('hapus', 'Data berhasil dihapus');
+}
 }

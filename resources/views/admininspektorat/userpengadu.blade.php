@@ -40,6 +40,13 @@
                 </div>
             @endif
 
+            @if(Session::has('hapus'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Akun User berhasil dihapus</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
             <div class="row mb-2">
                 <div class="col-sm-6 mb-3">
                     <h1 class="m-0">User Pengadu</h1>
@@ -830,7 +837,34 @@
                                                     <!-- /.modal-dialog -->
                                                 </div>
                                                 <!-- /.modal -->  
-                                                
+                                            <button type="button"  class="btn bg-gradient-danger ml-2" data-toggle="modal" data-target="#modal-hapus__{{ $u->id }}">
+                                                <a style="text-decoration: none; color:white;"><i class="fas fa-trash"></i></a>
+                                            </button>    
+                                                <div class="modal fade" id="modal-hapus__{{ $u->id }}">
+                                                            <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                <!-- <h4 class="modal-title">Default Modal</h4> -->
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                <form method="post" action="/hapususer/{{ $u->id }}">
+                                                                    @csrf
+                                                                    <h5 class="d-flex justify-content-center">Apakah anda yakin menghapus akun user ini?</h5>
+                                                                </div>
+                                                                <div class="modal-footer justify-content-center">
+                                                                    <button type="button" class="btn btn-default mr-5" data-dismiss="modal">Batal</button>
+                                                                    <button type="submit" class="btn btn-primary">Hapus</button>
+                                                                </div>
+                                                                </form>
+                                                            </div>
+                                                            <!-- /.modal-content -->
+                                                            </div>
+                                                            <!-- /.modal-dialog -->
+                                                        </div>
+                                                        <!-- /.modal -->
                                             </td>
                                             </tr>
                                         @endforeach

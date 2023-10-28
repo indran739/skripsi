@@ -193,7 +193,7 @@
                                                     <!-- /.modal-dialog -->
                                                 </div>
                                     <!-- Modal Button Detail Pengaduan -->
-                                    <div class="d-flex justify-content-end"><a style="color: black;text-decoration: none;" id="" class="ml-3" href="" data-toggle="modal" data-target="#modal-delete-tanggapan__{{ $tanggapan->id }}" ><i class="fas fa-trash"></i></a>
+                                                <div class="d-flex justify-content-end"><a style="color: black;text-decoration: none;" id="" class="ml-3" href="" data-toggle="modal" data-target="#modal-delete-tanggapan__{{ $tanggapan->id }}" ><i class="fas fa-trash"></i></a>
                                                 </div>
                                                 
                                                     <div class="modal fade" id="modal-delete-tanggapan__{{ $tanggapan->id }}">

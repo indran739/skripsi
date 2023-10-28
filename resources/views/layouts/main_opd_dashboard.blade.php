@@ -171,7 +171,7 @@ document.getElementById('tahunSelect').addEventListener('change', function() {
             }
         });
 
-        return; // Keluar dari fungsi karena tidak perlu mengirim permintaan AJAX
+        return; 
     }
 
     // Jika nilai yang dipilih bukan "-- Filter Tahun --", kirim permintaan AJAX ke server
@@ -255,16 +255,17 @@ document.getElementById('tahunSelect').addEventListener('change', function() {
                     }, {
                         label: 'Tindak Lanjut',
                         backgroundColor: 'rgba(112, 128, 144, 1 )',
-                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderColor: 'rgba(0, 0, 0, 1)',
                         borderWidth: 1,
                         data: labels.map(opd => response[opd] ? response[opd]['Tindak Lanjut'] : 0) // Periksa apakah response[opd] terdefinisi
-                    }, {
-                        label: 'Belum Ditindak (Terdisposisi, Valid, Invalid)',
-                        backgroundColor: 'rgba(255, 255, 0, 1)',
-                        borderColor: 'rgba(255, 206, 86, 1)',
-                        borderWidth: 1,
-                        data: labels.map(opd => response[opd] ? response[opd]['Belum Ditindak'] : 0) // Periksa apakah response[opd] terdefinisi
-                    }]
+                    }// }, {
+                    //     label: 'Belum Ditindak (Terdisposisi, Valid, Invalid)',
+                    //     backgroundColor: 'rgba(255, 255, 0, 1)',
+                    //     borderColor: 'rgba(255, 206, 86, 1)',
+                    //     borderWidth: 1,
+                    //     data: labels.map(opd => response[opd] ? response[opd]['Belum Ditindak'] : 0) // Periksa apakah response[opd] terdefinisi
+                    // }
+                ]
                 };
 
                 // Buat grafik baru dengan data yang diperbarui
