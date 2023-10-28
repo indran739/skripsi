@@ -126,6 +126,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['adminopd'])->group(function () {
         Route::get('adminopd', [OpdController::class, 'index']);
+        Route::get('adminopd/chart-data', [OpdController::class, 'chartPengaduanCategories']);
+        Route::get('adminopd/chart-opd', [OpdController::class, 'chartPengaduanOpd']);
+
         Route::get('/laporanterdisposisiopd', [OpdController::class, 'view_laporan_terdisposisi']);
         Route::get('laporanselesaiopd', [OpdController::class, 'view_laporan_selesai']);
         Route::get('userpengaduopd', [OpdController::class, 'view_user_pengadu']);

@@ -24,7 +24,7 @@ class Admin extends Controller
         
         $count_users = User::where('role','pengadu')->where('verification','Y')->get()->count();
 
-    
+        
         // Ambil tahun dari permintaan (jika tidak ada, gunakan tahun sekarang)
         $selectedYear = Carbon::now()->year;
 

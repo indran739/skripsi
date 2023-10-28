@@ -149,27 +149,23 @@ $(function () {
   bsCustomFileInput.init();
 });
 </script>
+
+
 <script>
-$(function () {
-  bsCustomFileInput.init();
-});
-</script>
-<script>
-$(function () {
-  bsCustomFileInput.init();
-});
-</script>
-<script>
+    // JavaScript section
     var pieChartCanvas = document.getElementById('pieChartKate').getContext('2d');
+    var myPieChart;
+
     var pieData = {
-        labels: @json($categoryNames),
+        labels: [],
         datasets: [{
-            data: @json($categoryCounts),
-            backgroundColor: ['rgba(255, 99, 132, 0.7)', 'rgba(255, 159, 64, 0.7)', 'rgba(255, 205, 86, 0.7)', 'rgba(75, 192, 192, 0.7)', 'rgba(54, 162, 235, 0.7)'],
+            data: [],
+            backgroundColor: ['rgba(255, 99, 132, 0.7)', 'rgba(255, 159, 64, 0.7)', 'rgba(255, 205, 86, 0.7)', 'rgba(75, 192, 192, 0.7)', 'rgba(54, 162, 235, 0.7)', 'rgba(0, 0, 255, 1)', 'rgba(127, 255, 0, 1)', 'rgba(139, 0, 139, 1)'],
             borderColor: 'rgba(255, 255, 255, 1)',
             borderWidth: 1
         }]
     };
+
     var pieOptions = {
         responsive: true,
         maintainAspectRatio: false,
@@ -178,14 +174,129 @@ $(function () {
             easing: 'easeInOutQuart'
         }
     };
-    new Chart(pieChartCanvas, {
-        type: 'pie',
-        data: pieData,
-        options: pieOptions
+
+    // Mengambil data awal untuk tahun sekarang saat halaman dimuat
+    fetchDataAndUpdateChart();
+
+    // Event listener untuk perubahan pada elemen form select
+    document.getElementById('tahunSelect').addEventListener('change', function () {
+        fetchDataAndUpdateChart();
     });
+
+    function fetchDataAndUpdateChart() {
+        var selectedYear = document.getElementById('tahunSelect').value;
+
+        // Jika nilai yang dipilih adalah "Filter Tahun", ganti nilainya dengan tahun sekarang
+        if (selectedYear === "-- Filter Tahun --") {
+            selectedYear = new Date().getFullYear().toString();
+        }
+
+        // Kirim permintaan AJAX ke server dengan tahun yang dipilih
+        $.ajax({
+            url: '/adminopd/chart-data',
+            type: 'GET',
+            data: { year: selectedYear },
+            success: function (response) {
+                // Hancurkan instansi grafik sebelum membuat yang baru
+                if (myPieChart) {
+                    myPieChart.destroy();
+                }
+
+                // Perbarui data grafik dengan data baru dari server
+                pieData.labels = response.categoryNames;
+                pieData.datasets[0].data = response.categoryCounts;
+
+                // Buat grafik baru dengan data yang diperbarui
+                myPieChart = new Chart(pieChartCanvas, {
+                    type: 'pie',
+                    data: pieData,
+                    options: pieOptions
+                });
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
 </script>
 
+<script>
+var barChartCanvasOpd;
+var myBarChartOpd;
+var options = {
+    scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero: true
+            }
+        }]
+    },
+    legend: {
+        display: false // Menghilangkan tampilan legend
+    }
+};
 
+$(document).ready(function() {
+    barChartCanvasOpd = document.getElementById('opdPengaduan').getContext('2d');
+    fetchDataAndUpdateOPDChart();
+});
+
+document.getElementById('tahunSelect').addEventListener('change', function () {
+    fetchDataAndUpdateOPDChart();
+});
+
+function fetchDataAndUpdateOPDChart() {
+    var selectedYear = document.getElementById('tahunSelect').value;
+
+    if (selectedYear === "-- Filter Tahun --") {
+        selectedYear = new Date().getFullYear().toString();
+    }
+
+    $.ajax({
+        url: '/adminopd/chart-opd',
+        type: 'GET',
+        data: { year: selectedYear },
+        success: function (response) {
+            console.log(response);
+            if (!response || response.length === 0) {
+                console.error('Data response kosong atau tidak terdefinisi.');
+                return;
+            }
+
+            if (myBarChartOpd) {
+                myBarChartOpd.destroy();
+            }
+
+            var data = response[0];
+            var updatedData = {
+                labels: Object.keys(data),
+                datasets: [{
+                    backgroundColor: [
+                        'rgba(60, 179, 113, 1)',
+                        'rgba(112, 128, 144, 1)',
+                        'rgba(72, 209, 204, 1)',
+                        'rgba(255, 0, 0, 1)',
+                        'rgba(30, 144, 255, 1)'
+                    ],
+                    borderColor: 'rgba(0, 0, 0, 1)',
+                    borderWidth: 1,
+                    data: Object.values(data)
+                }]
+            };
+
+            myBarChartOpd = new Chart(barChartCanvasOpd, {
+                type: 'bar',
+                data: updatedData,
+                options: options
+            });
+        },
+        error: function (error) {
+            console.error(error);
+        }
+    });
+}
+
+    </script>
 
 <!-- 
 <script>
@@ -218,11 +329,13 @@ $(function () {
             grid: {
                 display: false
             }
+            
         },
         y: {
             grid: {
                 display: false
             }
+            
         }
     };
     var lineChartData = {
