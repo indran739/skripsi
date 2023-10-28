@@ -451,12 +451,14 @@ class Admin extends Controller
         $users_pending = User::where('role','pengadu')->where('verification','P')->paginate(7);
         $users_tolak = User::where('role','pengadu')->where('verification','N')->paginate(7);
         $users_verif = User::where('role','pengadu')->where('verification','Y')->paginate(7);
+        $users_suspend = User::where('role','pengadu')->where('verification','S')->paginate(7);
 
         return view('admininspektorat.userpengadu', [
             'opd' => $opd,
             'users' => $users_pending,
             'users_tolak' => $users_tolak,
             'users_verif' => $users_verif,
+            'users_suspend' => $users_suspend,
             'active' => 'usermanajemen'
         ]);
     }
@@ -595,6 +597,7 @@ class Admin extends Controller
         $kategori->save();
         return redirect('/kategori')->with('berhasil', 'Data berhasil disimpan');
     }
+
     public function hapus_kategori($id_categories)
     {
     // Temukan item berdasarkan ID
@@ -717,5 +720,12 @@ public function tambah_admin(Request $request)
     }
 }
 
+public function suspend_akun(Request $request, $id_user)
+{
+        $user = User::find($id_user);
+        $user->verification = $request->verification;
+        $user->save();
+        return redirect('/userpengadu')->with('suspended', 'Data berhasil diperbarui');
+}
 
 }

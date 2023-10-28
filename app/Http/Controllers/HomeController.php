@@ -35,6 +35,8 @@ class HomeController extends Controller
                 return redirect()->to('halamanpending');
             }elseif ($role == "pengadu" && $verif === "N") { //Akun ditolak
                 return redirect()->to('halamanpending');
+            }elseif ($role == "pengadu" && $verif === "S") { //Akun disuspend
+                return redirect()->to('halamanpending');
             }
             elseif ($role == "adminopd" && $verif === "Y"){
                 return redirect()->to('adminopd');

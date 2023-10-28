@@ -113,6 +113,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/cetak-laporan-belumtanggap', [PDFController::class, 'cetakLaporanBelumTanggap']);
         Route::get('/cetak-laporan-kinerja', [PDFController::class, 'cetakLaporanKinerja']);
         Route::get('/search', [Admin::class, 'search']);
+        Route::put('suspendedakun/{id_user}', [Admin::class, 'suspend_akun']);
 
         // Route::get('/admininspektorat/chart', [DashboardController::class, 'index']);
         // Route::get('/admininspektorat/chart-data', [DashboardController::class, 'chartData']);

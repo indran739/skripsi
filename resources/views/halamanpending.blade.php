@@ -36,6 +36,41 @@
                 <br>
             </div>
         @endif
+        @if (auth()->user()->verification == 'S')
+            <div class="container">
+                <h6 class="fw-bold mt-4">Akun anda ditangguhkan sementara.</h6>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
+        @endif
         @if (auth()->user()->verification == 'N')
         <div class="content-wrapper">
                 <!-- Content Header (Page header) -->

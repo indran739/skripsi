@@ -33,6 +33,13 @@
                 </div>
             @endif
 
+            @if (Session::has('suspended'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Akun sudah ditangguhkan</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
             <div class="row mb-2">
                 <div class="col-sm-6 mb-3">
                     <h1 class="m-0">User Pengadu</h1>
@@ -58,6 +65,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" style="color: black;text-decoration: none;" id="custom-tabs-four-verif-tab" data-toggle="pill" href="#custom-tabs-four-verif" role="tab" aria-controls="custom-tabs-four-verif" aria-selected="false"><i class="fas fa-check-circle mr-2"></i>Terverifikasi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: black;text-decoration: none;" id="custom-tabs-four-suspended-tab" data-toggle="pill" href="#custom-tabs-four-suspended" role="tab" aria-controls="custom-tabs-four-suspended" aria-selected="false"><i class="fas fa-power-off mr-2"></i>Suspended</a>
                     </li>
                     </ul>
                 </div>
@@ -620,7 +630,36 @@
                                                 <!-- /.modal-dialog -->
                                             </div>
                                             <!-- /.modal -->  
-                                        
+                                            <button type="button"  class=" ml-2 btn bg-gradient-danger" data-toggle="modal" data-target="#modal-suspend__{{ $u->id }}">
+                                                <a style="text-decoration: none; color:white;"><i class="fas fa-power-off"></i></a>
+                                            </button>
+                                            <div class="modal fade" id="modal-suspend__{{ $u->id }}">
+                                                        <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                            <!-- <h4 class="modal-title">Default Modal</h4> -->
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                            <form method="post" action="/suspendedakun/{{ $u->id }}">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                <h5 class="d-flex justify-content-center">Apakah anda yakin menangguhkan akun ini?</h5>
+                                                                <input type="hidden" value="S" name="verification">
+                                                            </div>
+                                                            <div class="modal-footer justify-content-center">
+                                                                <button type="button" class="btn btn-default mr-5" data-dismiss="modal">Batal</button>
+                                                                <button type="submit" class="btn btn-primary">Suspend</button>
+                                                            </div>
+                                                            </form>
+                                                        </div>
+                                                        <!-- /.modal-content -->
+                                                        </div>
+                                                        <!-- /.modal-dialog -->
+                                                    </div>
+                                                    <!-- /.modal -->
                                         </td>
                                         </tr>
                                     @endforeach
@@ -635,5 +674,177 @@
                                         {{ $users_verif->links('vendor.pagination.adminlte_sec') }}
                                     </div>
                         </div>
-                    </div>
+                        </div>
+                    <div class="tab-pane fade show" id="custom-tabs-four-suspended" role="tabpanel" aria-labelledby="custom-tabs-four-suspended-tab">
+                    <div class="row">
+                                    <div class="col-12">
+                                        <div class="card-tools">
+                                            <div class="input-group input-group-sm" style="width: 500px;">
+                                                <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+                                                <div class="input-group-append float-left">
+                                                <button type="submit" class="btn btn-default">
+                                                    <i class="fas fa-search"></i>
+                                                </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <div class="card-body table-responsive p-0">
+                                        <table class="table table-hover text-nowrap">
+                                        <thead>
+                                            <tr>
+                                            <th>No</th>
+                                            <th>NIK</th>
+                                            <th>Nama Pelapor</th>
+                                            <th>Email</th>
+                                            <th>No. Handphone</th>
+                                            <th>Jenis Kelamin</th>
+                                            <th>Status</th>
+                                            <th style="text-align: center;">Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                    @if(count($users_suspend) > 0)
+                                        @php
+                                            $no = ($users_suspend->currentPage() - 1) * $users_suspend->perPage() + 1;
+                                        @endphp
+                                        @foreach($users_suspend as $u)
+                                            <tr>
+                                            <td>{{ $no++ }}</td>
+                                            <td>{{ $u->nik }}</td>
+                                            <td>{{ $u->name }}</td>
+                                            <td>{{ $u->email }}</td>
+                                            <td>{{ $u->no_hp }}</td>
+                                            <td>{{ $u->jenis_kelamin }}</td>
+                                            @if ($u->verification == 'Y')
+                                            <td><div class=""><span class="badge badge-success">Terverifikasi</span></div></td>
+                                            @elseif($u->verification == 'P')
+                                            <td><div class=""><span class="badge badge-warning">Belum Terverifikasi</span></div></td>
+                                            @elseif($u->verification == 'N')
+                                            <td><div class=""><span class="badge badge-danger">Tidak Terverifikasi</span></div></td>
+                                            @elseif($u->verification == 'S')
+                                            <td><div class=""><span class="badge badge-danger">Suspended</span></div></td>
+                                            @endif
+                    
+                                            <td style="text-align: center;" colspan="2">
+                                                <button type="button" class="btn bg-gradient-info" data-toggle="modal" data-target="#modal-lg__{{ $u->id }}">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <div class="modal fade" id="modal-lg__{{ $u->id }}">
+                                                    <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                        <h4 class="modal-title">Data Pengadu</h4>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <table class="vertical-table">
+                                                                <tr>
+                                                                    <th>NIK</th>
+                                                                    <td>{{ $u->nik }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Nama</th>
+                                                                    <td>{{ $u->name }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Alamat</th>
+                                                                    <td>{{ $u->alamat }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Kecamatan</th>
+                                                                    <td>{{ $u->kecamatan->name }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Kelurahan</th>
+                                                                    <td>{{ $u->kelurahan->name }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Desa</th>
+                                                                    <td>{{ $u->desa->name }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Tempat Lahir</th>
+                                                                    <td>{{ $u->tempat_lahir }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Tanggal Lahir</th>
+                                                                    <td>{{ \Carbon\Carbon::parse($u->tanggal_lahir)->format('d F Y') }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Jenis Kelamin</th>
+                                                                    <td>{{ $u->jenis_kelamin }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Agama</th>
+                                                                    <td>{{ $u->agama }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>No. Handphone</th>
+                                                                    <td>{{ $u->no_hp }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Pekerjaan</th>
+                                                                    <td>{{ $u->pekerjaan }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Golongan Darah</th>
+                                                                    <td>{{ $u->gol_darah }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Status Pernikahan</th>
+                                                                    <td>{{ $u->status_pernikahan }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                <tr>
+                                                                <th>Foto Wajah</th>
+                                                                <td>
+                                                                    @if ($u->foto_wajah)
+                                                                        <img class="profile-user-img" style="height:300px; width:200px;" src="{{ asset('storage/' . $u->foto_wajah) }}" alt="Foto Wajah">
+                                                                    @else
+                                                                        <h5> Tidak Ada Foto </h5>
+                                                                    @endif
+                                                                </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Foto KTP</th>
+                                                                    <td>
+                                                                        @if ($u->foto_ktp)
+                                                                            <img class="profile-user-img" style="height:220px; width:370px;" src="{{ asset('storage/' . $u->foto_ktp) }}" alt="Foto KTP">
+                                                                        @else
+                                                                            <h5> Tidak Ada Foto </h5>
+                                                                        @endif
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                        <div class="modal-footer justify-content-between">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                    <!-- /.modal-content -->
+                                                    </div>
+                                                    <!-- /.modal-dialog -->
+                                                </div>
+                                                <!-- /.modal -->  
+                                                
+                                            </td>
+                                            </tr>
+                                        @endforeach
+                                        @else
+                                        <tr> <td colspan="7" style="text-align: center;">No Data</td> </tr>
+                                        @endif
+                                        </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- Pagination Links -->
+                                        <div class="container col-md-12 float-right mt-2 mb-3">
+                                            {{ $users_suspend->links('vendor.pagination.adminlte_sec') }}
+                                        </div>
+                            </div>
+                    </div>    
+
 @endsection
