@@ -101,7 +101,7 @@
                         <div class="form-group row">
                             <label for="" class="col-sm-2 col-form-label">Lokasi Detail</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" placeholder="Ketik Detail Lokasi.." name="lokasi_kejadian"  style="width: 100%;" required value="{{ old('lokasi_kejadian') }}">
+                                    <input type="text" class="form-control " placeholder="Ketik Detail Lokasi.." name="lokasi_kejadian"  style="width: 100%;" required value="{{ old('lokasi_kejadian') }}">
                                 </div>
                         </div>
                         <!-- <div class="form-group row">
@@ -115,11 +115,11 @@
                         <div class="form-group row">
                             <label for="" class="col-sm-2 col-form-label">Tanggal Kejadian</label>
                             <div class="col-sm-10">
-                                <div class="input-group date" style="width: 30%;" id="reservationdate" data-target-input="nearest">
-                                    <input type="text" class="form-control datetimepicker-input" name="tanggal_kejadian"   required data-target="#reservationdate"/>
-                                    <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
-                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                <div class="input-group" style="width: 30%;">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                                     </div>
+                                    <input type="text" class="form-control" id="tanggal_kejadian" name="tanggal_kejadian" placeholder="Pilih Tanggal" required />
                                 </div>
                             </div>
                         </div>
@@ -235,4 +235,16 @@
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
     </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        flatpickr('#tanggal_kejadian', {
+            dateFormat: 'Y-m-d',  // Format tanggal sesuai kebutuhan Anda
+            maxDate: 'today',      // Batasi tanggal kejadian tidak lebih dari hari ini
+            theme: 'dark' // Ganti dengan tema lain jika diinginkan
+        });
+    });
+</script>
+
+
 @endsection

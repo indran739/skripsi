@@ -123,6 +123,7 @@
                                         <th>No</th>
                                         <th>Isi Laporan</th>
                                         <th>Tanggal Lapor</th>
+                                        <th>Tanggal Terdisposisi</th>
                                         <th>Kategori</th>
                                         <th class="">Status</th>
                                         <th style="text-align: center;">Aksi</th>
@@ -138,6 +139,7 @@
                                         <td>{{ $no++ }}</td>
                                         <td>{{ Str::limit($laporan->isi_laporan, 20) }}</td>
                                         <td>{{ \Carbon\Carbon::parse($laporan->tanggal_lapor)->format('d F Y') }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($laporan->tanggal_disposisi)->format('d F Y') }}</td>
                                         <td>{{ $laporan->category->name }}</td>
                                         
                                         @if ($laporan->status_selesai == 'Y')
@@ -418,10 +420,11 @@
                                             <tr>
                                             <th>No</th>
                                             <th>Isi Laporan</th>
-                                            <th>Tanggal Lapor</th>
                                             <th>Tanggal Tindak</th>
+                                            <th>Tanggal Estimasi Selesai</th>
                                             <th>Kategori</th>
                                             <th class="">Status</th>
+                                            <th>Keterangan</th>
                                             <th style="text-align: center;">Aksi</th>
                                             </tr>
                                         </thead>
@@ -434,8 +437,8 @@
                                             <tr>
                                             <td>{{ $no++ }}</td>
                                             <td>{{ Str::limit($laporan->isi_laporan, 20) }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($laporan->tanggal_lapor)->format('d F Y') }}</td>
                                             <td>{{ \Carbon\Carbon::parse($laporan->tanggal_tindak)->format('d F Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($laporan->tanggal_selesai)->format('d F Y') }}</td>
                                             <td>{{ $laporan->category->name }}</td>
                                             
                                             @if ($laporan->status_selesai == 'Y')
@@ -473,7 +476,15 @@
                                                         @endif
                                                     @endif
                                             @endif
-
+                                            <td>
+                                                @if(\Carbon\Carbon::now() < \Carbon\Carbon::parse($laporan->tanggal_tindak))
+                                                    <div class=""><span class="badge badge-warning text-dark">Menunggu Tindakan</span></div>
+                                                @elseif(\Carbon\Carbon::now() >= \Carbon\Carbon::parse($laporan->tanggal_tindak) && \Carbon\Carbon::now() < \Carbon\Carbon::parse($laporan->tanggal_selesai))
+                                                    <div class=""><span class="badge badge-secondary text-white">Sedang Ditindak</span></div>
+                                                @elseif(\Carbon\Carbon::now() > \Carbon\Carbon::parse($laporan->tanggal_selesai))
+                                                    <div class=""><span class="badge badge-danger text-white">Melewati Tanggal Estimasi</span></div>
+                                                @endif
+                                            </td>
                                             <td style="text-align: center;" colspan="2">
                                                 <button type="button"  class="btn bg-gradient-info mr-2" data-toggle="" data-target="">
                                                     <a href="/detailpengaduanopd/{{ $laporan->id }}" style="text-decoration: none; color:white;"><i class="fas fa-eye"></i></a>

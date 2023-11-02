@@ -754,9 +754,7 @@ public function update_user_admin(Request $request, $id)
     
     $user->save();
 
-    return redirect()->back()->with('updated', 'User updated successfully');
+    return redirect()->back()->with('updated', 'Data berhasil diperbarui');
 }
-
-
 
 }
