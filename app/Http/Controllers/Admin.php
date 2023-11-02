@@ -722,22 +722,20 @@ public function tambah_admin(Request $request)
 
 public function suspend_akun(Request $request, $id_user)
 {
-        $user = User::find($id_user);
-        $user->verification = $request->verification;
-        $user->save();
-        return redirect('/userpengadu')->with('suspended', 'Data berhasil diperbarui');
+    $user = User::find($id_user);
+    $user->verification = $request->verification;
+    $user->save();
+    return redirect('/userpengadu')->with('suspended', 'Data berhasil diperbarui');
 }
 
 public function delete_user($id_user)
 {
-// Temukan item berdasarkan ID
-$user = User::find($id_user);
+    // Temukan item berdasarkan ID
+    $user = User::find($id_user);
 
-// Hapus item
-$user->delete();
+    $user->delete();
 
-// Redirect dengan pesan sukses
-return redirect()->back()->with('hapus', 'Data berhasil dihapus');
+    return redirect()->back()->with('hapus', 'Data berhasil dihapus');
 }
 
 public function update_user_admin(Request $request, $id)

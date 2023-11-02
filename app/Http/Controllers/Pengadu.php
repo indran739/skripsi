@@ -44,18 +44,37 @@ class Pengadu extends Controller
             'opds' => Opd::where('name', '!=', 'pengadu')->where('name', '!=', 'Inspektorat Kabupaten Gunung Mas')->get(['id', 'name']),
         ]);
     }
-    
-    public function search(Request $request)
-    {
-        $searchTerm = $request->input('searchTerm');
-    
-        $results = Pengaduan::where('status_selesai', 'Y')
-            ->where('isi_laporan', 'like', '%' . $searchTerm . '%')
-            ->with('category', 'opd', 'user')
-            ->orderBy('tanggal_lapor', 'desc')
-            ->get();
-        return response()->json(['results' => $results]);
+
+
+public function search(Request $request)
+{
+    $searchTerm = $request->input('searchTerm');
+    $category = $request->input('category'); // Ambil nilai kategori dari request
+    $opd = $request->input('opd');
+
+    $query = Pengaduan::where('status_selesai', 'Y')
+        ->where('isi_laporan', 'like', '%' . $searchTerm . '%');
+
+    // Filter berdasarkan kategori jika kategori dipilih
+    if ($category) {
+        $query->whereHas('category', function ($query) use ($category) {
+            $query->where('id', $category);
+        });
     }
+
+    // Filter berdasarkan kategori jika kategori dipilih
+    if ($opd) {
+        $query->whereHas('opd', function ($query) use ($opd) {
+            $query->where('id', $opd);
+        });
+    }
+
+    $results = $query->with('category', 'opd', 'user')
+                    ->orderBy('tanggal_lapor', 'desc')
+                    ->get();
+
+    return response()->json(['results' => $results]);
+}
 
     public function view_form() {
         return view('pengadu.form_lapor', [
