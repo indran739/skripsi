@@ -50,7 +50,7 @@
           <div class="dropdown-divider"></div>
           @if(auth()->user()->id_opd_fk == '3')
           <a href="/profilepengadu" class="dropdown-item">
-            <i class="fas fa-user mr-2"></i><p class="float-right"> My Profile</p>
+            <i class="fas fa-user mr-2"></i><p class="float-right">Profil Saya</p>
           </a>
           <a href="{{ route('logout') }}" class="dropdown-item">
             <i class="fas fa-power-off mr-2"></i><p class="float-right"> Log Out</p>
