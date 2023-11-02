@@ -115,6 +115,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/search', [Admin::class, 'search']);
         Route::put('suspendedakun/{id_user}', [Admin::class, 'suspend_akun']);
         Route::post('hapususer/{id_user}', [Admin::class, 'delete_user']);
+        Route::post('delete_admin/{id_user}', [Admin::class, 'delete_user']);
+        Route::put('edituseradmin/{id_user}', [Admin::class, 'update_user_admin']);
 
         // Route::get('/admininspektorat/chart', [DashboardController::class, 'index']);
         // Route::get('/admininspektorat/chart-data', [DashboardController::class, 'chartData']);

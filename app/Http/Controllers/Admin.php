@@ -739,4 +739,27 @@ $user->delete();
 // Redirect dengan pesan sukses
 return redirect()->back()->with('hapus', 'Data berhasil dihapus');
 }
+
+public function update_user_admin(Request $request, $id)
+{
+    $user = User::find($id);
+    
+
+    if ($request->has('password')) {
+        $user->password = bcrypt($request->password);
+    }
+    
+    $user->name = $request->name;
+    $user->id_opd_fk = $request->id_opd_fk;
+    $user->alamat = $request->alamat;
+    $user->no_hp = $request->no_hp;
+    $user->email = $request->email;
+    
+    $user->save();
+
+    return redirect()->back()->with('updated', 'User updated successfully');
+}
+
+
+
 }

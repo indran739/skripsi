@@ -8,6 +8,18 @@
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
     @endif
+    @if(Session::has('hapus'))
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <strong>Data berhasil dihapus</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    @endif
+    @if(Session::has('updated'))
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <strong>Data berhasil diedit</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    @endif
     @if(Session::has('error'))
       <div class="alert alert-danger alert-dismissible fade show" role="alert">
           <strong>Data gagal ditambah</strong>
@@ -142,10 +154,7 @@
                                     <thead>
                                         <tr>
                                         <th>No</th>
-                                        <th>NIK</th>
-                                        <th>Admin</th>
                                         <th>OPD</th>
-                                        <th>Alamat</th>
                                         <th>Email</th>
                                         <th>No. Handphone</th>
                                         <th style="text-align: center;">Status</th>
@@ -160,10 +169,7 @@
                                     @foreach($users as $u)
                                         <tr>
                                         <td>{{ $no++ }}</td>
-                                        <td>{{ $u->nik }}</td>
-                                        <td>{{ $u->name }}</td>
                                         <td>{{ $u->opd->name }}</td>
-                                        <td>{{ $u->alamat }}</td>
                                         <td>{{ $u->email }}</td>
                                         <td>{{ $u->no_hp }}</td>
                                         @if ($u->verification == 'Y')
@@ -173,53 +179,174 @@
                                         @elseif($u->verification == 'N')
                                         <td><div class="d-flex justify-content-center"><span class="badge badge-danger">Tidak Terverifikasi</span></div></td>
                                         @endif
-                
                                         <td colspan="2">
-                                        <button type="button"  class="btn bg-gradient-info d-flex justify-content-end float-right" data-toggle="modal" data-target="#modal-view__{{ $u->id }}">
+                                        <div class="d-flex justify-content-center">
+                                        <button type="button"  class="btn bg-gradient-info" data-toggle="modal" data-target="#modal-view__{{ $u->id }}">
                                             <a style="text-decoration: none; color:white;"><i class="fas fa-eye"></i></a>
                                         </button>
-                                        <div class="modal fade" id="modal-view__{{ $u->id }}">
-                                                <div class="modal-dialog modal-default">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                    <h4 class="modal-title">Data Admin OPD</h4>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
+                                            <div class="modal fade" id="modal-view__{{ $u->id }}">
+                                                    <div class="modal-dialog modal-default">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                        <h4 class="modal-title">Data Admin OPD</h4>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                        </div>
+                                                        <div class="modal-body d-flex justify-content-center">
+                                                            <table class="vertical-table">
+                                                                <tr>
+                                                                    <th>NIK</th>
+                                                                    <td>{{ $u->nik }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Nama</th>
+                                                                    <td>{{ $u->name }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Alamat</th>
+                                                                    <td>{{ $u->alamat }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Email</th>
+                                                                    <td>{{ $u->email }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>No. Handphone</th>
+                                                                    <td>{{ $u->no_hp }}</td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                        <div class="modal-footer justify-content-between">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                        </div>
                                                     </div>
-                                                    <div class="modal-body d-flex justify-content-center">
-                                                        <table class="vertical-table">
-                                                            <tr>
-                                                                <th>NIK</th>
-                                                                <td>{{ $u->nik }}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>Nama</th>
-                                                                <td>{{ $u->name }}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>Alamat</th>
-                                                                <td>{{ $u->alamat }}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>Email</th>
-                                                                <td>{{ $u->email }}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>No. Handphone</th>
-                                                                <td>{{ $u->no_hp }}</td>
-                                                            </tr>
-                                                        </table>
+                                                    <!-- /.modal-content -->
                                                     </div>
-                                                    <div class="modal-footer justify-content-between">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                    </div>
+                                                    <!-- /.modal-dialog -->
                                                 </div>
-                                                <!-- /.modal-content -->
+                                                <!-- /.modal -->  
+                                                <button type="button"  class="ml-2 btn bg-gradient-warning" data-toggle="modal" data-target="#modal-edit__{{ $u->id }}">
+                                                    <a style="text-decoration: none; color:black;"><i class="fas fa-edit"></i></a>
+                                                </button>
+                                                <div class="modal fade" id="modal-edit__{{$u->id}}">
+                                                    <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                        <h4 class="modal-title">Edit User</h4>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                    <div class="card">
+                                                        <div class="card-header" style="background-color:#4030A3;">
+                                                            <h7 class="card-title">
+                                                            
+                                                            </h7>
+                                                        </div>
+                                                        <div class="card-body">
+                                                        <form method="post" action="/edituseradmin/{{ $u->id }}" enctype="multipart/form-data" >
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <div class="form-group row">
+                                                                <label for="" class="col-sm-3 col-form-label">NIK</label>
+                                                                <div class="col-sm-9">
+                                                                    <input type="text" class="form-control" disabled placeholder="" style="width: 30%;" name="nik" value="{{$u->id}}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label for="" class="col-sm-3 col-form-label">Nama</label>
+                                                                <div class="col-sm-9">
+                                                                    <input type="text" class="form-control" placeholder="" style="width: 70%;" name="name" value="{{ $u->name }}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label for="" class="col-sm-3 col-form-label">OPD</label>
+                                                                <div class="col-sm-9">
+                                                                    <select class="form-control select2" style="width: 70%;" name="id_opd_fk" required>
+                                                                        <option selected="selected">Pilih OPD</option>
+                                                                        @foreach($opds as $opd)
+                                                                            @if($opd->name != 'pengadu' && $opd->name != 'Inspektorat Kabupaten Gunung Mas')
+                                                                            <option value="{{ $opd->id }}" @if($u->id_opd_fk == $opd->id) selected @endif>
+                                                                                {{ $opd->name }}
+                                                                            </option>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    </select>
+                                                                    @error('id_opd_fk')
+                                                                        <div class="text-danger">{{ $message }}</div>
+                                                                    @enderror
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label for="" class="col-sm-3 col-form-label">Alamat</label>
+                                                                <div class="col-sm-9">
+                                                                    <textarea class="form-control" rows="3" placeholder="" name="alamat" value="" required>{{$u->alamat}} </textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label for="" class="col-sm-3 col-form-label">Email</label>
+                                                                <div class="col-sm-9">
+                                                                    <input type="email" class="form-control" style="width: 40%;" placeholder="" name="email" value="{{$u->email}}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label for="" class="col-sm-3 col-form-label">No. Handphone</label>
+                                                                <div class="col-sm-9">
+                                                                    <input type="text" class="form-control" style="width: 40%;" placeholder="" name="no_hp" value="{{$u->no_hp}}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label for="" class="col-sm-3 col-form-label">Password</label>
+                                                                <div class="col-sm-9">
+                                                                    <input type="password" class="form-control"  style="width: 40%;" name="password" id="exampleInputPassword1" placeholder="*************">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer justify-content-center">
+                                                            <button type="submit" class="btn btn-success mr-4">Submit</button>
+                                                        </div>
+                                                    </form>
+                                                        </div>
+                                                    </div>
+                                                        
+                                                    </div>
+                                                    <!-- /.modal-content -->
+                                                    </div>
+                                                    <!-- /.modal-dialog -->
                                                 </div>
-                                                <!-- /.modal-dialog -->
+                                                <!-- /.modal -->
+                                                <button type="button"  class="ml-2 btn bg-gradient-danger" data-toggle="modal" data-target="#modal-hapus__{{ $u->id }}">
+                                                    <a style="text-decoration: none; color:white;"><i class="fas fa-trash"></i></a>
+                                                </button>
+                                                    <div class="modal fade" id="modal-hapus__{{ $u->id }}">
+                                                            <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                <!-- <h4 class="modal-title">Default Modal</h4> -->
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                <form method="post" action="/delete_admin/{{ $u->id }}">
+                                                                    @csrf
+                                                                    <h5 class="d-flex justify-content-center">Apakah anda yakin menghapus akun ini?</h5>
+                                                                    <input type="hidden" value="S" name="verification">
+                                                                </div>
+                                                                <div class="modal-footer justify-content-center">
+                                                                    <button type="button" class="btn btn-danger mr-5" data-dismiss="modal">Batal</button>
+                                                                    <button type="submit" class="btn btn-primary">Hapus</button>
+                                                                </div>
+                                                                </form>
+                                                            </div>
+                                                            <!-- /.modal-content -->
+                                                            </div>
+                                                            <!-- /.modal-dialog -->
+                                                        </div>
+                                                        <!-- /.modal -->
                                             </div>
-                                            <!-- /.modal -->  
                                         </td>
                                         </tr>
                                     @endforeach
