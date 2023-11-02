@@ -420,7 +420,6 @@ class Admin extends Controller
         return response()->json(['results' => $results]);
     }
 
-    
 
     public function filterLaporanSelesai(Request $request) 
     {

@@ -171,6 +171,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('editpengaduaninvalid/{id_pengaduan}', [Pengadu::class, 'view_edit_pengaduan_invalid']);
         Route::put('editlaporaninvalid/{id_pengaduan}', [Pengadu::class, 'update_pengaduan_invalid']);
         Route::get('/search-pengadu', [Pengadu::class, 'search']);
+        Route::get('/search-laporan-selesai', [Pengadu::class, 'searchLaporanSelesai']);
     });
 
 });

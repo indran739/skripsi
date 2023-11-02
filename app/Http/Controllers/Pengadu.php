@@ -76,6 +76,19 @@ public function search(Request $request)
     return response()->json(['results' => $results]);
 }
 
+public function searchLaporanSelesai(Request $request)
+    {
+        $searchTerm = $request->input('searchTerm');
+    
+        $results = Pengaduan::where('status_selesai', 'Y')
+            ->where('isi_laporan', 'like', '%' . $searchTerm . '%')
+            ->with('category', 'opd')
+            ->orderBy('tanggal_lapor', 'desc')
+            ->where('id_user_fk', auth()->user()->id)
+            ->get();
+        return response()->json(['results' => $results]);
+    }
+
     public function view_form() {
         return view('pengadu.form_lapor', [
             'opds' => Opd::where('name', '!=', 'pengadu')->where('name', '!=', 'Inspektorat Kabupaten Gunung Mas')->get(['id', 'name']),
