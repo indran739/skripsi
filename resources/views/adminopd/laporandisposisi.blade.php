@@ -283,16 +283,36 @@
                                                             <!-- form start -->
                                                       <div class="card-body">
                                                           <input type="hidden" class="form-control" value="{{ $laporan->id }}" name="id" id="exampleInputEmail1">
-                                                              <div class="form-group">
-                                                                  <label class="d-flex justify-content-start" for="exampleInputEmail1">Tanggal Tindak</label>
-                                                                  <input type="date" id="inputField1" name="tanggal_tindak" class="form-control" value="{{ $laporan->tanggal_tindak }}">
-                                                              </div>
-                                                                  <h7 class="d-flex justify-content-start mb-2 text-red" class="text-red">*tanggal yang diinputkan tidak dapat diubah</h7>
-                                                              <div class="form-group mt-3">
-                                                                  <label class="d-flex justify-content-start" for="exampleInputEmail1">Tanggal Estimasi Selesai</label>
-                                                                  <input type="date" id="inputField2" name="tanggal_selesai" class="form-control" value="{{ $laporan->tanggal_selesai }}">
-                                                              </div>
-                                                                <h7 class="d-flex justify-content-start text-red">*tanggal yang diinputkan tidak dapat diubah</h7>
+                                                        <div class="form-group">
+                                                            <label class="d-flex justify-content-start" for="tanggal_tindak">Tanggal Tindak</label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" id="tanggal_tindak" name="tanggal_tindak" placeholder="Pilih Tanggal" required />
+                                                                <div class="input-group-append">
+                                                                    <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                                                                </div>
+                                                            </div>
+                                                            <small class="form-text text-muted d-flex justify-content-start text-red fw-bold">*tanggal yang diinputkan tidak dapat diubah</small>
+                                                        </div>
+
+                                                        <div class="form-group mt-3">
+                                                            <label class="d-flex justify-content-start" for="inputField2">Tanggal Estimasi Selesai</label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" id="tanggal_selesai" name="tanggal_selesai" placeholder="Pilih Tanggal" required />
+                                                                <div class="input-group-append">
+                                                                    <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                                                                </div>
+                                                            </div>
+                                                            <small class="form-text text-muted d-flex justify-content-start text-red fw-bold">*tanggal yang diinputkan dapat diubah</small>
+                                                        </div>
+
+                                                        
+                                                        <div class="form-group mt-3">
+                                                            <label class="d-flex justify-content-start" for="inputField2">Beri Tanggapan</label>
+                                                            <div class="input-group">
+                                                                <textarea class="form-control" rows="4" name="tanggapan" placeholder="Beri tanggapan pengaduan..." required></textarea>
+                                                            </div>
+                                                        </div>
+
                                                       </div>
                                                   </div>
                                                   <div class="modal-footer justify-content-between">
@@ -478,7 +498,7 @@
                                             @endif
                                             <td>
                                                 @if(\Carbon\Carbon::now() < \Carbon\Carbon::parse($laporan->tanggal_tindak))
-                                                    <div class=""><span class="badge badge-warning text-dark">Menunggu Tindakan</span></div>
+                                                    <div class=""><span class="badge badge-warning text-dark">Menunggu Jadwal Ditindak</span></div>
                                                 @elseif(\Carbon\Carbon::now() >= \Carbon\Carbon::parse($laporan->tanggal_tindak) && \Carbon\Carbon::now() < \Carbon\Carbon::parse($laporan->tanggal_selesai))
                                                     <div class=""><span class="badge badge-secondary text-white">Sedang Ditindak</span></div>
                                                 @elseif(\Carbon\Carbon::now() > \Carbon\Carbon::parse($laporan->tanggal_selesai))
@@ -546,5 +566,31 @@
 
         <!-- /.content-header -->
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    var tanggalTindak = flatpickr('#tanggal_tindak', {
+        dateFormat: 'Y-m-d',  // Format tanggal sesuai kebutuhan Anda
+        minDate: 'today',      // Batasi tanggal kejadian tidak lebih awal dari hari ini
+        theme: 'dark',         // Ganti dengan tema lain jika diinginkan
+        onClose: function(selectedDates) {
+            // Mengambil tanggal yang telah dipilih pada input tanggal tindak
+            var selectedTindakDate = selectedDates[0];
 
+            // Aktifkan dan nonaktifkan tanggal selesai berdasarkan tanggal tindak
+            tanggalSelesai.set('disable', [
+                function(date) {
+                    return date < selectedTindakDate; // Gunakan '<' agar tanggal selesai bisa sama dengan tanggal tindak
+                }
+            ]);
+        }
+    });
+
+    var tanggalSelesai = flatpickr('#tanggal_selesai', {
+        dateFormat: 'Y-m-d',  // Format tanggal sesuai kebutuhan Anda
+        minDate: 'today',      // Batasi tanggal kejadian tidak lebih awal dari hari ini
+        theme: 'dark' // Ganti dengan tema lain jika diinginkan
+    });
+});
+
+</script>
 @endsection

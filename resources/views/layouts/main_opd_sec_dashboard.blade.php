@@ -94,6 +94,8 @@
 <script src="{{asset('/')}}plugins/datatables-buttons/js/buttons.html5.min.js"></script>
 <script src="{{asset('/')}}plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="{{asset('/')}}plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<!-- Load flatpickr.js dari AdminLTE 3.1 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.9/flatpickr.min.js"></script>
 <!-- Filterizr-->
 <script src="{{asset('/')}}plugins/filterizr/jquery.filterizr.min.js"></script>
 <!-- Ekko Lightbox -->

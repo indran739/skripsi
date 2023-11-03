@@ -385,7 +385,19 @@ class OpdController extends Controller
         $proses_tindak->tanggal_selesai = $request->tanggal_selesai;
 
         $proses_tindak->save();
-        return redirect('/laporanterdisposisiopd')->with('tindak', 'Data berhasil diperbarui');
+
+        if($request->tanggapan == NULL){
+            return redirect('/laporanterdisposisiopd')->with('tindak', 'Data berhasil diperbarui');
+        }
+        else{
+            $tanggapan = new Tanggapan();
+            $tanggapan->id_user_fk = auth()->user()->id;
+            $tanggapan->id_pengaduan_fk = $id;
+            $tanggapan->tanggapan = $request->tanggapan;
+            $tanggapan->save();
+            return redirect('/laporanterdisposisiopd')->with('tindak', 'Data berhasil diperbarui');
+        }
+
     }
 
     public function validasi(Request $request, $id)
