@@ -185,26 +185,33 @@ $(document).ready(function () {
 $(document).ready(function () {
     $('#opdFilter').on('change', function () {
         var selectedOpd = $(this).val();
-        $.ajax({
-            url: '/search-pengadu', // Ganti dengan URL yang sesuai dengan endpoint pencarian
-            method: 'GET',
-            data: { opd: selectedOpd }, // Kirim data kategori yang dipilih
-            success: function (data) {
-                var results = data.results;
-                var tableBody = $('#bodyRows');
-                tableBody.empty();
 
-                if (results.length > 0) {
-                    $.each(results, function (index, result) {
-                        var formattedDate = result.created_at ? new Date(result.created_at).toLocaleDateString('en-GB', {
-                            day: 'numeric',
-                            month: 'long',
-                            year: 'numeric',
-                            hour: 'numeric',
-                            minute: 'numeric'
-                        }) : '';
+        // Cek apakah nilai dropdown adalah "Pilih OPD"
+        if (selectedOpd === 'Pilih OPD') {
+            // Muat ulang data seperti pada halaman awal
+            window.location.href = '/berandapengadu'; // Ganti dengan URL halaman awal Anda
+        } else {
+            // Lakukan permintaan AJAX untuk mendapatkan data berdasarkan OPD yang dipilih
+            $.ajax({
+                url: '/search-pengadu', // Ganti dengan URL yang sesuai dengan endpoint pencarian
+                method: 'GET',
+                data: { opd: selectedOpd },
+                success: function (data) {
+                    var results = data.results;
+                    var tableBody = $('#bodyRows');
+                    tableBody.empty();
 
-                        var row = '<div class="col-md-10 offset-md-1">' +
+                    if (results.length > 0) {
+                        $.each(results, function (index, result) {
+                            // Bangun struktur HTML untuk setiap hasil
+                            var formattedDate = result.created_at ? new Date(result.created_at).toLocaleDateString('en-GB', {
+                                day: 'numeric',
+                                month: 'long',
+                                year: 'numeric',
+                                hour: 'numeric',
+                                minute: 'numeric'
+                            }) : '';
+                            var row = '<div class="col-md-10 offset-md-1">' +
                             '<div class="list-group">' +
                             '<div class="list-group-item mb-3">' +
                             '<div class="row">' +
@@ -238,53 +245,63 @@ $(document).ready(function () {
                             '</div>';
 
                         tableBody.append(row);
-
-                    });
-                } else {
-                    var noData = `
-                        <div class="col-md-10 offset-md-1">
-                            <div class="list-group-item mb-3">
-                                <div class="row">
-                                    <div class="col text-center">No Data</div>
+                            
+                        });
+                    } else {
+                        var noData = `
+                            <div class="col-md-10 offset-md-1">
+                                <div class="list-group-item mb-3">
+                                    <div class="row">
+                                        <div class="col text-center">No Data</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    `;
-                    tableBody.append(noData);
+                        `;
+                        tableBody.append(noData);
+                    }
+                },
+                error: function (error) {
+                    console.log('Error:', error);
                 }
-            },
-            error: function (error) {
-                console.log('Error:', error);
-            }
-        });
+            });
+        }
     });
 });
+
 </script>
 
 <script>
 $(document).ready(function () {
     $('#categoryFilter').on('change', function () {
         var selectedCategory = $(this).val();
-        $.ajax({
-            url: '/search-pengadu', // Ganti dengan URL yang sesuai dengan endpoint pencarian
-            method: 'GET',
-            data: { category: selectedCategory }, // Kirim data kategori yang dipilih
-            success: function (data) {
-                var results = data.results;
-                var tableBody = $('#bodyRows');
-                tableBody.empty();
 
-                if (results.length > 0) {
-                    $.each(results, function (index, result) {
-                        var formattedDate = result.created_at ? new Date(result.created_at).toLocaleDateString('en-GB', {
-                            day: 'numeric',
-                            month: 'long',
-                            year: 'numeric',
-                            hour: 'numeric',
-                            minute: 'numeric'
-                        }) : '';
+        // Cek apakah nilai dropdown adalah "Pilih OPD"
+        if (selectedCategory === 'Pilih Kategori') {
+            // Muat ulang data seperti pada halaman awal
+            window.location.href = '/berandapengadu'; // Ganti dengan URL halaman awal Anda
+        } else {
+            // Lakukan permintaan AJAX untuk mendapatkan data berdasarkan kategori yang dipilih
+            $.ajax({
+                url: '/search-pengadu', // Ganti dengan URL yang sesuai dengan endpoint pencarian
+                method: 'GET',
+                data: { category: selectedCategory },
+                success: function (data) {
+                    var results = data.results;
+                    var tableBody = $('#bodyRows');
+                    tableBody.empty();
 
-                        var row = '<div class="col-md-10 offset-md-1">' +
+                    if (results.length > 0) {
+                        $.each(results, function (index, result) {
+                            // Bangun struktur HTML untuk setiap hasil
+                            var formattedDate = result.created_at ? new Date(result.created_at).toLocaleDateString('en-GB', {
+                                day: 'numeric',
+                                month: 'long',
+                                year: 'numeric',
+                                hour: 'numeric',
+                                minute: 'numeric'
+                            }) : '';
+
+                            var row = '<div class="col-md-10 offset-md-1">' +
                             '<div class="list-group">' +
                             '<div class="list-group-item mb-3">' +
                             '<div class="row">' +
@@ -318,27 +335,28 @@ $(document).ready(function () {
                             '</div>';
 
                         tableBody.append(row);
-
-                    });
-                } else {
-                    var noData = `
-                        <div class="col-md-10 offset-md-1">
-                            <div class="list-group-item mb-3">
-                                <div class="row">
-                                    <div class="col text-center">No Data</div>
+                        });
+                    } else {
+                        var noData = `
+                            <div class="col-md-10 offset-md-1">
+                                <div class="list-group-item mb-3">
+                                    <div class="row">
+                                        <div class="col text-center">No Data</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    `;
-                    tableBody.append(noData);
+                        `;
+                        tableBody.append(noData);
+                    }
+                },
+                error: function (error) {
+                    console.log('Error:', error);
                 }
-            },
-            error: function (error) {
-                console.log('Error:', error);
-            }
-        });
+            });
+        }
     });
 });
+
 </script>
 
 @endsection
