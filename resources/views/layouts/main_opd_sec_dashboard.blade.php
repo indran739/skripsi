@@ -40,7 +40,7 @@
 <body class="hold-transition sidebar-mini layout-fixed">
       <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center">
-    <img class="animation__shake" src="{{asset('/')}}dist/img/gumas.png" alt="AdminLTELogo" height="130" width="100">>
+    <img class="animation__shake" src="{{asset('/')}}dist/img/gumas.png" alt="AdminLTELogo" height="130" width="100">
   </div>
 <!-- Navbar -->
 @include('partials.panel')

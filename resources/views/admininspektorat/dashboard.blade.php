@@ -91,26 +91,26 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>No.</th>
-                                    <th>Nama OPD</th>
-                                    <th>Total Pengaduan Selesai</th>
-                                    <th>Total <br>Selisih waktu respon <br>(Jam)</th>
-                                    <th>Total <br>Selisih waktu penyelesaian <br>(Jam)</th>
-                                    <th>Rata-rata <br> waktu Penyelesaian <br>(Jam)</th>
-                                    <th>Rata-rata <br> waktu Respon <br> (Jam)</th>
+                                    <th style="text-align: center;">No.</th>
+                                    <th style="text-align: center;">Nama OPD</th>
+                                    <th style="text-align: center;">Total <br>Pengaduan Selesai</th>
+                                    <th style="text-align: center;">Total <br>Selisih waktu respon <br>(Jam)</th>
+                                    <th style="text-align: center;">Total <br>Selisih waktu penyelesaian <br>(Jam)</th>
+                                    <th style="text-align: center;">Rata-rata <br> waktu Penyelesaian <br>(Jam)</th>
+                                    <th style="text-align: center;">Rata-rata <br> waktu Respon <br> (Jam)</th>
                                 </tr>
                             </thead>
                             <tbody id="tableBody">
                                 @php $count = 1 @endphp
                                 @foreach($opdAverages as $index => $opdAverage)
                                 <tr>
-                                    <td>{{ $count++ }}</td>
-                                    <td>{{ $opdAverage['opd_name'] }}</td>
-                                    <td>{{ $opdAverage['count_laporan_selesai']}}</td>
-                                    <td>{{ $opdAverage['respons_duration'] }}</td>
-                                    <td>{{ $opdAverage['completed_duration'] }}</td>
-                                    <td>{{ $opdAverage['average_duration'] }}</td>
-                                    <td>{{ $opdAverage['rataRataWaktuRespon'] }}</td>
+                                    <td style="text-align: center;">{{ $count++ }}</td>
+                                    <td style="text-align: left;">{{ $opdAverage['opd_name'] }}</td>
+                                    <td style="text-align: right;">{{ $opdAverage['count_laporan_selesai']}}</td>
+                                    <td style="text-align: right;">{{ $opdAverage['respons_duration'] }}</td>
+                                    <td style="text-align: right;">{{ $opdAverage['completed_duration'] }}</td>
+                                    <td style="text-align: right;">{{ $opdAverage['average_duration'] }}</td>
+                                    <td style="text-align: right;">{{ $opdAverage['rataRataWaktuRespon'] }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>

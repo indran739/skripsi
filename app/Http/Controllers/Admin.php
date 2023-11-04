@@ -280,7 +280,7 @@ class Admin extends Controller
             ->count();
 
             // Hanya menyimpan data OPD yang memiliki pengaduan
-            if ($countLaporanSelesai > 0 || $countLaporanTindak > 0 || $countLaporanBelum > 0) {
+            if ($countLaporanSelesai > 0 || $countLaporanTindak > 0) {
                 $opdCounts[$opd->name] = [
                     'Selesai' => $countLaporanSelesai,
                     'Tindak Lanjut' => $countLaporanTindak,

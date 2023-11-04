@@ -497,7 +497,7 @@
                                                     @endif
                                             @endif
                                             <td>
-                                                @if(\Carbon\Carbon::now() < \Carbon\Carbon::parse($laporan->tanggal_tindak))
+                                                @if(\Carbon\Carbon::now() <= \Carbon\Carbon::parse($laporan->tanggal_tindak))
                                                     <div class=""><span class="badge badge-warning text-dark">Menunggu Jadwal Ditindak</span></div>
                                                 @elseif(\Carbon\Carbon::now() >= \Carbon\Carbon::parse($laporan->tanggal_tindak) && \Carbon\Carbon::now() < \Carbon\Carbon::parse($laporan->tanggal_selesai))
                                                     <div class=""><span class="badge badge-secondary text-white">Sedang Ditindak</span></div>
