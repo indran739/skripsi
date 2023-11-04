@@ -37,7 +37,7 @@
   <div class="card-body">
     <div class="row">
     @if($laporan->first_image || $laporan->sec_image )
-      <div class="col-5">
+      <div class="col-sm-5">
           <div class="card">
               <div class="card-header text-white" style="background-color:#4030A3;">
                 <div class="card-title">
@@ -118,7 +118,7 @@
     </div>
         
         @else
-        <div class="col-5">
+        <div class="col-sm-5">
           <div class="card">
               <div class="card-header text-white" style="background-color:#4030A3;">
                 <div class="card-title">
@@ -199,7 +199,7 @@
         @endif
               <!-- /.card-body -->
             </div>
-            <div class="col-7">
+            <div class="col-sm-7">
                    <div class="card">
                         <div class="card-header">
                             <div class="card-body">

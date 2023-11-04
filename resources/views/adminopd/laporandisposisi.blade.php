@@ -64,7 +64,7 @@
         </div><!-- /.row -->
 
         <div class="row mt-3 ml-1 mb-3">
-                        <div class="col-8">
+                        <div class="col-sm-8">
                             <form action="{{ url('/cetak-laporan-belumtanggapopd') }}" method="post">
                                 @csrf
                                 <select class="form-control select2"style="width: 20%;" name="rentang" required>
@@ -84,7 +84,7 @@
                                 <button type="submit" class="btn bg-gradient-olive ml-3">Cetak Laporan</button>
                             </form>
                         </div>
-                        <div class="col-4">
+                        <div class="col-sm-4">
                             <div class="input-group input-group-sm" style="width: 450px;">
                                 <input type="text" name="table_search" class="form-control" placeholder="Search">
                                     <div class="input-group-append float-left">

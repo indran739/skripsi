@@ -57,7 +57,7 @@
   <div class="card-body">
     <div class="row">
     @if($laporan->first_image || $laporan->sec_image )
-      <div class="col-5">
+      <div class="col-sm-5">
           <div class="card">
               <div class="card-header text-white" style="background-color:#4030A3;">
                 <div class="card-title">
@@ -162,7 +162,7 @@
                                     </p>
                                     @if($tanggapan->id_user_fk === auth()->user()->id )
                                     <div class="row">
-                                    <div class="col">
+                                    <div class="col-sm">
                                             <div class="d-flex justify-content-end"><a style="color: black;text-decoration: none;" id="" class="ml-3" href="" data-toggle="modal" data-target="#modal-update-tanggapan__{{ $tanggapan->id }}" ><i class="fas fa-edit"></i></a>
                                              <!-- Modal Button Detail Pengaduan -->
                                                 <div class="modal fade" id="modal-update-tanggapan__{{ $tanggapan->id }}">
@@ -236,7 +236,7 @@
     </div>
         
         @else
-        <div class="col-5">
+        <div class="col-sm-5">
           <div class="card">
               <div class="card-header text-white" style="background-color:#4030A3;">
                 <div class="card-title">
@@ -340,7 +340,7 @@
                                     </p>
                                     @if($tanggapan->id_user_fk === auth()->user()->id )
                                     <div class="row">
-                                    <div class="col">
+                                    <div class="col-sm">
                                             <div class="d-flex justify-content-end"><a style="color: black;text-decoration: none;" id="" class="ml-3" href="" data-toggle="modal" data-target="#modal-update-tanggapan__{{ $tanggapan->id }}" ><i class="fas fa-edit"></i></a>
                                              <!-- Modal Button Detail Pengaduan -->
                                                 <div class="modal fade" id="modal-update-tanggapan__{{ $tanggapan->id }}">
@@ -415,7 +415,7 @@
         @endif
               <!-- /.card-body -->
             </div>
-            <div class="col-7">
+            <div class="col-sm-7">
                    <div class="card">
                         <div class="card-header">
                             <div class="card-body">
@@ -541,7 +541,7 @@
                                 @if($laporan->anonim === 'Y')
                                     <dd class="col-sm-7 mb-3"> <span>:</span> - Anonim - </dd>  
                                 @else
-                                    <dd class="col-sm-7 mb-3"> <span>:</span> {{ $laporan->user->alamat}}</dd>
+                                    <dd class="col-sm-7 mb-3"> <span>:</span> {{ $laporan->user->alamat}}, {{$laporan->user->desa->name}}, {{$laporan->user->kecamatan->name}}, 74511</dd>
                                 @endif
                                 <dt class="col-sm-5 mb-3">Email</dt>
                                 @if($laporan->anonim === 'Y')

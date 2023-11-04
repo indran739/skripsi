@@ -2,9 +2,6 @@
 @section('container')
 <div class="container" style="margin-top:230px; margin-bottom:100px;" >
   <div class="row">
-    <!-- <div class="col d-flex align-items-center">
-        <h1 class="text-bold">SISTEM INFORMASI PENGADUAN MASYARAKAT INSPEKTORAT KABUPATEN GUNUNG MAS</h1>
-    </div> -->
     <div class="col d-flex justify-content-center">
         <div class="login-box">
       <!-- /.login-logo -->

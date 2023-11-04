@@ -57,7 +57,7 @@
   <div class="card-body">
     <div class="row">
     @if($laporan->first_image || $laporan->sec_image )
-      <div class="col-5">
+      <div class="col-sm-5">
           <div class="card">
               <div class="card-header text-white" style="background-color:#4030A3;">
                 <div class="card-title">
@@ -162,7 +162,7 @@
                                     </p>
                                     @if($tanggapan->id_user_fk === auth()->user()->id )
                                     <div class="row">
-                                    <div class="col">
+                                    <div class="col-sm">
                                             <div class="d-flex justify-content-end"><a style="color: black;text-decoration: none;" id="" class="ml-3" href="" data-toggle="modal" data-target="#modal-update-tanggapan__{{ $tanggapan->id }}" ><i class="fas fa-edit"></i></a>
                                              <!-- Modal Button Detail Pengaduan -->
                                                 <div class="modal fade" id="modal-update-tanggapan__{{ $tanggapan->id }}">
@@ -236,7 +236,7 @@
     </div>
         
         @else
-        <div class="col-5">
+        <div class="col-sm-5">
           <div class="card">
               <div class="card-header text-white" style="background-color:#4030A3;">
                 <div class="card-title">
@@ -282,7 +282,7 @@
         </div>
                 <div class="card">
                     <div class="card-header text-white" style="background-color:#4030A3;">
-                            <div class="col d-flex justify-content-between">
+                            <div class="col-sm d-flex justify-content-between">
                                 <div class="card-title">
                                     <h5>Tanggapan Admin</h5>
                                 </div>
@@ -340,7 +340,7 @@
                                     </p>
                                     @if($tanggapan->id_user_fk === auth()->user()->id )
                                     <div class="row">
-                                    <div class="col">
+                                    <div class="col-sm">
                                             <div class="d-flex justify-content-end"><a style="color: black;text-decoration: none;" id="" class="ml-3" href="" data-toggle="modal" data-target="#modal-update-tanggapan__{{ $tanggapan->id }}" ><i class="fas fa-edit"></i></a>
                                              <!-- Modal Button Detail Pengaduan -->
                                                 <div class="modal fade" id="modal-update-tanggapan__{{ $tanggapan->id }}">
@@ -415,7 +415,7 @@
         @endif
               <!-- /.card-body -->
             </div>
-            <div class="col-7">
+            <div class="col-sm-7">
                    <div class="card">
                         <div class="card-header">
                             <div class="card-body">

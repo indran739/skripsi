@@ -264,7 +264,7 @@
                                                                     @elseif($u->verification == 'P')
                                                                         <option value="Y">Ya</option>
                                                                         <option value="N">Tidak</option>
-                                                                        <option value="P" selected>Pending</option>
+                                                                        <option value="P" selected>Menunggu</option>
                                                                     @else
                                                                         <option value="Y">Ya</option>
                                                                         <option value="N" selected>Tidak</option>
