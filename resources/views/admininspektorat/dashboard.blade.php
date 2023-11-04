@@ -8,7 +8,7 @@
             <h1 class="m-0">Selamat Datang Admin Inspektorat </h1>
             <div class="row">
               <div class="col-3">
-                <form action="{{ url('/cetak-laporan-kinerja') }}" method="post" target="_blank">
+                <form action="{{ url('/cetak-laporan-kinerja') }}" method="post">
                     @csrf
                       <select id="tahunSelect" style="width:100%;" class="form-control mt-3" name="year">
                         <option selected="selected" style="text-align:center;" value="2023">-- Filter Tahun --</option>

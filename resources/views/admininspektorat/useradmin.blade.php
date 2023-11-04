@@ -252,7 +252,7 @@
                                                             <div class="form-group row">
                                                                 <label for="" class="col-sm-3 col-form-label">NIK</label>
                                                                 <div class="col-sm-9">
-                                                                    <input type="text" class="form-control" disabled placeholder="" style="width: 30%;" name="nik" value="{{$u->id}}">
+                                                                    <input type="text" class="form-control" disabled placeholder="" style="width: 30%;" name="nik" value="{{$u->nik}}">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group row">
