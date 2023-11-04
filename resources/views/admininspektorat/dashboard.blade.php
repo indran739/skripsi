@@ -3,14 +3,19 @@
  <!-- Content Header (Page header) -->
  <div class="content-header">
       <div class="container-fluid">
-        <div class="row mb-2">
+        <div class="row">
           <div class="col-sm-6">
             <h1 class="m-0">Selamat Datang Admin Inspektorat </h1>
-
-              <select id="tahunSelect" style="width:20%;" class="form-control mt-3">
-                  <option selected="selected"> -- Filter Tahun -- </option>
-                  <option value="2022">2022</option>
-              </select>
+            <div class="row">
+              <div class="col-3">
+                <form action="{{ url('/cetak-laporan-kinerja') }}" method="post" target="_blank">
+                    @csrf
+                      <select id="tahunSelect" style="width:100%;" class="form-control mt-3" name="year">
+                        <option selected="selected" style="text-align:center;" value="2023">-- Filter Tahun --</option>
+                        <option value="2022" style="text-align:center;">2022</option>
+                      </select>
+              </div>
+            </div>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -65,7 +70,7 @@
         </div>
         <div class="row">
 
-          <section class="col-lg-12   connectedSortable">
+          <section class="col-lg-12 connectedSortable">
             <div class="card">
                 <div class="card-header" style="background-color:#4030A3;">
                   <h3 class="card-title text-white">Rata-rata waktu kinerja OPD</h3>
@@ -79,11 +84,8 @@
                   </div>
                 </div>
                 <div class="card-body">
-                  <div class="row mb-3">
-                    <div class="col-8">
-                    </div>
-                  </div>
-               
+                        <button type="submit" class="btn bg-gradient-olive mb-3 ">Cetak Laporan Kinerja</button>
+                      </form>
                 <div class="box">
                     <div class="box-body">
                         <table class="table table-bordered">

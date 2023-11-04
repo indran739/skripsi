@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Opd;
 Use Auth;
 use Carbon\Carbon;
+use PDF;
 use App\Models\User;
 use App\Models\Kecamatan;
 use App\Models\Pengaduan;

@@ -98,18 +98,22 @@
     </div>
     <div class="border"></div>
     <div class="title">
-        <h2>Laporan Kinerja OPD</h2>
+    @foreach($opdAverages as $index => $opdAverage)
+        @if($index === 0) <!-- Mengecek apakah saat ini adalah data pertama -->
+            <h2>Laporan Kinerja OPD Tahun {{$opdAverage['selectedYear']}}</h2>
+        @endif
+    @endforeach
     </div>
     <table>
         <thead>
             <tr> 
                 <th style="width: 50px;">No</th>
                 <th style="width: 150px;text-align: center;">Nama OPD</th>
-                <th style="width: 150px;text-align: center;">Total Pengaduan <br>Belum ditindak</th>
-                <th style="width: 150px;text-align: center;">Total Pengaduan <br>Sedang ditindak</th>
                 <th style="width: 150px;text-align: center;">Total Pengaduan <br>Selesai</th>
-                <th style="width: 150px;text-align: center;">Rata-rata waktu penyelesaian <br>(Jam)</th>
+                <th style="width: 150px;text-align: center;">Total <br>Selisih waktu respon <br>(Jam)</th>
+                <th style="width: 150px;text-align: center;">Total <br>Selisih waktu penyelesaian <br>(Jam)</th>
                 <th style="width: 150px;text-align: center;">Rata-rata waktu respon <br>(Jam)</th>
+                <th style="width: 150px;text-align: center;">Rata-rata waktu penyelesaian <br>(Jam)</th>
                 
             </tr>
         </thead>
@@ -120,11 +124,11 @@
             <tr>
                 <td>{{ $count++ }}</td>
                 <td>{{ $opdAverage['opd_name'] }}</td>
-                <td style="text-align: right;">{{ $opdAverage['count_laporan_belum'] }}</td>
-                <td style="text-align: right;">{{ $opdAverage['count_laporan_ditindak'] }}</td>
                 <td style="text-align: right;">{{ $opdAverage['count_laporan_selesai'] }}</td>
-                <td style="text-align: right;">{{ $opdAverage['average_duration'] }}</td>
+                <td style="text-align: right;">{{ $opdAverage['respons_duration'] }}</td>
+                <td style="text-align: right;">{{ $opdAverage['completed_duration'] }}</td>
                 <td style="text-align: right;">{{ $opdAverage['rataRataWaktuRespon'] }}</td>
+                <td style="text-align: right;">{{ $opdAverage['average_duration'] }}</td>
             </tr>
             @endforeach
             @else
@@ -135,3 +139,4 @@
 </body>
 
 </html>
+

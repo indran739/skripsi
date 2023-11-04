@@ -188,14 +188,16 @@ class PDFController extends Controller
         return $pdf->setPaper('a3', 'landscape')->download('Laporan_Pengaduan_Masuk.pdf'); // Nama file PDF yang akan diunduh
     }
 
-    public function cetakLaporanKinerja()
+    public function cetakLaporanKinerja(Request $request)
     {
+        $selectedYear = $request->input('year');
         $opds = OPD::all();
             $opdAverages = [];
 
             foreach ($opds as $opd) {
                 $completedPengaduan = Pengaduan::where('status_selesai', 'Y')
                 ->where('id_opd_fk', $opd->id)
+                ->whereYear('tanggal_lapor', $selectedYear)
                 ->get();
                 
                 $totalDuration = 0;
@@ -209,7 +211,9 @@ class PDFController extends Controller
                 }
                 
                 $pengaduan = Pengaduan::whereNotNull('tanggal_validasi')
+                ->where('status_selesai', 'Y')
                 ->where('id_opd_fk', $opd->id)
+                ->whereYear('tanggal_lapor', $selectedYear)
                 ->get();
 
                 $totalWaktuRespon = 0;
@@ -235,37 +239,28 @@ class PDFController extends Controller
                 $averageDuration = ($completedCount > 0) ? ($totalDuration / $completedCount) : 0;
                 $averageDuration = number_format($averageDuration, 2);
                 
+                $totalDuration = number_format($totalDuration, 1);
+                $totalWaktuRespon = number_format($totalWaktuRespon, 1);
+
                 $count_laporan_selesai = Pengaduan::where('disposisi_opd','Y')
                 ->where('status_selesai','Y')
                 ->where('validasi_laporan','Y')
                 ->where('proses_tindak','Y')
                 ->where('id_opd_fk', $opd->id)
+                ->whereYear('tanggal_lapor', $selectedYear)
                 ->get()
                 ->count();
-
-                $count_laporan_ditindak = Pengaduan::where('disposisi_opd','Y')
-                ->where('status_selesai',NULL)
-                ->where('validasi_laporan','Y')
-                ->where('proses_tindak','Y')
-                ->where('id_opd_fk',$opd->id)
-                ->get()->count();
-
-                $count_laporan_belum = Pengaduan::where('status_selesai',NULL)
-                ->where('id_opd_fk',$opd->id)
-                ->where('proses_tindak','P')
-                ->whereNotNull('validasi_laporan')
-                ->whereNotNull('disposisi_opd')
-                ->get()->count();
 
                 // Hanya simpan data jika rata-rata waktu penyelesaian lebih dari 0
                 if ($averageDuration > 0 && $rataRataWaktuRespon > 0) {
                     $opdAverages[] = [
                         'opd_name' => $opd->name,
+                        'completed_duration' => $totalDuration,
+                        'respons_duration' => $totalWaktuRespon,
                         'average_duration' => $averageDuration,
                         'rataRataWaktuRespon' => $rataRataWaktuRespon,
                         'count_laporan_selesai' => $count_laporan_selesai,
-                        'count_laporan_ditindak' => $count_laporan_ditindak,
-                        'count_laporan_belum' => $count_laporan_belum
+                        'selectedYear' => $selectedYear
                     ];
                 }
             }
@@ -273,6 +268,6 @@ class PDFController extends Controller
         $pdf = PDF::loadView('admininspektorat.template_laporankinerja', compact('opdAverages')); // 'pdf.template' adalah nama view PDF
 
 
-        return $pdf->setPaper('a3', 'landscape')->download('Laporan_Pengaduan_Selesai.pdf'); // Nama file PDF yang akan diunduh
+        return $pdf->setPaper('a3', 'landscape')->download('Laporan_Kinerja_OPD.pdf'); // Nama file PDF yang akan diunduh
     }
 }

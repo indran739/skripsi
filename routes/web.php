@@ -111,7 +111,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('laporanselesai/filter', [Admin::class, 'filterLaporanSelesai'])->name('laporanselesai.filter');
         Route::post('/cetak-pdf', [PDFController::class, 'cetakPDF']);
         Route::post('/cetak-laporan-belumtanggap', [PDFController::class, 'cetakLaporanBelumTanggap']);
-        Route::get('/cetak-laporan-kinerja', [PDFController::class, 'cetakLaporanKinerja']);
+        Route::post('/cetak-laporan-kinerja', [PDFController::class, 'cetakLaporanKinerja']);
         Route::get('/search', [Admin::class, 'search']);
         Route::put('suspendedakun/{id_user}', [Admin::class, 'suspend_akun']);
         Route::post('hapususer/{id_user}', [Admin::class, 'delete_user']);
