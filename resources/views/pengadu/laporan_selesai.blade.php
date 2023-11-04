@@ -15,15 +15,14 @@
         </div><!-- /.row -->
     <!-- /.content-header -->
             <div class="row">
-                <div class="col-12">
+                <div class="col-sm-12">
                     <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Laporan yang sudah selesai ditindak lanjuti</h3>
+                        <h3 class="card-title">Laporan anda yang sudah selesai ditindak lanjuti</h3>
 
                         <div class="card-tools">
                         <div class="input-group input-group-sm" style="width: 500px;">
                             <input type="text" id="searchTerm" class="form-control float-right" placeholder="Search">
-
                             <div class="input-group-append">
                             <button type="submit" class="btn btn-default">
                                 <i class="fas fa-search"></i>
@@ -39,6 +38,7 @@
                             <tr>
                             <th>No</th>
                             <th>Isi Laporan</th>
+                            <th>Tanggal Lapor</th>
                             <th>Tanggal Selesai</th>
                             <th>Kategori</th>
                             <th>OPD Tujuan</th>
@@ -55,6 +55,7 @@
                             <tr>
                             <td>{{ $no++ }}</td>
                             <td>{{ Str::limit($laporan->isi_laporan, 50) }}</td>
+                            <td>{{ \Carbon\Carbon::parse($laporan->tanggal_lapor)->format('d F Y') }}</td>
                             <td>{{ \Carbon\Carbon::parse($laporan->tgl_dinyatakan_selesai)->format('d F Y') }}</td>
                             <td>{{ $laporan->category->name }}</td>
                             <td>{{ $laporan->opd->name }}</td>

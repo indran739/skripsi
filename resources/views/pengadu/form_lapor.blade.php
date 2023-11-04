@@ -56,15 +56,39 @@
                                 </div>
                             </div>
                         <div class="form-group row">
-                            <label for="" class="col-sm-2 col-form-label">Isi Laporan</label>
+                                <label for="" class="col-sm-2 col-form-label">OPD Tujuan</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control select2" style="width: 30%;" name="id_opd_fk" required>
+                                        <option selected="selected">Pilih OPD Tujuan</option>
+                                        @foreach($opds as $opd)
+                                            @if($opd->name != 'pengadu' && $opd->name != 'Inspektorat Kabupaten Gunung Mas')
+                                                <option value="{{ $opd->id }}" {{ old('id_opd_fk') == $opd->id ? 'selected' : '' }}>
+                                                    {{ $opd->name }}
+                                                </option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                    @error('id_opd_fk')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="" class="col-sm-2 col-form-label">Tanggal Kejadian</label>
                             <div class="col-sm-10">
-                                <textarea class="form-control @error('isi_laporan') is-invalid @enderror" rows="3" placeholder="Ketik isi laporan anda..."  style="width: 100%;" name="isi_laporan" value="{{ old('isi_laporan') }}" required></textarea>
-                                @error('isi_laporan')
-                                <div class="invalid-feedback">
-                                    {{ $message }}  
-                                </div> 
-                                @enderror
+                                <div class="input-group" style="width: 30%;">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" id="tanggal_kejadian" name="tanggal_kejadian" placeholder="Pilih Tanggal Kejadian" required />
+                                </div>
                             </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="" class="col-sm-2 col-form-label">Detail Lokasi</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control " placeholder="Ketik detail lokasi.." name="lokasi_kejadian"  style="width: 100%;" required value="{{ old('lokasi_kejadian') }}">
+                                </div>
                         </div>
                         <div class="form-group row">
                             <label for="" class="col-sm-2 col-form-label">Kecamatan</label>
@@ -99,10 +123,15 @@
                                 </div>
                         </div>
                         <div class="form-group row">
-                            <label for="" class="col-sm-2 col-form-label">Lokasi Detail</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control " placeholder="Ketik Detail Lokasi.." name="lokasi_kejadian"  style="width: 100%;" required value="{{ old('lokasi_kejadian') }}">
-                                </div>
+                            <label for="" class="col-sm-2 col-form-label">Isi Laporan</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control @error('isi_laporan') is-invalid @enderror" rows="3" placeholder="Ketik isi laporan anda..."  style="width: 100%; height:138%;" name="isi_laporan" value="{{ old('isi_laporan') }}" required></textarea>
+                                @error('isi_laporan')
+                                <div class="invalid-feedback">
+                                    {{ $message }}  
+                                </div> 
+                                @enderror
+                            </div>
                         </div>
                         <!-- <div class="form-group row">
                             <label for="" class="col-sm-3 col-form-label">Titik MAP</label>
@@ -112,42 +141,13 @@
                                     <div id="map" style="width: 530px; height: 398px;"></div>
                                 </div>
                         </div> -->
-                        <div class="form-group row">
-                            <label for="" class="col-sm-2 col-form-label">Tanggal Kejadian</label>
-                            <div class="col-sm-10">
-                                <div class="input-group" style="width: 30%;">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control" id="tanggal_kejadian" name="tanggal_kejadian" placeholder="Pilih Tanggal" required />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                                <label for="" class="col-sm-2 col-form-label">OPD Tujuan</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control select2" style="width: 30%;" name="id_opd_fk" required>
-                                        <option selected="selected">Pilih OPD Tujuan</option>
-                                        @foreach($opds as $opd)
-                                            @if($opd->name != 'pengadu' && $opd->name != 'Inspektorat Kabupaten Gunung Mas')
-                                                <option value="{{ $opd->id }}" {{ old('id_opd_fk') == $opd->id ? 'selected' : '' }}>
-                                                    {{ $opd->name }}
-                                                </option>
-                                            @endif
-                                        @endforeach
-                                    </select>
-                                    @error('id_opd_fk')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                        </div>
-                            <div class="form-group row">
+                            <div class="form-group row mt-5">
                                 <label for="" class="col-sm-2 col-form-label">Lampiran</label>
                                 <div class="col-sm-10">
                                     <div class="custom-file" style="width: 15%;">
                                         <input type="file" class="custom-file-input" id="customFile" name="lampiran">
                                         <p class="d-flex justify-content-start mb-2 mt-1 text-red fw-bold" style="font-size:14px;">*jika ada (pdf)</p>
-                                        <label class="custom-file-label" for="customFile">Choose File</label>
+                                        <label class="custom-file-label" for="customFile">Pilih File</label>
                                     </div>
                                 </div>
                             </div>
@@ -157,7 +157,7 @@
                                     <div class="custom-file" style="width: 15%;">
                                         <input type="file" class="custom-file-input" id="customFile" name="first_image">
                                         <p class="d-flex justify-content-start mb-2 text-red mt-1 fw-bold" style="font-size:14px;" class="text-red">*jika ada (jpg,png,jpeg)</p>
-                                        <label class="custom-file-label" for="customFile">Choose File</label>
+                                        <label class="custom-file-label" for="customFile">Pilih File</label>
                                     </div>
                                 </div>
                             </div>
@@ -167,7 +167,7 @@
                                     <div class="custom-file" style="width: 15%;">
                                         <input type="file" class="custom-file-input" id="customFile" name="sec_image">
                                         <p class="d-flex justify-content-start mb-2 text-red mt-1 fw-bold" style="font-size:14px;" class="text-red">*jika ada (jpg,png,jpeg)</p>
-                                        <label class="custom-file-label" for="customFile">Choose File</label>
+                                        <label class="custom-file-label" for="customFile">Pilih File</label>
                                     </div>
                                 </div>
                             </div>

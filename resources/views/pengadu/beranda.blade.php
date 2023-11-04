@@ -63,17 +63,24 @@
                                 </div>
                                 <div class="col px-4">
                                     <div>
-                                        <div class="float-right">{{ \Carbon\Carbon::parse($laporan->created_at)->format('d F Y, H:i') }}</div>
-                                        @if($laporan->anonim === 'Y' && $laporan->id_user_fk !== auth()->user()->id)
-                                        <h3>Nama Pelapor : Anonim </h3>
-                                        @else
-                                        <h3>Nama Pelapor : {{ $laporan->user->name }}</h3>
-                                        @endif
-                                        <p class="mb-2 fw-bold">Kategori : {{ $laporan->category->name }} </p>
-                                        <p class="mb-2 fw-bold">Lokasi Kejadian : {{ $laporan->lokasi_kejadian }}</p>
-                                        <p class="mb-2 fw-bold">OPD Tujuan : {{ $laporan->opd->name }}</p>
-                                        <p class="mb-0 fw-bold">Isi Laporan : {{ Str::limit($laporan->isi_laporan, 50) }}</p>
-                                        <button type="button"  class="btn bg-gradient-info mr-2 mt-2" data-toggle="" data-target="">
+                                        <!-- <div class="float-right">{{ \Carbon\Carbon::parse($laporan->created_at)->format('d F Y, H:i') }}</div> -->
+                                        <dl class="row">
+                                            <dt class="col-sm-2 mb-1 pl-0">Kategori</dt>
+                                            <dd class="col-sm-10 mb-1"><span>:</span> {{ $laporan->category->name }}</dd>
+                                            
+                                            <dt class="col-sm-2 mb-1 pl-0">OPD Tujuan</dt>
+                                            <dd class="col-sm-10 mb-1"><span>:</span> {{ $laporan->opd->name }}</dd>
+                                                                                        
+                                            <dt class="col-sm-2 pl-0">Detail Lokasi</dt>
+                                            <dd class="col-sm-10"><span>:</span> {{ $laporan->lokasi_kejadian }}</dd>
+
+                                            <dt class="col-sm-2 mb-1 pl-0">Tanggal Lapor</dt>
+                                            <dd class="col-sm-10 mb-1"><span>:</span> {{ \Carbon\Carbon::parse($laporan->tanggal_lapor)->format('d F Y, H:i') }}</dd>
+                                            
+                                            <dt class="col-sm-2 pl-0">Isi Laporan</dt>
+                                            <dd class="col-sm-10"><span>:</span> {{ $laporan->isi_laporan }}</dd>
+                                        </dl>
+                                        <button type="button"  class="btn bg-gradient-info mr-2" data-toggle="" data-target="">
                                             <i class="fas fa-eye"></i> <a href="/detailpengaduan/{{ $laporan->id }}" style="text-decoration: none; color:white;">Detail</a>
                                         </button>
                                     </div>
