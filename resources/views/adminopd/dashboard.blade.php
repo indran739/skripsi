@@ -7,8 +7,8 @@
                 <div class="col-sm-6">
                     <h1 class="m-0">Selamat Datang Admin {{ $opd->name }}</h1>
                     <select id="tahunSelect" style="width:20%;" class="form-control mt-3">
-                        <option selected="selected"> -- Filter Tahun -- </option>
-                        <option value="2022">2022</option>
+                        <option selected="selected" style="text-align:center;"> -- Filter Tahun -- </option>
+                        <option value="2022" style="text-align:center;">2022</option>
                     </select>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
@@ -53,15 +53,14 @@
         <div class="row">
             <!-- Left col -->
 
-            <section class="col-lg-6 connectedSortable">
+            <section class="col-lg-12 connectedSortable">
                 <div class="card card-info">
                     <div class="card-header" style="background-color:#4030A3;">
                         <h3 class="card-title text-white">Jumlah Pengaduan Selesai per Bulan</h3>
                     </div>
                     <div class="card-body">
                         <div class="chart">
-                            <canvas id="pengaduanChart"
-                                style="min-height: 150px; max-height: 700px; min-width: 500px; max-width: 1400px;"></canvas>
+                            <canvas id="pengaduanChart" style="min-height: 150px; max-height: 700px; min-width: 500px; max-width: 2000px;"></canvas>
                         </div>
                     </div>
                 </div>

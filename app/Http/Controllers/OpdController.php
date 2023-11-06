@@ -41,22 +41,27 @@ class OpdController extends Controller
 
 //<--------------------------------------------------Grafik Line-------------------------------------------------------------------------->//
 
-        // Mengambil data pengaduan yang memiliki status selesai
-        $pengaduanSelesai = Pengaduan::where('status_selesai', 'Y')->whereYear('tanggal_lapor', Carbon::now()->year)->where('id_opd_fk',$idOpd)->get();
+// Mengambil data pengaduan yang memiliki status selesai
+$pengaduanSelesai = Pengaduan::where('status_selesai', 'Y')
+    ->whereYear('tgl_dinyatakan_selesai', $selectedYear)
+    ->where('id_opd_fk', $idOpd)
+    ->get();
 
-        // Mengelompokkan pengaduan berdasarkan bulan
-        $pengaduanPerBulan = $pengaduanSelesai->groupBy(function ($pengaduanSelesai) {
-            return $pengaduanSelesai->updated_at->format('F Y');
-        });
+// Mengelompokkan pengaduan berdasarkan bulan
+$pengaduanPerBulan = $pengaduanSelesai->groupBy(function ($pengaduanSelesai) {
+    return Carbon::parse($pengaduanSelesai->tgl_dinyatakan_selesai)->format('F Y');
+});
 
-        // Menghitung jumlah pengaduan selesai per bulan
-        $jumlahPengaduanPerBulan = $pengaduanPerBulan->map(function ($group) {
-            return $group->count();
-        });
+// Menghitung jumlah pengaduan selesai per bulan
+$jumlahPengaduanPerBulan = $pengaduanPerBulan->map(function ($group) {
+    return $group->count();
+});
 
-        // Mengumpulkan data bulan dan jumlah pengaduan per bulan
-        $labels = $jumlahPengaduanPerBulan->keys();
-        $data = $jumlahPengaduanPerBulan->values();
+// Mengumpulkan data bulan dan jumlah pengaduan per bulan
+$labels = $jumlahPengaduanPerBulan->keys();
+$data = $jumlahPengaduanPerBulan->values();
+
+
 //<--------------------------------------------------End Grafik Line-------------------------------------------------------------------------->//
 
 //<--------------------------------------------------Rata-rata Waktu----------------------------------------------------------------------------->//
@@ -236,6 +241,39 @@ class OpdController extends Controller
                 ];
 
         return response()->json($opdCounts);
+    }
+
+    public function chartPengaduanLine(Request $request)
+    {
+        $idOpd = Auth::user()->id_opd_fk;
+    
+        $selectedYear = $request->input('year', Carbon::now()->year);
+    
+        // Mengambil data pengaduan yang memiliki status selesai
+        $pengaduanSelesai = Pengaduan::where('status_selesai', 'Y')
+            ->whereYear('tgl_dinyatakan_selesai', $selectedYear)
+            ->where('id_opd_fk', $idOpd)
+            ->get();
+    
+        // Mengelompokkan pengaduan berdasarkan bulan
+        $pengaduanPerBulan = $pengaduanSelesai->groupBy(function ($pengaduanSelesai) {
+            return Carbon::parse($pengaduanSelesai->tgl_dinyatakan_selesai)->format('F Y');
+        });
+    
+        // Menghitung jumlah pengaduan selesai per bulan
+        $jumlahPengaduanPerBulan = $pengaduanPerBulan->map(function ($group) {
+            return $group->count();
+        });
+    
+        // Mengumpulkan data bulan dan jumlah pengaduan per bulan
+        $labels = $jumlahPengaduanPerBulan->keys()->toArray(); // Mengonversi koleksi ke array
+        $data = $jumlahPengaduanPerBulan->values()->toArray(); // Mengonversi koleksi ke array
+    
+        // Mengembalikan data dalam format JSON
+        return response()->json([
+            'labels' => $labels,
+            'data' => $data
+        ]);
     }
 
     public function view_laporan_terdisposisi() {

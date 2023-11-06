@@ -430,7 +430,7 @@
                                     <dd class="col-sm-7 mb-3"> <span>:</span> {{ $laporan->kelurahan->name }}</dd>
                                     <dt class="col-sm-5 mb-3">Desa</dt>
                                     <dd class="col-sm-7 mb-3"> <span>:</span> {{ $laporan->desa->name }}</dd>
-                                    <dt class="col-sm-5 mb-3">Lokasi Detail</dt>
+                                    <dt class="col-sm-5 mb-3">Detail Lokasi</dt>
                                     <dd class="col-sm-7 mb-3"> <span>:</span> {{ $laporan->lokasi_kejadian }}</dd>
                                     <dt class="col-sm-5 mb-3">OPD Tujuan</dt>
                                     <dd class="col-sm-7 mb-3"> <span>:</span> {{ $laporan->opd->name }}</dd>
@@ -541,7 +541,7 @@
                                 @if($laporan->anonim === 'Y')
                                     <dd class="col-sm-7 mb-3"> <span>:</span> - Anonim - </dd>  
                                 @else
-                                    <dd class="col-sm-7 mb-3"> <span>:</span> {{ $laporan->user->alamat}}</dd>
+                                    <dd class="col-sm-7 mb-3"> <span>:</span> {{ $laporan->user->alamat}}, {{$laporan->user->desa->name}}, {{$laporan->user->kecamatan->name}}, 74511</dd>
                                 @endif
                                 <dt class="col-sm-5 mb-3">Email</dt>
                                 @if($laporan->anonim === 'Y')

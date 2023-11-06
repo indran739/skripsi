@@ -89,7 +89,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('admininspektorat/chart-opd', [Admin::class, 'chartPengaduanOpd']);
         Route::get('admininspektorat/get-opd-averages', [Admin::class, 'getOpdAverages']);
 
-
         Route::get('laporanmasuk', [Admin::class, 'view_laporan_masuk']);
         Route::get('laporanterdisposisi', [Admin::class, 'view_laporan_terdisposisi']);
         Route::get('laporanselesai', [Admin::class, 'view_laporan_selesai']);
@@ -131,7 +130,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('adminopd', [OpdController::class, 'index']);
         Route::get('adminopd/chart-data', [OpdController::class, 'chartPengaduanCategories']);
         Route::get('adminopd/chart-opd', [OpdController::class, 'chartPengaduanOpd']);
-
+        Route::get('adminopd/chart-opd-line', [OpdController::class, 'chartPengaduanLine']);
         Route::get('/laporanterdisposisiopd', [OpdController::class, 'view_laporan_terdisposisi']);
         Route::get('laporanselesaiopd', [OpdController::class, 'view_laporan_selesai']);
         Route::get('userpengaduopd', [OpdController::class, 'view_user_pengadu']);

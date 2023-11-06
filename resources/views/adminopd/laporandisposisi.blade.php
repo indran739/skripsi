@@ -291,7 +291,7 @@
                                                                     <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                                                                 </div>
                                                             </div>
-                                                            <small class="form-text text-muted d-flex justify-content-start text-red fw-bold">*tanggal yang diinputkan tidak dapat diubah</small>
+                                                            <small class="form-text text-muted d-flex justify-content-start text-red fw-bold">*tanggal yang sudah ditetapkan tidak dapat diubah</small>
                                                         </div>
 
                                                         <div class="form-group mt-3">
@@ -302,7 +302,7 @@
                                                                     <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                                                                 </div>
                                                             </div>
-                                                            <small class="form-text text-muted d-flex justify-content-start text-red fw-bold">*tanggal yang diinputkan dapat diubah</small>
+                                                            <small class="form-text text-muted d-flex justify-content-start text-red fw-bold">*tanggal yang sudah ditetapkan tidak dapat diubah</small>
                                                         </div>
 
                                                         

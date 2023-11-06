@@ -317,48 +317,73 @@ function fetchDataAndUpdateOPDChart() {
 </script> -->
 
 <script>
-    var labels = @json($labels);
-    var data = @json($data);
+document.addEventListener('DOMContentLoaded', function() {
+    var selectedYear = new Date().getFullYear(); // Tahun saat ini
+    fetchDataAndUpdateChart(selectedYear);
 
-    var lineChartCanvas = document.getElementById('pengaduanChart').getContext('2d');
-    var lineChartOptions = $.extend(true, {}, lineChartOptions);
-    lineChartOptions.scales = {
-        x: {
-            ticks: {
-                // reverse: false,
-                align: 'start'
-            },
-            grid: {
-                display: false
-            }
-            
-        },
-        y: {
-            grid: {
-                display: false
-            }
-            
+    var tahunSelect = document.getElementById('tahunSelect');
+    tahunSelect.addEventListener('change', function () {
+        var selectedYear = tahunSelect.value;
+
+        if (selectedYear === "-- Filter Tahun --") {
+            selectedYear = new Date().getFullYear().toString();
         }
-    };
-    var lineChartData = {
-        labels: labels,
-        datasets: [
-            {
-                label: 'Jumlah Pengaduan Selesai',
-                data: data,
-                borderColor: 'green',
-                fill: false
-            }
-        ]
-    };
-    lineChartData.datasets[0].fill = false;
-    lineChartOptions.datasetFill = false;
 
-    var lineChart = new Chart(lineChartCanvas, {
-        type: 'line',
-        data: lineChartData,
-        options: lineChartOptions
+        fetchDataAndUpdateChart(selectedYear);
     });
+
+    function fetchDataAndUpdateChart(selectedYear) {
+        // Kirim permintaan AJAX ke server dengan parameter tahun terpilih
+        $.ajax({
+            url: '/adminopd/chart-opd-line',
+            type: 'GET',
+            data: { year: selectedYear },
+            success: function (response) {
+                // Perbarui data labels dan data pengaduan dengan respons dari server
+                var labels = response.labels;
+                var data = response.data;
+
+                // Hancurkan grafik sebelumnya jika ada
+                var lineChartCanvas = document.getElementById('pengaduanChart').getContext('2d');
+                var lineChartOptions = {
+                    scales: {
+                        x: {
+                            ticks: {
+                                align: 'start'
+                            },
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                };
+
+                var lineChart = new Chart(lineChartCanvas, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Jumlah Pengaduan Selesai',
+                            data: data,
+                            borderColor: 'green',
+                            fill: false
+                        }]
+                    },
+                    options: lineChartOptions
+                });
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
+});
+
 </script>
 
 </body>

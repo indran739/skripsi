@@ -77,10 +77,10 @@
                             <label for="" class="col-sm-2 col-form-label">Tanggal Kejadian</label>
                             <div class="col-sm-10">
                                 <div class="input-group" style="width: 30%;">
+                                    <input type="text" class="form-control" id="tanggal_kejadian" name="tanggal_kejadian" placeholder="Pilih Tanggal Kejadian" required />
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                                     </div>
-                                    <input type="text" class="form-control" id="tanggal_kejadian" name="tanggal_kejadian" placeholder="Pilih Tanggal Kejadian" required />
                                 </div>
                             </div>
                         </div>
