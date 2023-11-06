@@ -96,8 +96,8 @@
                                     <th style="text-align: center;">Total <br>Pengaduan Selesai</th>
                                     <th style="text-align: center;">Total <br>Selisih waktu respon <br>(Jam)</th>
                                     <th style="text-align: center;">Total <br>Selisih waktu penyelesaian <br>(Jam)</th>
-                                    <th style="text-align: center;">Rata-rata <br> waktu Penyelesaian <br>(Jam)</th>
                                     <th style="text-align: center;">Rata-rata <br> waktu Respon <br> (Jam)</th>
+                                    <th style="text-align: center;">Rata-rata <br> waktu Penyelesaian <br>(Jam)</th>
                                 </tr>
                             </thead>
                             <tbody id="tableBody">
@@ -109,8 +109,8 @@
                                     <td style="text-align: right;">{{ $opdAverage['count_laporan_selesai']}}</td>
                                     <td style="text-align: right;">{{ $opdAverage['respons_duration'] }}</td>
                                     <td style="text-align: right;">{{ $opdAverage['completed_duration'] }}</td>
-                                    <td style="text-align: right;">{{ $opdAverage['average_duration'] }}</td>
                                     <td style="text-align: right;">{{ $opdAverage['rataRataWaktuRespon'] }}</td>
+                                    <td style="text-align: right;">{{ $opdAverage['average_duration'] }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
