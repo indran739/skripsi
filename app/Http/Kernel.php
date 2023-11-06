@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'adminopd' => \App\Http\Middleware\AdminOpdMiddleware::class,
         'pengadu' => \App\Http\Middleware\PengaduMiddleware::class,
         'verification' => \App\Http\Middleware\VerificationMiddleware::class,
+        'check-ownership' => \App\Http\Middleware\CheckLaporanOwnership::class,
     ];
 }

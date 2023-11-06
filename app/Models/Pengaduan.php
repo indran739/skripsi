@@ -22,7 +22,7 @@ class Pengaduan extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user_fk'); 
+    return $this->belongsTo(User::class, 'id_user_fk'); 
     }
 
     public function tanggapan()

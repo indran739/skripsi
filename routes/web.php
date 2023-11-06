@@ -146,6 +146,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/cetak-laporan-belumtanggapopd', [PDFController::class, 'cetakLaporanBelumTanggapOpd']);
         Route::post('/cetak-laporan-selesai-opd', [PDFController::class, 'cetakLaporanSelesaiOpd']);
         Route::get('/searchopd', [OpdController::class, 'searchOpd']);
+        Route::put('/editkategorilaporan/{id_pengaduan}', [OpdController::class, 'updatekategorilaporanselesai']);
     });
 
     Route::middleware(['pengadu'])->group(function () {
@@ -165,15 +166,17 @@ Route::middleware(['auth'])->group(function () {
         Route::put('editprofile/{id_user}', [Pengadu::class, 'editprofile']);
         Route::post('store', [Pengadu::class, 'store_pengaduan']);
         Route::post('search', [Pengadu::class, 'search']);
-        Route::get('editpengaduan/{id_pengaduan}', [Pengadu::class, 'view_edit_pengaduan']);
+        Route::get('editpengaduan/{id_pengaduan}', [Pengadu::class, 'view_edit_pengaduan'])->middleware('check-ownership');
         Route::put('editlaporan/{id_pengaduan}', [Pengadu::class, 'update_pengaduan']);
-        Route::get('editpengaduaninvalid/{id_pengaduan}', [Pengadu::class, 'view_edit_pengaduan_invalid']);
+        Route::get('editpengaduaninvalid/{id_pengaduan}', [Pengadu::class, 'view_edit_pengaduan_invalid'])->middleware('check-ownership');
         Route::put('editlaporaninvalid/{id_pengaduan}', [Pengadu::class, 'update_pengaduan_invalid']);
         Route::get('/search-pengadu', [Pengadu::class, 'search']);
         Route::get('/search-laporan-selesai', [Pengadu::class, 'searchLaporanSelesai']);
     });
 
 });
+
+
 
 // Route::put('disposisi/{id_pengaduan}', [Admin::class, 'disposisi']);
 

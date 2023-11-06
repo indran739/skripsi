@@ -342,6 +342,7 @@ $data = $jumlahPengaduanPerBulan->values();
             'laporans' => $pengaduans,
             'active' => 'selesai',
             'categories' => $kategorisSelesai,
+            'kategori' => Category::all(),
             'opds' => Opd::where('name', '!=', 'pengadu')->where('name', '!=', 'Inspektorat Kabupaten Gunung Mas')->get(['id', 'name']),
         ]);
     }
@@ -573,5 +574,14 @@ $data = $jumlahPengaduanPerBulan->values();
 
     // Redirect dengan pesan sukses
     return redirect()->back()->with('deletetanggapans', 'Data berhasil dihapus');
+}
+
+public function updatekategorilaporanselesai(Request $request, $id)
+{
+    $laporan = Pengaduan::findOrFail($id);
+    $laporan->id_category_fk = $request->id_category_fk;
+    $laporan->save();
+
+    return redirect()->back()->with('updatedcategories', 'Data berhasil disimpan');
 }
 }

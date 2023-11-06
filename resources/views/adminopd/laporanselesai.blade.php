@@ -8,6 +8,12 @@
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
       @endif
+      @if(Session::has('updatedcategories'))
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <strong>Data Laporan berhasil diedit</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      @endif
         <div class="row mb-2">
           <div class="col-sm-6 mb-3">
             <h1 class="m-0">Laporan Selesai</h1>
@@ -116,6 +122,43 @@
                                 <button type="button"  class="btn bg-gradient-info" data-toggle="" data-target="">
                                     <a href="/detailpengaduanopd/{{ $laporan->id }}" style="text-decoration: none; color:white;"><i class="fas fa-eye"></i></a>
                                 </button>
+                                <button type="button"  class="ml-2 btn bg-gradient-warning" data-toggle="modal" data-target="#modal-edit-kategori__{{ $laporan->id }}">
+                                    <a style="text-decoration: none; color:black;"><i class="fas fa-edit"></i></a>
+                                </button>
+                                    <div class="modal fade" id="modal-edit-kategori__{{ $laporan->id }}">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Edit Kategori</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h6 class="fw-bold">Pilihlah Kategori yang sesuai untuk laporan pengaduan</h5>
+                                        <form method="post" action="/editkategorilaporan/{{ $laporan->id }}">
+                                            @csrf
+                                            @method('put')
+                                            <select class="form-control select2" style="width: 100%;" name="id_category_fk" required>
+                                                <option selected="selected">Pilih Kategori Pengaduan</option>
+                                                @foreach($kategori as $category)
+                                                    <option value="{{ $category->id }}"  @if($laporan->id_category_fk == $category->id) selected @endif>
+                                                        {{ $category->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                            <div class="modal-footer justify-content-center">
+                                                <button type="submit" class="btn btn-success">Simpan</button> 
+                                                <a href="" data-dismiss="modal" class="btn btn-danger">Batal</a>
+                                            </div>
+                                        </form>
+                                        </div>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                    </div>
+                                    <!-- /.modal -->
                             </td>
                             </tr>
                         @endforeach

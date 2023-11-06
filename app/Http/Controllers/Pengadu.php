@@ -16,10 +16,18 @@ use App\Models\Tanggapan_Admins;
 use Illuminate\Support\Facades\Storage; // Import namespace Storage
 use Auth;
 use Carbon\Carbon;
+use App\Policies\LaporanPolicy;
 
 
 class Pengadu extends Controller
 {
+
+    public function __construct()
+{
+    $this->middleware('check-ownership')->only('view_edit_pengaduan');
+}
+
+
     public function halaman_pending() {
         $iduser = Auth::user()->id;
         $tanggapan = Tanggapan_Admins::where('id_user_fk',$iduser)->get();
@@ -360,7 +368,7 @@ public function store_pengaduan(Request $request)
     public function view_edit_pengaduan($id_pengaduan) {
 
         $laporans = Pengaduan::findOrFail($id_pengaduan);
-
+        
         return view('pengadu.edit_laporan', [
             'active' => 'beranda',
             'categories' => Category::all(),
@@ -419,7 +427,7 @@ public function store_pengaduan(Request $request)
         $laporan->lokasi_kejadian = $request->lokasi_kejadian;
         $laporan->latitude = $request->latitude;
         $laporan->longitude = $request->longitude;
-        $laporan->tanggal_kejadian = \Carbon\Carbon::createFromFormat('d/m/Y', $request->tanggal_kejadian)->format('Y-m-d');
+        $laporan->tanggal_kejadian = date("Y-m-d", strtotime($request->input('tanggal_kejadian')));
         $laporan->anonim = $request->has('anonim') ? 'Y' : 'N';
 
         if ($laporan->disposisi_opd == 'N' && $laporan->id_opd_fk == $request->id_opd_fk) {
@@ -506,7 +514,7 @@ public function update_pengaduan_invalid(Request $request, $id_pengaduan)
     $laporan->lokasi_kejadian = $request->lokasi_kejadian;
     $laporan->latitude = $request->latitude;
     $laporan->longitude = $request->longitude;
-    $laporan->tanggal_kejadian = \Carbon\Carbon::createFromFormat('d/m/Y', $request->tanggal_kejadian)->format('Y-m-d');
+    $laporan->tanggal_kejadian = date("Y-m-d", strtotime($request->input('tanggal_kejadian')));
     $laporan->anonim = $request->has('anonim') ? 'Y' : 'N';
 
 
