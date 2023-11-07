@@ -121,7 +121,7 @@
                 <td>{{ $count++ }}</td>
                 <td>{{ $d->user->nik }}</td>
                 <td style="width: 150px;">{{ $d->user->name }}</td>
-                <td style="width: 150px;">{{ \Carbon\Carbon::parse($d->created_at)->format('d F Y') }}</td>
+                <td style="width: 150px;">{{ \Carbon\Carbon::parse($d->tanggal_lapor)->format('d F Y') }}</td>
                 <td>{{ $d->category->name }}</td>
                 <td style="width: 150px;">{{ $d->opd->name }}</td>
                 <td>{{ $d->isi_laporan }}</td>

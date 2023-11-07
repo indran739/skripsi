@@ -20,13 +20,23 @@ class PDFController extends Controller
     {
 
         $rentang = $request->input('rentang'); // Mendapatkan nilai rentang waktu dari formulir
-
+        
+        $selectedYear = $rentang;
         // Menghitung tanggal awal berdasarkan rentang waktu yang dipilih
         $tanggalAwal = now()->subMonths($rentang);
 
-        $data = Pengaduan::where('status_selesai','Y')
-        ->where('created_at', '>=', $tanggalAwal)
-        ->get();
+        if($rentang == '2022')
+        {
+            $data = Pengaduan::where('status_selesai','Y')
+            ->whereYear('tanggal_lapor', $selectedYear)
+            ->get(); 
+        }
+        else{
+            $data = Pengaduan::where('status_selesai','Y')
+            ->where('created_at', '>=', $tanggalAwal)
+            ->get();
+        }
+        
 
         $pdf = PDF::loadView('pdf', compact('data')); // 'pdf.template' adalah nama view PDF
 
@@ -42,10 +52,21 @@ class PDFController extends Controller
         // Menghitung tanggal awal berdasarkan rentang waktu yang dipilih
         $tanggalAwal = now()->subMonths($rentang);
 
-        $data = Pengaduan::where('status_selesai','Y')
-        ->where('id_opd_fk',auth()->user()->id_opd_fk)
-        ->where('created_at', '>=', $tanggalAwal)
-        ->get();
+        $selectedYear = $rentang;
+
+        if($rentang == '2022')
+        {
+            $data = Pengaduan::where('status_selesai','Y')
+            ->where('id_opd_fk',auth()->user()->id_opd_fk)
+            ->whereYear('tanggal_lapor', $selectedYear)
+            ->get(); 
+        }
+        else{
+            $data = Pengaduan::where('status_selesai','Y')
+            ->where('id_opd_fk',auth()->user()->id_opd_fk)
+            ->where('created_at', '>=', $tanggalAwal)
+            ->get();
+        }
 
         $pdf = PDF::loadView('adminopd.tempalate_laporanselesai', compact('data')); // 'pdf.template' adalah nama view PDF
 

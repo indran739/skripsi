@@ -50,13 +50,15 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-8">
-                                <form action="{{ url('/cetak-laporan-selesai-opd') }}" method="post" target="_blank">
+                                <form action="{{ url('/cetak-laporan-selesai-opd') }}" method="post">
                                     @csrf
                                     <select class="form-control select2" style="width: 20%;" name="rentang" required>
                                         <option selected="selected" value="">Pilih Rentang</option>
                                         <option value="1">1 Bulan Terakhir</option>
                                         <option value="3">3 Bulan Terakhir</option>
                                         <option value="6">6 Bulan Terakhir</option>
+                                        <option value="12">1 Tahun Terakhir</option>
+                                        <option value="2022">Tahun 2022</option>
                                     </select>
                                     <button type="submit" class="btn bg-gradient-olive ml-3">Cetak Laporan</button>
                                 </form>

@@ -142,7 +142,7 @@
                         <div class="col-sm-10">
                             <div class="custom-file" style="width: 15%;">
                                 <input type="file" class="custom-file-input" id="customFile" name="lampiran">
-                                <p class="d-flex justify-content-start mb-2 mt-1 text-red fw-bold" style="font-size:14px;">*jika ada (pdf)</p>
+                                <p class="d-flex justify-content-start mb-2 mt-1 text-red fw-bold" style="font-size:14px;">*opsional (pdf)</p>
                                 <label class="custom-file-label" for="customFile">{{ pathinfo($laporan->lampiran, PATHINFO_BASENAME) }}</label>
                             </div>
                         </div>
@@ -152,7 +152,7 @@
                         <div class="col-sm-10">
                             <div class="custom-file" style="width: 15%;">
                                 <input type="file" class="custom-file-input" id="customFile" name="first_image">
-                                <p class="d-flex justify-content-start mb-2 text-red mt-1 fw-bold" style="font-size:14px;" class="text-red">*jika ada (jpg,png,jpeg)
+                                <p class="d-flex justify-content-start mb-2 text-red mt-1 fw-bold" style="font-size:14px;" class="text-red">*opsional (jpg,png,jpeg)
                                 @if(pathinfo($laporan->first_image, PATHINFO_BASENAME))
                                 <label class="custom-file-label" for="customFile">foto_1.jpg</label>
                                 @else
@@ -166,7 +166,7 @@
                         <div class="col-sm-10">
                             <div class="custom-file" style="width: 15%;">
                                 <input type="file" class="custom-file-input" id="customFile" name="sec_image">
-                                <p class="d-flex justify-content-start mb-2 text-red mt-1 fw-bold" style="font-size:14px;" class="text-red">*jika ada (jpg,png,jpeg)
+                                <p class="d-flex justify-content-start mb-2 text-red mt-1 fw-bold" style="font-size:14px;" class="text-red">*opsional (jpg,png,jpeg)
                                 @if(pathinfo($laporan->sec_image, PATHINFO_BASENAME))
                                 <label class="custom-file-label" for="customFile">foto_2.jpg</label>
                                 @else
