@@ -128,8 +128,8 @@
                                                     </div>
                                               </div>
                                                 <div class="modal-footer justify-content-center">
-                                                    <button type="button" class="btn btn-default mr-5" data-dismiss="modal">Batal</button>
                                                     <button type="submit" class="btn btn-primary">Tanggapi</button>
+                                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
                                                 </div>
                                             </form>
                                             </div>
@@ -182,8 +182,8 @@
                                                                 </div>
                                                         </div>
                                                             <div class="modal-footer justify-content-center">
-                                                                <button type="button" class="btn btn-default mr-5" data-dismiss="modal">Batal</button>
                                                                 <button type="submit" class="btn btn-primary">Tanggapi</button>
+                                                                <button type="button" class="btn btn-danger " data-dismiss="modal">Batal</button>
                                                             </div>
                                                         </form>
                                                         </div>
@@ -211,8 +211,8 @@
                                                                 <h5 class="d-flex justify-content-center">Apakah anda yakin menghapus tanggapan ini?</h5>
                                                             </div>
                                                             <div class="modal-footer justify-content-center">
-                                                                <button type="button" class="btn btn-default mr-5" data-dismiss="modal">Batal</button>
                                                                 <button type="submit" class="btn btn-primary">Hapus</button>
+                                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
                                                             </div>
                                                             </form>
                                                         </div>
@@ -306,8 +306,8 @@
                                                     </div>
                                               </div>
                                                 <div class="modal-footer justify-content-center">
-                                                    <button type="button" class="btn btn-default mr-5" data-dismiss="modal">Batal</button>
                                                     <button type="submit" class="btn btn-primary">Tanggapi</button>
+                                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
                                                 </div>
                                             </form>
                                             </div>
@@ -360,8 +360,8 @@
                                                                 </div>
                                                         </div>
                                                             <div class="modal-footer justify-content-center">
-                                                                <button type="button" class="btn btn-default mr-5" data-dismiss="modal">Batal</button>
                                                                 <button type="submit" class="btn btn-primary">Tanggapi</button>
+                                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
                                                             </div>
                                                         </form>
                                                         </div>
@@ -389,8 +389,8 @@
                                                                 <h5 class="d-flex justify-content-center">Apakah anda yakin menghapus tanggapan ini?</h5>
                                                             </div>
                                                             <div class="modal-footer justify-content-center">
-                                                                <button type="button" class="btn btn-default mr-5" data-dismiss="modal">Batal</button>
                                                                 <button type="submit" class="btn btn-primary">Hapus</button>
+                                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
                                                             </div>
                                                             </form>
                                                         </div>

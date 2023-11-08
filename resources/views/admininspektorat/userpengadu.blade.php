@@ -279,7 +279,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer justify-content-center">
-                                                            <button type="submit" class="btn btn-primary">Simpan</button>
+                                                            <button type="submit" class="btn btn-success">Simpan</button>
                                                             <script>
                                                                 document.querySelectorAll('[id^="verification"]').forEach(function(element) {
                                                                     element.addEventListener('change', function() {
@@ -489,12 +489,7 @@
                                 <div class="col-12">
                                     <div class="card-tools">
                                         <div class="input-group input-group-sm" style="width: 500px;">
-                                            <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-                                            <div class="input-group-append float-left">
-                                            <button type="submit" class="btn btn-default">
-                                                <i class="fas fa-search"></i>
-                                            </button>
-                                            </div>
+                                            <input type="text" id="searchPengadu" class="form-control" placeholder="Cari berdasarkan isi laporan...">
                                         </div>
                                     </div>
                                 </div>
@@ -513,7 +508,7 @@
                                         <th style="text-align: center;">Aksi</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="bodyRows">
                                 @if(count($users_verif) > 0)
                                     @php
                                         $no = ($users_verif->currentPage() - 1) * $users_verif->perPage() + 1;
@@ -657,7 +652,7 @@
                                                                 <input type="hidden" value="S" name="verification">
                                                             </div>
                                                             <div class="modal-footer justify-content-center">
-                                                                <button type="button" class="btn btn-default mr-5" data-dismiss="modal">Batal</button>
+                                                                <button type="button" class="btn btn-danger mr-5" data-dismiss="modal">Batal</button>
                                                                 <button type="submit" class="btn btn-primary">Suspend</button>
                                                             </div>
                                                             </form>
@@ -880,5 +875,59 @@
                                         </div>
                             </div>
                     </div>    
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+<script>
+$(document).ready(function () {
+    $('#searchPengadu').on('input', function () {
+        var searchPengadu = $(this).val();
+        $.ajax({
+            url: '/searchpengadu', // Ganti dengan URL yang sesuai dengan endpoint pencarian
+            method: 'GET',
+            data: { searchPengadu: searchPengadu },
+            success: function (data) {
+                // Perbarui tampilan dengan hasil pencarian
+                var results = data.results;
+                var tableBody = $('#bodyRows');
+                tableBody.empty();
+
+                if (results.length > 0) {
+                    $.each(results, function (index, result) {
+
+                        var rowNumber = index + 1; // Nomor urut, dimulai dari 1
+                        var row = '<tr>';
+                        row += '<td>' + rowNumber + '</td>';
+                        row += '<td>' + result.nik + '</td>';
+                        row += '<td>' + result.name + '</td>';
+                        row += '<td>' + result.email + '</td>';
+                        row += '<td>' + result.no_hp + '</td>';
+                        row += '<td>' + result.jenis_kelamin + '</td>';
+                        row += '<td>' + getStatusBadge(result.verification) + '</td>';
+                        row += '<td style="text-align: center;" colspan="2"><button type="button" data-toggle="modal" data-target="#modal-lg__' + result.id + '" class="btn bg-gradient-info"><a style="text-decoration: none; color:white;"><i class="fas fa-eye"></i></a></button> <button type="button" data-toggle="modal" data-target="#modal-lg__' + result.id + '" class="btn bg-gradient-danger ml-2"><a style="text-decoration: none; color:white;"><i class="fas fa-power-off"></i></a></button> </td>';
+                        row += '</tr>';
+                        tableBody.append(row);
+                    });
+                } else {
+                    var noData = '<tr><td colspan="8" style="text-align: center;">No Data</td></tr>';
+                    tableBody.append(noData);
+                }
+            },
+            error: function (error) {
+                console.log('Error:', error);
+            }
+        });
+    });
+
+    function getStatusBadge(verification) {
+            if (verification === 'Y') {
+                return '<div><span class="badge badge-success">Terverifikasi</span></div>';
+            }
+        }
+});
+</script>
 
 @endsection

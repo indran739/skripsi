@@ -463,6 +463,22 @@ class Admin extends Controller
         ]);
     }
 
+    public function searchUserPengadu(Request $request)
+    {
+        $searchPengadu = $request->input('searchPengadu');
+    
+        $results = User::where('verification', 'Y')
+            ->where(function($query) use ($searchPengadu) {
+                $query->where('name', 'like', '%' . $searchPengadu . '%')
+                      ->orWhere('nik', 'like', '%' . $searchPengadu . '%');
+            })
+            ->where('role', 'pengadu')
+            ->get();
+    
+        return response()->json(['results' => $results]);
+    }
+    
+
     public function view_user_admin() {
 
         $idOpd= Auth::user()->id_opd_fk;
