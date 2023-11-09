@@ -14,6 +14,13 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
+        @if(Session::has('error'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <div class="row"><strong>Gagal Login</strong></div>
+                <div class="row">{{ error }}</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
             <h2><strong>Login</strong></h2>
             <img src="{{asset('/')}}dist/img/gumas.png" alt="AdminLTE Logo" class="img mr-2" style="opacity: .8; height:90px; width:75px;">
             <h1><strong>SIPEMAS</strong></h1>
