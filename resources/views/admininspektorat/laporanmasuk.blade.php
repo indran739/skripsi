@@ -35,6 +35,8 @@
                                     <option value="1">1 Bulan Terakhir</option>
                                     <option value="3">3 Bulan Terakhir</option>
                                     <option value="6">6 Bulan Terakhir</option>
+                                    <option value="12">1 Tahun Terakhir</option>
+                                    <option value="2022">Tahun 2022</option>
                                 </select>
                                 <select class="form-control select2"style="width: 20%;" name="status" required>
                                     <option selected="selected" value="">Pilih Status</option>

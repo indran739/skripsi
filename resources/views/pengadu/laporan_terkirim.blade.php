@@ -48,18 +48,7 @@
                     <div class="tab-content" id="custom-tabs-four-tabContent">
                     <div class="tab-pane fade show active" id="custom-tabs-four-pending" role="tabpanel" aria-labelledby="custom-tabs-four-pending-tab">
                         <div class="row">
-                                <div class="col-12">
-                                    <div class="card-tools">
-                                        <div class="input-group input-group-sm" style="width: 500px;">
-                                            <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-                                            <div class="input-group-append float-left">
-                                            <button type="submit" class="btn btn-default">
-                                                <i class="fas fa-search"></i>
-                                            </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                
                                 <!-- /.card-header -->
                                 <div class="card-body table-responsive p-0">
                                     <table class="table table-hover text-nowrap">

@@ -21,13 +21,9 @@
                         <h3 class="card-title">Laporan anda yang sudah selesai ditindak lanjuti</h3>
 
                         <div class="card-tools">
-                        <div class="input-group input-group-sm" style="width: 500px;">
-                            <input type="text" id="searchTerm" class="form-control float-right" placeholder="Search">
-                            <div class="input-group-append">
-                            <button type="submit" class="btn btn-default">
-                                <i class="fas fa-search"></i>
-                            </button>
-                            </div>
+                        <div class="input-group input-group-md" style="width: 500px;">
+                            <input type="text" id="searchTerm" class="form-control float-right" placeholder="Cari berdasarkan isi laporan">
+                            
                         </div>
                         </div>
                     </div>
@@ -143,7 +139,7 @@ $(document).ready(function () {
                         var rowNumber = index + 1; // Nomor urut, dimulai dari 1
                         var row = '<tr>';
                         row += '<td>' + rowNumber + '</td>';
-                        row += '<td>' + result.isi_laporan + '</td>';
+                        row += '<td>{{ Str::limit($laporan->isi_laporan, 50) }}</td>';
                         row += '<td>' + formattedDate + '</td>'; // Menggunakan tanggal yang sudah diformat
                         row += '<td>' + result.category.name + '</td>';
                         row += '<td>' + result.opd.name + '</td>';

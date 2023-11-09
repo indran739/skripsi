@@ -516,6 +516,17 @@
                                         </div>
                                     </div>
                                 </div>
+                                @if($laporan->lampiran)
+                                    <dt class="col-sm-2 mb-2 ">
+                                        @php
+                                            $fileNameParts = explode('/', $laporan->lampiran);
+                                            $fileName = end($fileNameParts);
+                                        @endphp
+                                        <a class="btn btn-app bg-gradient-info" href="{{ asset('storage/' . $laporan->lampiran) }}">
+                                            <i class="fas fa-download"></i>Lampiran
+                                        </a>
+                                    </dt>
+                                @endif
                         </dl>
                     </div>
                 </div>

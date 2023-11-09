@@ -311,7 +311,7 @@
                                                   <div class="modal-footer justify-content-between">
                                                         <div class="col-sm">
                                                           <button type="submit" class="btn btn-primary mr-4">Tindak</button> 
-                                                            <a href="/laporanterdisposisiopd" class="btn btn-info">Kembali</a>
+                                                            <a href="/laporanterdisposisiopd" class="btn btn-danger">Batal</a>
                                                         </div>
                                                   </div>
                                                 </div>
@@ -584,6 +584,5 @@ document.addEventListener("DOMContentLoaded", function () {
         theme: 'dark' // Ganti dengan tema lain jika diinginkan
     });
 });
-
 </script>
 @endsection

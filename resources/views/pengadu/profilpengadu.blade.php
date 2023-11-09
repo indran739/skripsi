@@ -29,9 +29,7 @@
                   <li class="nav-item">
                     <a class="nav-link" style="color: black;text-decoration: none;" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#custom-tabs-four-profile" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false"><i class="fas fa-edit mr-2"></i>Edit Profile</a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link" style="color: black;text-decoration: none;" id="custom-tabs-four-messages-tab" data-toggle="pill" href="#custom-tabs-four-messages" role="tab" aria-controls="custom-tabs-four-messages" aria-selected="false">Ubah Sandi</a>
-                  </li>
+                  
                 </ul>
               </div>
               <div class="card-body">
