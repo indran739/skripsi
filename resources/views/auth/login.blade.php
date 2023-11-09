@@ -44,6 +44,14 @@
                 </div>
               </div>
             </div>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control @error('email') is-invalid @enderror" placeholder="EMAIL" name="email">
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fas fa-user"></span>
+                </div>
+              </div>
+            </div>
               @error('password')
                 <div class="alert alert-danger">
                   <h7><i class="fas fa-brake-warning"></i>NIK atau Password Salah!</h7>
