@@ -139,8 +139,8 @@ $(document).ready(function () {
                         var rowNumber = index + 1; // Nomor urut, dimulai dari 1
                         var row = '<tr>';
                         row += '<td>' + rowNumber + '</td>';
-                        row += '<td>{{ Str::limit($laporan->isi_laporan, 50) }}</td>';
-                        row += '<td>' + formattedDate + '</td>'; // Menggunakan tanggal yang sudah diformat
+                        row += '<td>' + (result.isi_laporan ? result.isi_laporan.substring(0, 50) : '') + '</td>';
+                        row += '<td>' + formattedDate + '</td>';
                         row += '<td>' + result.category.name + '</td>';
                         row += '<td>' + result.opd.name + '</td>';
                         row += '<td>' + getStatusBadge(result.status_selesai) + '</td>';
