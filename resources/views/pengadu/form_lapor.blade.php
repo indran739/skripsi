@@ -145,29 +145,31 @@
                                 <label for="" class="col-sm-2 col-form-label">Lampiran</label>
                                 <div class="col-sm-10">
                                     <div class="custom-file" style="width: 15%;">
-                                        <input type="file" class="custom-file-input" id="customFile" name="lampiran">
-                                        <p class="d-flex justify-content-start mb-2 mt-1 text-red fw-bold" style="font-size:14px;">*opsional (pdf)</p>
-                                        <label class="custom-file-label" for="customFile">Pilih File</label>
+                                        <input type="file" class="custom-file-input" id="customFileLampiran" name="lampiran">
+                                        <p id="error-lampiran" class="d-flex justify-content-start mb-2 mt-1 text-red fw-bold" style="font-size:14px;"></p>
+                                        <label class="custom-file-label" for="customFileLampiran">Pilih File</label>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="form-group row">
                                 <label for="" class="col-sm-2 col-form-label">Foto 1</label>
                                 <div class="col-sm-10">
                                     <div class="custom-file" style="width: 15%;">
-                                        <input type="file" class="custom-file-input" id="customFile" name="first_image">
-                                        <p class="d-flex justify-content-start mb-2 text-red mt-1 fw-bold" style="font-size:14px;" class="text-red">*opsional (jpg,png,jpeg)</p>
-                                        <label class="custom-file-label" for="customFile">Pilih File</label>
+                                        <input type="file" class="custom-file-input" id="customFileFirstImage" name="first_image">
+                                        <p id="error-first-image" class="d-flex justify-content-start mb-2 text-red mt-1 fw-bold" style="font-size:14px;"></p>
+                                        <label class="custom-file-label" for="customFileFirstImage">Pilih File</label>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="form-group row">
                                 <label for="" class="col-sm-2 col-form-label">Foto 2</label>
                                 <div class="col-sm-10">
                                     <div class="custom-file" style="width: 15%;">
-                                        <input type="file" class="custom-file-input" id="customFile" name="sec_image">
-                                        <p class="d-flex justify-content-start mb-2 text-red mt-1 fw-bold" style="font-size:14px;" class="text-red">*opsional (jpg,png,jpeg)</p>
-                                        <label class="custom-file-label" for="customFile">Pilih File</label>
+                                        <input type="file" class="custom-file-input" id="customFileSecImage" name="sec_image">
+                                        <p id="error-sec-image" class="d-flex justify-content-start mb-2 text-red mt-1 fw-bold" style="font-size:14px;"></p>
+                                        <label class="custom-file-label" for="customFileSecImage">Pilih File</label>
                                     </div>
                                 </div>
                             </div>
@@ -243,6 +245,46 @@
             maxDate: 'today',      // Batasi tanggal kejadian tidak lebih dari hari ini
             theme: 'dark' // Ganti dengan tema lain jika diinginkan
         });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Ambil elemen-elemen input file
+        var lampiranInput = document.querySelector('input[name="lampiran"]');
+        var firstImageInput = document.querySelector('input[name="first_image"]');
+        var secImageInput = document.querySelector('input[name="sec_image"]');
+
+        // Atur event listener untuk setiap input file
+        lampiranInput.addEventListener('change', function() {
+            validateFileExtension(this, 'pdf', 'error-lampiran');
+        });
+
+        firstImageInput.addEventListener('change', function() {
+            validateFileExtension(this, 'jpg', 'jpeg', 'png', 'error-first-image');
+        });
+
+        secImageInput.addEventListener('change', function() {
+            validateFileExtension(this, 'jpg', 'jpeg', 'png', 'error-sec-image');
+        });
+
+        // Fungsi untuk memeriksa ekstensi file
+        function validateFileExtension(input, ...allowedExtensions) {
+            var fileName = input.value;
+            var fileExtension = fileName.split('.').pop().toLowerCase();
+            var errorElementId = allowedExtensions.pop(); // Ambil id elemen pesan kesalahan
+
+            // Periksa apakah ekstensi file diizinkan
+            if (allowedExtensions.indexOf(fileExtension) === -1) {
+                // Tampilkan pesan kesalahan
+                document.getElementById(errorElementId).innerText = 'File harus : ' + allowedExtensions.join(', ');
+                // Reset input file
+                input.value = '';
+            } else {
+                // Sembunyikan pesan kesalahan jika ekstensi valid
+                document.getElementById(errorElementId).innerText = '';
+            }
+        }
     });
 </script>
 

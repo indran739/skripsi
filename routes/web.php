@@ -182,26 +182,3 @@ Route::middleware(['auth'])->group(function () {
     });
 
 });
-
-
-
-// Route::put('disposisi/{id_pengaduan}', [Admin::class, 'disposisi']);
-
-// Route::controller(LoginController::class)->group(function(){
-//     Route::get('login','index')->name('login');
-//     Route::post('login/proses','proses');
-//     Route::get('logout','logout');
-// });
-
-// Route::group(['middleware' => ['auth']],function(){
-
-//     Route::group(['middleware' => ['cekUser::3']],function(){
-//         Route::resource('pengadu',Pengadu::class);
-//     });
-
-//     Route::group(['middleware' => ['cekUser::1']],function(){
-//         Route::resource('admin', Admin::class);
-//     });
-// });
-
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

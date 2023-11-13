@@ -95,7 +95,7 @@
                 </div>
             @endforeach
             <!-- Pagination Links -->
-            <div class="container col-md-0 offset-md-0 mb-3">
+            <div class="container col-sm-0 col-md-0 col-lg-0 offset-sm-0 offset-md-0 offset-lg-0 mb-3">
                     {{ $laporans->links('vendor.pagination.adminlte') }}
                 </div>
             </div>

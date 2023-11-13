@@ -15,9 +15,14 @@
             </div>
         @endif
         @if(Session::has('error'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <div class="row"><strong>Gagal Login</strong></div>
-                <div class="row">{{ error }}</div>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <div class="row"><strong>Pengguna Belum Terdaftar</strong></div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        @if(Session::has('pass_fail'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <div class="row"><strong>Password Salah</strong></div>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
@@ -33,7 +38,7 @@
             @csrf
               @error('nik')
                 <div class="alert alert-danger">
-                  <h7><i class="fas fa-brake-warning"></i>NIK atau Password Salah!</h7>
+                  <h7><i class="fas fa-brake-warning"></i>NIK Tidak Boleh Kosong!</h7>
                 </div>
               @enderror
             <div class="input-group mb-3">
@@ -47,7 +52,7 @@
           
               @error('password')
                 <div class="alert alert-danger">
-                  <h7><i class="fas fa-brake-warning"></i>NIK atau Password Salah!</h7>
+                  <h7><i class="fas fa-brake-warning"></i>Password Tidak Boleh Kosong!</h7>
                 </div>
               @enderror
             <div class="input-group mb-3">
