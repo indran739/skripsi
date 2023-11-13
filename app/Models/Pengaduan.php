@@ -44,5 +44,10 @@ class Pengaduan extends Model
     {
         return $this->belongsTo(Desa::class,'id_desa_fk'); 
     }
+
+    public function likes()
+    {
+        return $this->hasMany(Likes::class,'id_pengaduan_fk');
+    }
     
 }

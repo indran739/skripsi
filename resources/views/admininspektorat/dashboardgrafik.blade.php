@@ -99,12 +99,50 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                        <form id="searchForm">
-                            <input type="text" id="searchTerm" class="form-control" placeholder="Cari berdasarkan isi laporan...">
-                        </form>
-
+                    <div class="col-lg-12">
+                        <div class="box">
+                            <div class="box-body">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                        <th>No.</th>
+                                        <th>Isi Laporan</th>
+                                        <th>Tanggal Lapor</th>
+                                        <th>Tanggal Selesai</th>
+                                        <th>Kategori</th>
+                                        <th>OPD Tujuan</th>
+                                        <th style="text-align:center;">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tableBody">
+                                    @php $count = 1 @endphp
+                                        @foreach($laporans as $laporan)
+                                            <tr>
+                                                <td>{{ $count++ }}</td>
+                                                <td>{{ $laporan->isi_laporan }}</td>
+                                                <td>{{ $laporan->tanggal_lapor }}</td>
+                                                <td>{{ $laporan->tgl_dinyatakan_selesai }}</td>
+                                                <td>{{ $laporan->category->name }}</td>
+                                                <td>{{ $laporan->opd->name }}</td>
+                                                <td>
+                                                            <form action="/unlike" method="post">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <input type="hidden" name="complaint_id" value="">
+                                                                <button type="submit">Unlike</button>
+                                                            </form>
+                                                        
+                                                            <form action="/like" method="post">
+                                                                @csrf
+                                                                <input type="hidden" name="complaint_id" value="">
+                                                                <button type="submit">Like</button>
+                                                            </form>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                    

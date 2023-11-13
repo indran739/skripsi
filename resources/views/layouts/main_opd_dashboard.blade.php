@@ -184,7 +184,7 @@ document.getElementById('tahunSelect').addEventListener('change', function() {
             $('#tableBody').html(''); // Kosongkan isi tabel
             $.each(data, function(index, opdAverage) {
                 var rowNumber = index + 1; // Nomor urut, dimulai dari 1
-                $('#tableBody').append('<tr><td style="text-align: center;">' + rowNumber + '</td><td style="text-align: left;">' + opdAverage.opd_name + '</td><td style="text-align: right;">' + opdAverage.count_laporan_selesai + '</td><td style="text-align: right;">' + opdAverage.respons_duration + '</td><td style="text-align: right;">' + opdAverage.completed_duration + '</td><td style="text-align: right;">' + opdAverage.rataRataWaktuRespon + '</td><td style="text-align: right;">' + opdAverage.average_duration + '</td></tr>'); // Tambahkan baris tabel baru dengan data opdAverage
+                $('#tableBody').append('<tr><td style="text-align: center;">' + rowNumber + '</td><td style="text-align: left;">' + opdAverage.opd_name + '</td><td style="text-align: right;">' + opdAverage.count_laporan_selesai + '</td><td style="text-align: right;">' + opdAverage.rataRataWaktuRespon + '</td><td style="text-align: right;">' + opdAverage.average_duration + '</td></tr>'); // Tambahkan baris tabel baru dengan data opdAverage
             });
         },
         error: function(error) {

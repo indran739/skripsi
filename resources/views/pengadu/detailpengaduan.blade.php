@@ -205,7 +205,25 @@
                             <div class="card-body">
                                 <dl class="row">
                                     <dt class="col-sm-5 mb-3 h4">Data Laporan</dt>
-                                    <dd class="col-sm-7 mb-2"> </dd> 
+                                    <dd class="col-sm-7 mb-2" style="text-align:right;">                                                    
+                                                    @if (auth()->check())
+                                                        @if ($laporan->likes->where('id_user_fk', auth()->user()->id)->count() > 0)
+                                                            {{-- Tombol untuk Unlike --}}
+                                                            <form action="/unlike" method="post">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <input type="hidden" name="id_pengaduan_fk" value="{{ $laporan->id }}">
+                                                                <button type="submit" class="btn bg-gradient-info"><i class="fas fa-thumbs-down mr-2"></i></i>Unlike</button>
+                                                            </form>
+                                                        @else
+                                                            {{-- Tombol untuk Like --}}
+                                                            <form action="/like" method="post">
+                                                                @csrf
+                                                                <input type="hidden" name="id_pengaduan_fk" value="{{ $laporan->id }}">
+                                                                <button type="submit" class="btn bg-gradient-info"><i class="fas fa-thumbs-up mr-2"></i> Like</button>
+                                                            </form>
+                                                        @endif
+                                                    @endif</dd> 
                                     <dt class="col-sm-5 mb-3">Nama Pengadu</dt>
                                     @if($laporan->anonim == 'Y' && $laporan->id_user_fk !== auth()->user()->id)
                                         <dd class="col-sm-7 mb-3"> <span>:</span> -Anonim- </dd>

@@ -63,7 +63,11 @@
                                 </div>
                                 <div class="col px-4">
                                     <div>
-                                        <!-- <div class="float-right">{{ \Carbon\Carbon::parse($laporan->created_at)->format('d F Y, H:i') }}</div> -->
+                                        <div class="float-right">
+                                            <span class="badge bg-gray disabled color-palette"  style="font-size: 14px;"> <!-- Adjust the font size as needed -->
+                                                <i class="fas fa-thumbs-up mr-2"></i>{{ $laporan->likes->count() }}
+                                            </span>
+                                        </div>
                                         <dl class="row">
                                             <dt class="col-sm-2 mb-1 pl-0">Kategori</dt>
                                             <dd class="col-sm-10 mb-1"><span>:</span> {{ $laporan->category->name }}</dd>
@@ -78,7 +82,7 @@
                                             <dd class="col-sm-10 mb-1"><span>:</span> {{ \Carbon\Carbon::parse($laporan->tanggal_lapor)->format('d F Y, H:i') }}</dd>
                                             
                                             <dt class="col-sm-2 pl-0">Isi Laporan</dt>
-                                            <dd class="col-sm-10"><span>:</span> {{ $laporan->isi_laporan }}</dd>
+                                            <dd class="col-sm-10"><span>:</span> {{ Str::limit($laporan->isi_laporan, 50) }}</dd>
                                         </dl>
                                         <button type="button"  class="btn bg-gradient-info mr-2" data-toggle="" data-target="">
                                             <i class="fas fa-eye"></i> <a href="/detailpengaduan/{{ $laporan->id }}" style="text-decoration: none; color:white;">Detail</a>
@@ -128,7 +132,10 @@ $(document).ready(function () {
                             '<div class="row">' +
                             '<div class="col-auto">';
 
-                        row += result.first_image ? '<img class="img-fluid" src="{{ asset('storage/') }}' + result.first_image + '" alt="Photo" style="max-height: 200px;">' : '<h4>No <br>Picture</h4>';
+                        // Misalkan Anda memiliki variabel base_url yang menyimpan base URL aplikasi Anda
+                        var base_url = "{{ url('/') }}"; 
+
+                        row += result.first_image ? '<img class="img-fluid" src="' + base_url + '/storage/' + result.first_image + '" alt="Photo" style="max-height: 200px;">' : '<h4>No <br>Picture</h4>';
 
                         row += '</div>' +
                             '<div class="col px-4">' +
@@ -217,7 +224,10 @@ $(document).ready(function () {
                             '<div class="row">' +
                             '<div class="col-auto">';
 
-                        row += result.first_image ? '<img class="img-fluid" src="{{ asset('storage/') }}' + result.first_image + '" alt="Photo" style="max-height: 200px;">' : '<h4>No <br>Picture</h4>';
+                       // Misalkan Anda memiliki variabel base_url yang menyimpan base URL aplikasi Anda
+                        var base_url = "{{ url('/') }}"; 
+
+                        row += result.first_image ? '<img class="img-fluid" src="' + base_url + '/storage/' + result.first_image + '" alt="Photo" style="max-height: 200px;">' : '<h4>No <br>Picture</h4>';
 
                         row += '</div>' +
                             '<div class="col px-4">' +
@@ -307,7 +317,11 @@ $(document).ready(function () {
                             '<div class="row">' +
                             '<div class="col-auto">';
 
-                        row += result.first_image ? '<img class="img-fluid" src="{{ asset('storage/') }}' + result.first_image + '" alt="Photo" style="max-height: 200px;">' : '<h4>No <br>Picture</h4>';
+                        // Misalkan Anda memiliki variabel base_url yang menyimpan base URL aplikasi Anda
+                            var base_url = "{{ url('/') }}"; 
+
+                            row += result.first_image ? '<img class="img-fluid" src="' + base_url + '/storage/' + result.first_image + '" alt="Photo" style="max-height: 200px;">' : '<h4>No <br>Picture</h4>';
+
 
                         row += '</div>' +
                             '<div class="col px-4">' +

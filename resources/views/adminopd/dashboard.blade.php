@@ -53,7 +53,7 @@
         <div class="row">
             <!-- Left col -->
 
-            <section class="col-lg-12 connectedSortable">
+            <section class="col-lg-7 connectedSortable">
                 <div class="card card-info">
                     <div class="card-header" style="background-color:#4030A3;">
                         <h3 class="card-title text-white">Jumlah Pengaduan Selesai per Bulan</h3>
@@ -65,6 +65,55 @@
                     </div>
                 </div>
             </section>
+
+            <section class="col-lg-5 connectedSortable">
+              <div class="card">
+                  <div class="card-header" style="background-color:#4030A3;">
+                      <h3 class="card-title text-white">TOP 3 Laporan yang paling banyak disukai</h3>
+                      <div class="card-tools">
+                          <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                              <i class="fas fa-minus"></i>
+                          </button>
+                          <button type="button" class="btn btn-tool" data-card-widget="remove">
+                              <i class="fas fa-times"></i>
+                          </button>
+                      </div>
+                  </div>
+                  <div class="card-body table-responsive p-0 ">
+                      <table class="table table-hover text-nowrap">
+                          <thead>
+                              <tr>
+                                  <th class="text-center align-middle">No.</th>
+                                  <th style="text-align:center;">Isi <br>Laporan</th>
+                                  <th class="text-center align-middle">Kategori</th>
+                                  <th class="text-center align-middle">Total Like</th>
+                                  <th class="text-center align-middle">Aksi</th>
+                              </tr>
+                          </thead>
+                          <tbody id="tableBody">
+                              @php $count = 1 @endphp
+                              @foreach($laporans as $laporan)
+                                  <tr>
+                                      <td style="text-align: center;">{{ $count++ }}</td>
+                                      <td>{{ Str::limit($laporan->isi_laporan, 20) }}</td>
+                                      <td>{{ $laporan->category->name }}</td>
+                                      <td style="text-align: center;">
+                                          <span class="badge bg-gray disabled color-palette"  style="font-size: 14px;">
+                                              <i class="fas fa-thumbs-up mr-2"></i>{{ $laporan->likes->count() }}
+                                          </span>
+                                      </td>
+                                      <td style="text-align: center;" colspan="2">
+                                          <button type="button"  class="btn bg-gradient-info" data-toggle="" data-target="">
+                                              <a href="/detailpengaduanopd/{{ $laporan->id }}" style="text-decoration: none; color:white;"><i class="fas fa-eye"></i></a>
+                                          </button>
+                                      </td>
+                                  </tr>
+                              @endforeach
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </section>
             <!-- /.Left col -->
             <!-- right col (We are only adding the ID to make the widgets sortable)-->
             <!-- right col -->

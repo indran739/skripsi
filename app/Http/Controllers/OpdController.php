@@ -49,7 +49,7 @@ $pengaduanSelesai = Pengaduan::where('status_selesai', 'Y')
 
 // Mengelompokkan pengaduan berdasarkan bulan
 $pengaduanPerBulan = $pengaduanSelesai->groupBy(function ($pengaduanSelesai) {
-    return Carbon::parse($pengaduanSelesai->tgl_dinyatakan_selesai)->format('F Y');
+    return Carbon::parse($pengaduanSelesai->tgl_dinyatakan_selesai)->format('F');
 });
 
 // Menghitung jumlah pengaduan selesai per bulan
@@ -135,6 +135,15 @@ $data = $jumlahPengaduanPerBulan->values();
                     'Terdisposisi' => $countLaporanTerdisposisi,
                 ];
 
+                $laporans = Pengaduan::withCount('likes')
+                ->whereYear('tanggal_lapor', $selectedYear)
+                ->where('id_opd_fk', $idOpd)
+                ->whereHas('likes') // hanya laporan dengan setidaknya satu like
+                ->orderByDesc('likes_count')
+                ->orderByDesc('tanggal_lapor')
+                ->limit(3)
+                ->get();
+
         return view('adminopd.dashboard', [
             'active' => 'login',
             'opd' => $opd,
@@ -145,7 +154,8 @@ $data = $jumlahPengaduanPerBulan->values();
             'data' => $data,
             // 'ratap' => $ratap,
             'active' => 'beranda',
-            'opdCounts' => $opdCounts
+            'opdCounts' => $opdCounts,
+            'laporans' => $laporans
         ]);
     }
 

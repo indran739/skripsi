@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Kecamatan;
 use App\Models\Pengaduan;
 use App\Models\Category;
+use App\Models\Likes;
 use App\Models\Tanggapan;
 use App\Models\Tanggapan_Admins;
 use Illuminate\Support\Facades\Storage;
@@ -184,12 +185,13 @@ class DashboardController extends Controller
             }
         }
 
-
+        $laporans = Pengaduan::orderBy('tanggal_lapor', 'desc')->where('status_selesai','Y')->whereYear('tanggal_lapor', Carbon::now())->paginate(10);
         // Mengembalikan data ke tampilan (view)
         return view('admininspektorat.dashboardgrafik', [
             'categoryNames' => $categoryNames,
             'categoryCounts' => $categoryCounts,
             'data' => $data,
+            'laporans' => $laporans,
             'selectedYear' => $selectedYear,
             'active' => 'beranda',
             'opdCounts' => $opdCounts,
@@ -199,6 +201,38 @@ class DashboardController extends Controller
     }
 
     
+public function view_likes()
+{
+    $laporans = Pengaduan::orderBy('tanggal_lapor', 'desc')->where('status_selesai','Y')->whereYear('tanggal_lapor', Carbon::now())->paginate(10);
+
+    return view('pengadu.likes', [
+        'laporans' => $laporans,
+    ]);
+
+}
+
+public function like(Request $request)
+{
+    // Lakukan validasi dan verifikasi user
+    $like = Likes::create([
+        'id_user_fk' => auth()->user()->id,
+        'id_pengaduan_fk' => $request->id_pengaduan_fk,
+    ]);
+
+   // Kembali ke halaman sebelumnya
+   return redirect()->back()->with('success', 'Liked successfully');
+}
+
+public function unlike(Request $request)
+{
+    // Lakukan validasi dan verifikasi user
+    Likes::where('id_user_fk', auth()->user()->id)
+        ->where('id_pengaduan_fk', $request->id_pengaduan_fk)
+        ->delete();
+
+        return redirect()->back()->with('success', 'Unliked successfully');
+}
+
 
     public function chartData(Request $request)
 {

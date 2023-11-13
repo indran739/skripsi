@@ -260,7 +260,7 @@
                                 <div class="form-group row">
                                     <label for="" class="col-sm-3 col-form-label">Golongan Darah</label>
                                     <div class="col-sm-9">
-                                        <select class="form-control select2 @error('gol_darah') is-invalid @enderror" style="width: 70%;" >
+                                        <select class="form-control select2 @error('gol_darah') is-invalid @enderror" name="gol_darah" style="width: 70%;" >
                                         <option selected="selected" disbabled>Pilih Gol.Darah</option>
                                         <option value="A" {{ auth()->user()->gol_darah == 'A' ? 'selected' : '' }}>A</option>
                                         <option value="B" {{ auth()->user()->gol_darah == 'B' ? 'selected' : '' }}>B</option>
@@ -288,7 +288,7 @@
                                     <label for="" class="col-sm-3 col-form-label">Foto Wajah</label>
                                     <div class="col-sm-9">
                                         <div class="custom-file" style="width: 50%;">
-                                            <input type="file" class="custom-file-input @error('foto_wajah') is-invalid @enderror" id="customFile" name="foto_wajah" required autocomplete="foto_wajah">
+                                            <input type="file" class="custom-file-input @error('foto_wajah') is-invalid @enderror" id="customFile" name="foto_wajah" autocomplete="foto_wajah">
                                             @error('foto_wajah')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -302,7 +302,7 @@
                                     <label for="" class="col-sm-3 col-form-label">Foto KTP</label>
                                     <div class="col-sm-9">
                                         <div class="custom-file" style="width: 50%;">
-                                            <input type="file" class="custom-file-input @error('foto_ktp') is-invalid @enderror" id="customFile" name="foto_ktp" required autocomplete="foto_ktp">
+                                            <input type="file" class="custom-file-input @error('foto_ktp') is-invalid @enderror" id="customFile" name="foto_ktp"  autocomplete="foto_ktp">
                                             <label class="custom-file-label" for="customFile">Choose File</label>
                                         </div>
                                     </div>

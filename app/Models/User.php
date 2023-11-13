@@ -73,4 +73,9 @@ class User extends Authenticatable
         return $this->belongsTo(Desa::class,'id_desa_fk'); 
     }
 
+    public function likes()
+    {
+        return $this->hasMany(Likes::class,'id_user_fk');
+    }
+
 }

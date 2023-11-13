@@ -340,7 +340,10 @@ document.addEventListener('DOMContentLoaded', function() {
             data: { year: selectedYear },
             success: function (response) {
                 // Perbarui data labels dan data pengaduan dengan respons dari server
-                var labels = response.labels;
+                var labels = response.labels.map(function(label) {
+                    // Manipulasi label di sini, misalnya menghapus tahun
+                    return label.split(' ')[0]; // Mengambil bagian pertama (nama bulan)
+                });
                 var data = response.data;
 
                 // Hancurkan grafik sebelumnya jika ada
@@ -383,7 +386,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
-
 </script>
 
 </body>

@@ -118,12 +118,12 @@ Route::middleware(['auth'])->group(function () {
         Route::put('edituseradmin/{id_user}', [Admin::class, 'update_user_admin']);
         Route::get('/searchpengadu', [Admin::class, 'searchUserPengadu']);
 
-        // Route::get('/admininspektorat/chart', [DashboardController::class, 'index']);
-        // Route::get('/admininspektorat/chart-data', [DashboardController::class, 'chartData']);
-        // Route::get('/admininspektorat/chart-data-opd', [DashboardController::class, 'chartDataOpd']);
-        // Route::get('/admininspektorat/get-opd-averages', [DashboardController::class, 'getOpdAverages']);
-        // Route::get('/admininspektorat/search', [DashboardController::class, 'view_search']);
-        // Route::get('/search', [DashboardController::class, 'search']);
+        Route::get('/admininspektorat/chart', [DashboardController::class, 'index']);
+        Route::get('/admininspektorat/chart-data', [DashboardController::class, 'chartData']);
+        Route::get('/admininspektorat/chart-data-opd', [DashboardController::class, 'chartDataOpd']);
+        Route::get('/admininspektorat/get-opd-averages', [DashboardController::class, 'getOpdAverages']);
+        Route::get('/admininspektorat/search', [DashboardController::class, 'view_search']);
+        Route::get('/search', [DashboardController::class, 'search']);
 
     });
 
@@ -173,6 +173,12 @@ Route::middleware(['auth'])->group(function () {
         Route::put('editlaporaninvalid/{id_pengaduan}', [Pengadu::class, 'update_pengaduan_invalid']);
         Route::get('/search-pengadu', [Pengadu::class, 'search']);
         Route::get('/search-laporan-selesai', [Pengadu::class, 'searchLaporanSelesai']);
+        Route::post('/like', [Pengadu::class, 'like']);
+        Route::delete('/unlike', [Pengadu::class, 'unlike']);
+
+        // Route::get('/berandapengadu/likes', [DashboardController::class, 'view_likes']);
+        // Route::post('/like', [DashboardController::class, 'like']);
+        // Route::delete('/unlike', [DashboardController::class, 'unlike']);
     });
 
 });

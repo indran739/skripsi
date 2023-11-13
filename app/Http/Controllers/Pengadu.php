@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Tanggapan;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
+use App\Models\Likes;
 use App\Models\Desa;
 use App\Models\Tanggapan_Admins;
 use Illuminate\Support\Facades\Storage; // Import namespace Storage
@@ -43,7 +44,7 @@ class Pengadu extends Controller
     }
 
     public function index() {
-        $laporans = Pengaduan::orderBy('tanggal_lapor', 'desc')->where('status_selesai','Y')->whereYear('tanggal_lapor', Carbon::now())->paginate(10);
+        $laporans = Pengaduan::orderBy('tanggal_lapor', 'desc')->paginate(10);
     
         return view('pengadu.beranda', [
             'laporans' => $laporans,
@@ -54,14 +55,14 @@ class Pengadu extends Controller
     }
 
 
+
 public function search(Request $request)
 {
     $searchTerm = $request->input('searchTerm');
     $category = $request->input('category'); // Ambil nilai kategori dari request
     $opd = $request->input('opd');
 
-    $query = Pengaduan::where('status_selesai', 'Y')
-        ->where('isi_laporan', 'like', '%' . $searchTerm . '%');
+    $query = Pengaduan::where('isi_laporan', 'like', '%' . $searchTerm . '%');
 
     // Filter berdasarkan kategori jika kategori dipilih
     if ($category) {
@@ -77,7 +78,7 @@ public function search(Request $request)
         });
     }
 
-    $results = $query->with('category', 'opd', 'user')
+    $results = $query->with('category', 'opd', 'user', 'likes')
                     ->orderBy('tanggal_lapor', 'desc')
                     ->get();
 
@@ -565,6 +566,29 @@ public function update_pengaduan_invalid(Request $request, $id_pengaduan)
         return redirect()->back()->with('error', 'Gagal memperbarui laporan. Silakan coba lagi.');
     }
 }
+
+public function like(Request $request)
+{
+    // Lakukan validasi dan verifikasi user
+    $like = Likes::create([
+        'id_user_fk' => auth()->user()->id,
+        'id_pengaduan_fk' => $request->id_pengaduan_fk,
+    ]);
+
+   // Kembali ke halaman sebelumnya
+   return redirect()->back()->with('liked', 'Liked successfully');
+}
+
+public function unlike(Request $request)
+{
+    // Lakukan validasi dan verifikasi user
+    Likes::where('id_user_fk', auth()->user()->id)
+        ->where('id_pengaduan_fk', $request->id_pengaduan_fk)
+        ->delete();
+
+        return redirect()->back()->with('unliked', 'Unliked successfully');
+}
+
 
 }
 

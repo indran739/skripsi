@@ -6,7 +6,9 @@
     </button>
     <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          </ul>
+            <a class="nav-link fs-4" href="/tentangkami" role="button" aria-expanded="false">
+              Tentang Kami
+            </a>
         </li>
       </ul>
   </div>

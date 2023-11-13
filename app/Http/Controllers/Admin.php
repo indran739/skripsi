@@ -195,13 +195,21 @@ class Admin extends Controller
                     ];
                 }
             }
+
+            $laporans = Pengaduan::withCount('likes')
+            ->whereYear('tanggal_lapor', now()->year)
+            ->orderByDesc('likes_count')
+            ->orderByDesc('tanggal_lapor')
+            ->limit(3)
+            ->get();
 //<---------------------------------------------------------------End Rata rata waktu----------------------------------------------------------------------------->//
         return view('admininspektorat.dashboard', [
             'count_pengadu' => $count_users,
             'selectedYear' => $selectedYear,
             'active' => 'beranda',
             'opdAverages' => $opdAverages,
-            'opdCounts' => $opdCounts
+            'opdCounts' => $opdCounts,
+            'laporans' => $laporans
         ]);
     }
     
