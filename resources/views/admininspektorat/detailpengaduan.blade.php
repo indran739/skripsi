@@ -421,7 +421,14 @@
                             <div class="card-body">
                                 <dl class="row">
                                     <dt class="col-sm-5 mb-3 h4">Data Laporan</dt>
-                                    <dd class="col-sm-7 mb-2"> </dd> 
+                                    <dd class="col-sm-7 mb-2" style="text-align:right; display: flex; align-items: center;">
+                                            <span style="display: flex; align-items: center; margin-left: auto;">
+                                              <!-- Jumlah Likes disamping tombol -->
+                                                <span class="badge bg-gray disabled color-palette" style="font-size: 14px; display: flex; align-items: center; margin-right: 10px;">
+                                                    <i class="fas fa-thumbs-up mr-2"></i>{{ $laporan->likes->count() }}
+                                                </span>
+                                            </span>
+                                    </dd>
                                     <dt class="col-sm-5 mb-3">Kategori</dt>
                                     <dd class="col-sm-7 mb-3"> <span>:</span> {{ $laporan->category->name }}</dd>
                                     <dt class="col-sm-5 mb-3">Kecamatan</dt>

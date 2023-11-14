@@ -124,7 +124,7 @@
           <section class="col-lg-6 connectedSortable">
               <div class="card">
                   <div class="card-header" style="background-color:#4030A3;">
-                      <h3 class="card-title text-white">TOP 3 Laporan yang paling banyak disukai</h3>
+                      <h3 class="card-title text-white">Sorotan 3 Laporan yang paling banyak disukai</h3>
                       <div class="card-tools">
                           <button type="button" class="btn btn-tool" data-card-widget="collapse">
                               <i class="fas fa-minus"></i>
