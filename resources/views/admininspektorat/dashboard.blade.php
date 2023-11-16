@@ -151,7 +151,7 @@
                               @foreach($laporans as $laporan)
                                   <tr>
                                       <td style="text-align: center;">{{ $count++ }}</td>
-                                      <td>{{ Str::limit($laporan->isi_laporan, 20) }}</td>
+                                      <td>{{ Str::limit($laporan->isi_laporan, 15) }}</td>
                                       <td>{{ $laporan->category->name }}</td>
                                       <td>{{ $laporan->opd->name }}</td>
                                       <td style="text-align: center;">

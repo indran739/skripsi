@@ -51,14 +51,6 @@ use App\Models\Desa;
 Route::get('/', function () {
     return view('auth.login');})->middleware('guest');
 
-    
-Route::get('/pdf', function () {
-    return view('pdf');})->middleware('guest');
-
-    
-Route::get('/data', function () {
-        return view('data');})->middleware('guest');
-
 Route::get('/daftar', function () {
     return view('auth.register',[
         "kecamatans" => Kecamatan::all(),
@@ -73,10 +65,6 @@ Route::get('/tentangkami', function () {
             'active' => 'about'
         ]);})->middleware('guest');
 
-Route::middleware(['guest'])->group(function () {
-    Route::post('daftarakun', [Pengadu::class, 'daftar_akun'])->name('regist');
-});
-
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
@@ -88,7 +76,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('admininspektorat/chart-data', [Admin::class, 'chartPengaduanCategories']);
         Route::get('admininspektorat/chart-opd', [Admin::class, 'chartPengaduanOpd']);
         Route::get('admininspektorat/get-opd-averages', [Admin::class, 'getOpdAverages']);
-
         Route::get('laporanmasuk', [Admin::class, 'view_laporan_masuk']);
         Route::get('laporanterdisposisi', [Admin::class, 'view_laporan_terdisposisi']);
         Route::get('laporanselesai', [Admin::class, 'view_laporan_selesai']);
@@ -112,18 +99,19 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/cetak-laporan-belumtanggap', [PDFController::class, 'cetakLaporanBelumTanggap']);
         Route::post('/cetak-laporan-kinerja', [PDFController::class, 'cetakLaporanKinerja']);
         Route::get('/search', [Admin::class, 'search']);
+        Route::get('/search-laporan-disposisi', [Admin::class, 'searchLaporanDisposisi']);
         Route::put('suspendedakun/{id_user}', [Admin::class, 'suspend_akun']);
         Route::post('hapususer/{id_user}', [Admin::class, 'delete_user']);
         Route::post('delete_admin/{id_user}', [Admin::class, 'delete_user']);
         Route::put('edituseradmin/{id_user}', [Admin::class, 'update_user_admin']);
         Route::get('/searchpengadu', [Admin::class, 'searchUserPengadu']);
 
-        Route::get('/admininspektorat/chart', [DashboardController::class, 'index']);
-        Route::get('/admininspektorat/chart-data', [DashboardController::class, 'chartData']);
-        Route::get('/admininspektorat/chart-data-opd', [DashboardController::class, 'chartDataOpd']);
-        Route::get('/admininspektorat/get-opd-averages', [DashboardController::class, 'getOpdAverages']);
-        Route::get('/admininspektorat/search', [DashboardController::class, 'view_search']);
-        Route::get('/search', [DashboardController::class, 'search']);
+        // Route::get('/admininspektorat/chart', [DashboardController::class, 'index']);
+        // Route::get('/admininspektorat/chart-data', [DashboardController::class, 'chartData']);
+        // Route::get('/admininspektorat/chart-data-opd', [DashboardController::class, 'chartDataOpd']);
+        // Route::get('/admininspektorat/get-opd-averages', [DashboardController::class, 'getOpdAverages']);
+        // Route::get('/admininspektorat/search', [DashboardController::class, 'view_search']);
+        // Route::get('/search', [DashboardController::class, 'search']);
 
     });
 
@@ -152,9 +140,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['pengadu'])->group(function () {
         Route::get('halamanpending', [Pengadu::class, 'halaman_pending']);
-        // Route::put('editdatapengadu/{id_user}', [Pengadu::class, 'editdatapengadu']);
         Route::put('editdataregister/{id_user}', [Pengadu::class, 'editdataregister']);
-        // Route::get('editdatapengadu', [Pengadu::class, 'editdatapengadu']);
     });
     
     Route::middleware(['pengadu','verification'])->group(function () {

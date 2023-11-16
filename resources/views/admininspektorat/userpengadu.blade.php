@@ -86,11 +86,6 @@
                                     <div class="card-tools">
                                         <div class="input-group input-group-sm" style="width: 500px;">
                                             <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-                                            <div class="input-group-append float-left">
-                                            <button type="submit" class="btn btn-default">
-                                                <i class="fas fa-search"></i>
-                                            </button>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -109,7 +104,7 @@
                                         <th style="text-align: center;">Aksi</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="bodyRows">
                                 @if(count($users) > 0)
                                     @php
                                         $no = ($users->currentPage() - 1) * $users->perPage() + 1;
@@ -322,11 +317,6 @@
                                     <div class="card-tools">
                                         <div class="input-group input-group-sm" style="width: 500px;">
                                             <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-                                            <div class="input-group-append float-left">
-                                            <button type="submit" class="btn btn-default">
-                                                <i class="fas fa-search"></i>
-                                            </button>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -489,7 +479,7 @@
                                 <div class="col-12">
                                     <div class="card-tools">
                                         <div class="input-group input-group-sm" style="width: 500px;">
-                                            <input type="text" id="searchPengadu" class="form-control" placeholder="Cari berdasarkan isi laporan...">
+                                            <input type="text" id="searchPengadu" class="form-control" placeholder="Cari berdasarkan NIK/Nama Pengadu">
                                         </div>
                                     </div>
                                 </div>
@@ -683,11 +673,6 @@
                                         <div class="card-tools">
                                             <div class="input-group input-group-sm" style="width: 500px;">
                                                 <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-                                                <div class="input-group-append float-left">
-                                                <button type="submit" class="btn btn-default">
-                                                    <i class="fas fa-search"></i>
-                                                </button>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -929,5 +914,4 @@ $(document).ready(function () {
         }
 });
 </script>
-
 @endsection

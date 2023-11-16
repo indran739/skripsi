@@ -8,7 +8,12 @@
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-
+    <style>
+    ::placeholder {
+      font-style: italic; /* Menjadikan teks miring */
+    }
+  </style>
+  
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
@@ -28,7 +33,7 @@
                     <div class="form-group row">
                         <label for="" class="col-sm-3 col-form-label">NIK</label>
                         <div class="col-sm-9">
-                            <input type="text" style="width: 40%;" value="{{ old('nik') }}" class="form-control @error('nik') is-invalid @enderror" placeholder="" name="nik">
+                            <input type="text" style="width: 40%;" value="{{ old('nik') }}" class="form-control @error('nik') is-invalid @enderror" placeholder="62**************" name="nik">
                             @error('nik')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -39,7 +44,7 @@
                     <div class="form-group row">
                         <label for="" class="col-sm-3 col-form-label">Nama Lengkap</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="" name="name"  value="{{ old('name') }}">
+                            <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Nama Lengkap Anda" name="name"  value="{{ old('name') }}">
                             @error('name')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -50,7 +55,7 @@
                     <div class="form-group row">
                         <label for="" class="col-sm-3 col-form-label">Alamat</label>
                         <div class="col-sm-9">
-                            <textarea class="form-control @error('alamat') is-invalid @enderror" rows="3" placeholder="" name="alamat" value="{{ old('alamat') }}" required> </textarea>
+                            <textarea class="form-control @error('alamat') is-invalid @enderror" rows="3" placeholder="Ketik Alamat Anda.." name="alamat" value="{{ old('alamat') }}" required>Ketik Alamat Anda.. </textarea>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -88,7 +93,7 @@
                     <div class="form-group row">
                         <label for="" class="col-sm-3 col-form-label">Tempat Lahir</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control @error('tempat_lahir') is-invalid @enderror" placeholder="" name="tempat_lahir" value="{{ old('tempat_lahir') }}">
+                            <input type="text" class="form-control @error('tempat_lahir') is-invalid @enderror" placeholder="Ketik Tempat Lahir Anda" name="tempat_lahir" value="{{ old('tempat_lahir') }}">
                             @error('tempat_lahir')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>

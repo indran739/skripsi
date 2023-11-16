@@ -329,11 +329,30 @@
                             </div>
                         </div>
                     <div class="tab-pane fade" id="custom-tabs-four-disposisi" role="tabpanel" aria-labelledby="custom-tabs-four-disposisi-tab">
-                    <div class="row">
-                                    <div class="col-12">
-                                        <div class="card-tools d-flex justify-content-end">
-                                        </div>
-                                    </div>
+                           <div class="row">
+                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                    <input type="text" id="searchTerdisposisi" style="width: 70%;" class="form-control" placeholder="Cari berdasarkan isi Laporan">             
+                                </div>
+                                <div class="col-sm-6 col-md-6 col-lg-6 mb-2 d-flex justify-content-end" style="">
+                                    <select class="form-control" id="opdFilter" style="width: 30%;" name="id_opd_fk" required>
+                                        <option selected="selected">-------- Filter OPD --------</option>
+                                        @foreach($opds as $opd)
+                                            @if($opd->name != 'pengadu' && $opd->name != 'Inspektorat Kabupaten Gunung Mas')
+                                                <option value="{{ $opd->id }}">{{ $opd->name }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+
+                                    <select class="form-control ml-3" id="categoryFilter" style="width:30%;" name="id_category_fk" id="id_category_fk" required>
+                                        <option selected="selected">-------- Filter Kategori -------</option>
+                                        @foreach($categories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+
                                     <!-- /.card-header -->
                                     <div class="card-body table-responsive p-0">
                                         <table class="table table-hover text-nowrap">
@@ -341,23 +360,21 @@
                                             <tr>
                                             <th>No</th>
                                             <th>Isi Laporan</th>
-                                            <th>Tanggal Lapor</th>
+                                            <th>Tanggal Disposisi</th>
                                             <th>Kategori</th>
                                             <th>OPD Tujuan</th>
                                             <th class="">Status</th>
                                             <th style="text-align: center;">Aksi</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                    @if(count($laporans_disposisi) > 0)
-                                        @php
-                                            $no = ($laporans_disposisi->currentPage() - 1) * $laporans_disposisi->perPage() + 1;
-                                        @endphp
+                                        <tbody id="bodyTable">
+                                    @if(count($laporans_disposisi) > 0) 
+                                        @php $count = 1 @endphp
                                         @foreach($laporans_disposisi as $laporan)
                                             <tr>
-                                            <td>{{ $no++ }}</td>
+                                            <td>{{ $count++ }}</td>
                                             <td>{{ Str::limit($laporan->isi_laporan, 20) }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($laporan->tanggal_lapor)->format('d F Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($laporan->tanggal_disposisi)->format('d F Y') }}</td>
                                             <td>{{ $laporan->category->name }}</td>
                                             <td>{{ $laporan->opd->name }}</td>
                                             
@@ -410,12 +427,225 @@
                                         </tbody>
                                         </table>
                                     </div>
-                                    <!-- Pagination Links -->
-                                        <div class="container col-md-12 float-right mt-2 mb-3">
-                                            {{ $laporans_disposisi->links('vendor.pagination.adminlte_sec') }}
-                                        </div>
                             </div>
                     </div>
 
         <!-- /.content-header -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+<script>
+$(document).ready(function () {
+    $('#searchTerdisposisi').on('input', function () {
+        var searchTerm = $(this).val();
+        $.ajax({
+            url: '/search-laporan-disposisi', // Ganti dengan URL yang sesuai dengan endpoint pencarian
+            method: 'GET',
+            data: { searchTerm: searchTerm },
+            success: function (data) {
+                // Perbarui tampilan dengan hasil pencarian
+                var results = data.results;
+                var tableBody = $('#bodyTable');
+                tableBody.empty();
+
+                if (results.length > 0) {
+                    $.each(results, function (index, result) {
+                        var formattedDate = result.tanggal_disposisi ? new Date(result.tanggal_disposisi).toLocaleDateString('en-GB', {
+                                    day: 'numeric',
+                                    month: 'long',
+                                    year: 'numeric'
+                                }) : '';
+
+                        var rowNumber = index + 1; // Nomor urut, dimulai dari 1
+                        var row = '<tr>';
+                        row += '<td>' + rowNumber + '</td>';
+                        row += '<td>' + (result.isi_laporan ? result.isi_laporan.substring(0, 20) : '') + '</td>';
+                        row += '<td>' + formattedDate + '</td>'; // Menggunakan tanggal yang sudah diformat
+                        row += '<td>' + result.category.name + '</td>';
+                        row += '<td>' + result.opd.name + '</td>';
+                        row += '<td>' + getStatusBadge(result.status_selesai, result.proses_tindak, result.validasi_laporan, result.disposisi_opd) + '</td>';
+                        row += '<td style="text-align: center;" colspan="2"><button type="button" class="btn bg-gradient-info"><a href="/detailpengaduanadmin/' + result.id + '" style="text-decoration: none; color:white;"><i class="fas fa-eye"></i></a></button> </td>';
+                        row += '</tr>';
+                        tableBody.append(row);
+                    });
+                } else {
+                    var noData = '<tr><td colspan="4" style="text-align: center;">No Data</td></tr>';
+                    tableBody.append(noData);
+                }
+            },
+            error: function (error) {
+                console.log('Error:', error);
+            }
+        });
+    });
+
+    function getStatusBadge(status_selesai, proses_tindak, validasi_laporan, disposisi_opd) {
+        if (status_selesai == 'Y') {
+            return '<div><span class="badge badge-success">Selesai</span></div>';
+        } else if (proses_tindak == 'Y') {
+            return '<div><span class="badge badge-dark">Ditindak</span></div>';
+        } else if (validasi_laporan == 'Y') {
+            return '<div><span class="badge badge-info">Valid</span></div>';
+        } else if (validasi_laporan == 'N') {
+            return '<div><span class="badge badge-danger">Tidak valid</span></div>';
+        } else if (disposisi_opd == 'Y') {
+            return '<div><span class="badge badge-primary">Terdisposisi</span></div>';
+        } else if (disposisi_opd == 'N') {
+            return '<div><span class="badge badge-danger">Ditolak</span></div>';
+        } else {
+            return '<div><span class="badge badge-warning">Menunggu</span></div>';
+        }
+    }
+
+});
+
+</script>
+
+<script>
+$(document).ready(function () {
+    $('#opdFilter').on('change', function () {
+        var selectedOpd = $(this).val();
+        // Cek apakah nilai dropdown adalah "Pilih OPD"
+        if (selectedOpd === '-------- Filter OPD --------') {
+            // Muat ulang data seperti pada halaman awal
+            window.location.href = '/laporanmasuk'; // Ganti dengan URL halaman awal Anda
+        } else {
+
+        $.ajax({
+            url: '/search-laporan-disposisi', // Ganti dengan URL yang sesuai dengan endpoint pencarian
+            method: 'GET',
+            data: { opd: selectedOpd },
+            success: function (data) {
+                // Perbarui tampilan dengan hasil pencarian
+                var results = data.results;
+                var tableBody = $('#bodyTable');
+                tableBody.empty();
+
+                if (results.length > 0) {
+                    $.each(results, function (index, result) {
+                        var formattedDate = result.tanggal_disposisi ? new Date(result.tanggal_disposisi).toLocaleDateString('en-GB', {
+                                    day: 'numeric',
+                                    month: 'long',
+                                    year: 'numeric'
+                                }) : '';
+
+                        var rowNumber = index + 1; // Nomor urut, dimulai dari 1
+                        var row = '<tr>';
+                        row += '<td>' + rowNumber + '</td>';
+                        row += '<td>' + (result.isi_laporan ? result.isi_laporan.substring(0, 20) : '') + '</td>';
+                        row += '<td>' + formattedDate + '</td>'; // Menggunakan tanggal yang sudah diformat
+                        row += '<td>' + result.category.name + '</td>';
+                        row += '<td>' + result.opd.name + '</td>';
+                        row += '<td>' + getStatusBadge(result.status_selesai, result.proses_tindak, result.validasi_laporan, result.disposisi_opd) + '</td>';
+                        row += '<td style="text-align: center;" colspan="2"><button type="button" class="btn bg-gradient-info"><a href="/detailpengaduanadmin/' + result.id + '" style="text-decoration: none; color:white;"><i class="fas fa-eye"></i></a></button> </td>';
+                        row += '</tr>';
+                        tableBody.append(row);
+                    });
+                } else {
+                    var noData = '<tr><td colspan="4" style="text-align: center;">No Data</td></tr>';
+                    tableBody.append(noData);
+                }
+            },
+            error: function (error) {
+                console.log('Error:', error);
+            }
+        });
+    }
+    });
+
+            function getStatusBadge(status_selesai, proses_tindak, validasi_laporan, disposisi_opd) {
+                if (status_selesai == 'Y') {
+                    return '<div><span class="badge badge-success">Selesai</span></div>';
+                } else if (proses_tindak == 'Y') {
+                    return '<div><span class="badge badge-dark">Ditindak</span></div>';
+                } else if (validasi_laporan == 'Y') {
+                    return '<div><span class="badge badge-info">Valid</span></div>';
+                } else if (validasi_laporan == 'N') {
+                    return '<div><span class="badge badge-danger">Tidak valid</span></div>';
+                } else if (disposisi_opd == 'Y') {
+                    return '<div><span class="badge badge-primary">Terdisposisi</span></div>';
+                } else if (disposisi_opd == 'N') {
+                    return '<div><span class="badge badge-danger">Ditolak</span></div>';
+                } else {
+                    return '<div><span class="badge badge-warning">Menunggu</span></div>';
+                }
+            }
+
+});
+</script>
+
+<script>
+$(document).ready(function () {
+    $('#categoryFilter').on('change', function () {
+        var selectedCategory = $(this).val();
+        // Cek apakah nilai dropdown adalah "Pilih OPD"
+        if (selectedCategory === '-------- Filter Kategori --------') {
+            // Muat ulang data seperti pada halaman awal
+            window.location.href = '/laporanmasuk'; // Ganti dengan URL halaman awal Anda
+        } else {
+
+        $.ajax({
+            url: '/search-laporan-disposisi', // Ganti dengan URL yang sesuai dengan endpoint pencarian
+            method: 'GET',
+            data: { category: selectedCategory },
+            success: function (data) {
+                // Perbarui tampilan dengan hasil pencarian
+                var results = data.results;
+                var tableBody = $('#bodyTable');
+                tableBody.empty();
+
+                if (results.length > 0) {
+                    $.each(results, function (index, result) {
+                        var formattedDate = result.tanggal_disposisi ? new Date(result.tanggal_disposisi).toLocaleDateString('en-GB', {
+                                    day: 'numeric',
+                                    month: 'long',
+                                    year: 'numeric'
+                                }) : '';
+
+                        var rowNumber = index + 1; // Nomor urut, dimulai dari 1
+                        var row = '<tr>';
+                        row += '<td>' + rowNumber + '</td>';
+                        row += '<td>' + (result.isi_laporan ? result.isi_laporan.substring(0, 20) : '') + '</td>';
+                        row += '<td>' + formattedDate + '</td>'; // Menggunakan tanggal yang sudah diformat
+                        row += '<td>' + result.category.name + '</td>';
+                        row += '<td>' + result.opd.name + '</td>';
+                        row += '<td>' + getStatusBadge(result.status_selesai, result.proses_tindak, result.validasi_laporan, result.disposisi_opd) + '</td>';
+                        row += '<td style="text-align: center;" colspan="2"><button type="button" class="btn bg-gradient-info"><a href="/detailpengaduanadmin/' + result.id + '" style="text-decoration: none; color:white;"><i class="fas fa-eye"></i></a></button> </td>';
+                        row += '</tr>';
+                        tableBody.append(row);
+                    });
+                } else {
+                    var noData = '<tr><td colspan="4" style="text-align: center;">No Data</td></tr>';
+                    tableBody.append(noData);
+                }
+            },
+            error: function (error) {
+                console.log('Error:', error);
+            }
+        });
+    }
+    });
+
+            function getStatusBadge(status_selesai, proses_tindak, validasi_laporan, disposisi_opd) {
+                if (status_selesai == 'Y') {
+                    return '<div><span class="badge badge-success">Selesai</span></div>';
+                } else if (proses_tindak == 'Y') {
+                    return '<div><span class="badge badge-dark">Ditindak</span></div>';
+                } else if (validasi_laporan == 'Y') {
+                    return '<div><span class="badge badge-info">Valid</span></div>';
+                } else if (validasi_laporan == 'N') {
+                    return '<div><span class="badge badge-danger">Tidak valid</span></div>';
+                } else if (disposisi_opd == 'Y') {
+                    return '<div><span class="badge badge-primary">Terdisposisi</span></div>';
+                } else if (disposisi_opd == 'N') {
+                    return '<div><span class="badge badge-danger">Ditolak</span></div>';
+                } else {
+                    return '<div><span class="badge badge-warning">Menunggu</span></div>';
+                }
+            }
+
+});
+</script>
+
 @endsection

@@ -391,15 +391,58 @@ class Admin extends Controller
         $opd =  Opd::select('name')->where('id',$idOpd)->first();
         $laporans_pending = Pengaduan::where('disposisi_opd', 'P')->whereNull('status_selesai')->orderBy('tanggal_lapor', 'desc')->paginate(5);
         $laporans_tolak = Pengaduan::where('disposisi_opd', 'N')->whereNull('status_selesai')->orderBy('tanggal_lapor', 'desc')->paginate(5);
-        $laporans_disposisi = Pengaduan::where('disposisi_opd', 'Y')->whereNull('status_selesai')->orderBy('tanggal_lapor', 'desc')->paginate(5);
+        $laporans_disposisi = Pengaduan::where('disposisi_opd', 'Y')->whereNull('status_selesai')->orderBy('tanggal_lapor', 'desc')->get();
         // $laporans_disposisi = Pengaduan::where('disposisi_opd', 'Y')->whereNull('status_selesai')->orderBy('tanggal_lapor', 'desc')->paginate(5);
+
+        $kategorisDisposisi = Category::whereHas('pengaduan', function ($query) {
+            $query->where('disposisi_opd', 'Y')->whereNull('status_selesai');
+        })->get();
+
+        $opdDisposisi = Opd::where('name', '!=', 'pengadu')->where('name', '!=', 'Inspektorat Kabupaten Gunung Mas')
+        ->whereHas('pengaduan', function ($query) {
+            $query->where('disposisi_opd', 'Y')->whereNull('status_selesai');
+        })->get(['id', 'name']);
+
         return view('admininspektorat.laporanmasuk', [
             'opd' => $opd,
             'laporans_pending' => $laporans_pending,
             'laporans_tolak' => $laporans_tolak,
             'laporans_disposisi' => $laporans_disposisi,
             'active' => 'manajemenlaporan',
+            'categories' => $kategorisDisposisi,
+            'opds' => $opdDisposisi
         ]);
+    }
+
+    public function searchLaporanDisposisi(Request $request)
+    {
+        $searchTerm = $request->input('searchTerm');
+        $category = $request->input('category'); // Ambil nilai kategori dari request
+        $opd = $request->input('opd');
+    
+        $query = Pengaduan::where('isi_laporan', 'like', '%' . $searchTerm . '%');
+    
+        // Filter berdasarkan kategori jika kategori dipilih
+        if ($category) {
+            $query->whereHas('category', function ($query) use ($category) {
+                $query->where('id', $category);
+            });
+        }
+    
+        // Filter berdasarkan kategori jika kategori dipilih
+        if ($opd) {
+            $query->whereHas('opd', function ($query) use ($opd) {
+                $query->where('id', $opd);
+            });
+        }
+    
+        $results = $query->with('category', 'opd')
+                        ->where('disposisi_opd', 'Y')
+                        ->whereNull('status_selesai')
+                        ->orderBy('tanggal_lapor', 'desc')
+                        ->get();
+    
+        return response()->json(['results' => $results]);
     }
 
     public function view_laporan_selesai() {
@@ -428,28 +471,6 @@ class Admin extends Controller
             ->get();
         return response()->json(['results' => $results]);
     }
-
-
-    public function filterLaporanSelesai(Request $request) 
-    {
-        $idOpd = $request->input('id_opd_fk');
-        $idCategory = $request->input('id_category_fk');
-
-        // Lakukan filter data berdasarkan $idOpd dan $idCategory
-        $filteredLaporans = Pengaduan::with(['category', 'opd']) // Memuat relasi category dan opd
-            ->where('status_selesai', 'Y')
-            ->when($idOpd, function ($query) use ($idOpd) {
-                return $query->where('id_opd_fk', $idOpd);
-            })
-            ->when($idCategory, function ($query) use ($idCategory) {
-                return $query->where('id_category_fk', $idCategory);
-            })
-            ->orderBy('tanggal_lapor', 'desc')
-            ->paginate(7);
-
-        return response()->json(['laporans' => $filteredLaporans]); // Pastikan mengirimkan 'laporans' ke frontend
-    }
-
 
 
     public function view_user_pengadu() {
@@ -514,6 +535,7 @@ class Admin extends Controller
             'active' => 'kategori'
         ]);
     }
+
 
     public function showDataDisposisi($id)
     {

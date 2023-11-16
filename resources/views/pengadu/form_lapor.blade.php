@@ -146,7 +146,7 @@
                                 <div class="col-sm-10">
                                     <div class="custom-file" style="width: 15%;">
                                         <input type="file" class="custom-file-input" id="customFileLampiran" name="lampiran">
-                                        <p id="error-lampiran" class="d-flex justify-content-start mb-2 mt-1 text-red fw-bold" style="font-size:14px;"></p>
+                                        <p id="error-lampiran" class="d-flex justify-content-start mb-2 mt-1 text-red fw-bold" style="font-size:14px;">*opsional (pdf)</p>
                                         <label class="custom-file-label" for="customFileLampiran">Pilih File</label>
                                     </div>
                                 </div>
@@ -157,7 +157,7 @@
                                 <div class="col-sm-10">
                                     <div class="custom-file" style="width: 15%;">
                                         <input type="file" class="custom-file-input" id="customFileFirstImage" name="first_image">
-                                        <p id="error-first-image" class="d-flex justify-content-start mb-2 text-red mt-1 fw-bold" style="font-size:14px;"></p>
+                                        <p id="error-first-image" class="d-flex justify-content-start mb-2 text-red mt-1 fw-bold" style="font-size:14px;">*opsional (jpg, jpeg,png)</p>
                                         <label class="custom-file-label" for="customFileFirstImage">Pilih File</label>
                                     </div>
                                 </div>
@@ -168,7 +168,7 @@
                                 <div class="col-sm-10">
                                     <div class="custom-file" style="width: 15%;">
                                         <input type="file" class="custom-file-input" id="customFileSecImage" name="sec_image">
-                                        <p id="error-sec-image" class="d-flex justify-content-start mb-2 text-red mt-1 fw-bold" style="font-size:14px;"></p>
+                                        <p id="error-sec-image" class="d-flex justify-content-start mb-2 text-red mt-1 fw-bold" style="font-size:14px;">*opsional (jpg, jpeg,png)</p>
                                         <label class="custom-file-label" for="customFileSecImage">Pilih File</label>
                                     </div>
                                 </div>
