@@ -105,7 +105,7 @@
                         <label for="" class="col-sm-3 col-form-label">Tanggal Lahir</label>
                         <div class="col-sm-9">
                             <div class="input-group date" style="width: 35%;" id="reservationdate" data-target-input="nearest" >
-                                <input type="text" class="form-control @error('tanggal_lahir') is-invalid @enderror datetimepicker-input" name="tanggal_lahir" data-target="#reservationdate" value="{{ old('tanggal_lahir') }}"/>
+                                <input type="text" class="form-control @error('tanggal_lahir') is-invalid @enderror datetimepicker-input" placeholder="MM/DD/YYYY" name="tanggal_lahir" data-target="#reservationdate" value="{{ old('tanggal_lahir') }}"/>
                                 @error('tanggal_lahir')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -154,7 +154,7 @@
                     <div class="form-group row">
                         <label for="" class="col-sm-3 col-form-label">Email</label>
                         <div class="col-sm-9">
-                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" placeholder="Ketik Email Anda" name="email" value="{{ old('email') }}" required autocomplete="email">
                             @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -165,7 +165,7 @@
                     <div class="form-group row">
                         <label for="" class="col-sm-3 col-form-label">No. Handphone</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control @error('no_hp') is-invalid @enderror" value="{{ old('no_hp') }}" style="width: 25%;" placeholder="" name="no_hp">
+                            <input type="text" class="form-control @error('no_hp') is-invalid @enderror" value="{{ old('no_hp') }}" style="width: 25%;" placeholder="08**********" name="no_hp">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -240,7 +240,7 @@
                     <div class="form-group row">
                             <label for="" class="col-sm-3 col-form-label">Password</label>
                             <div class="col-sm-9">
-                                <input id="password" style="width: 40%;" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                                <input id="password" style="width: 40%;" type="password" placeholder="" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>

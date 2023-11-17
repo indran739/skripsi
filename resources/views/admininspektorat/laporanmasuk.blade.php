@@ -2,19 +2,6 @@
 @section('container')
 <div class="content-header">
     <div class="container-fluid">
-    @if(Session::has('success'))
-      <div class="alert alert-success alert-dismissible fade show" role="alert">
-          <strong>Laporan Pengaduan Sudah dilakukan disposisi ke OPD terkait</strong>
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    @endif  
-
-    @if(Session::has('berhasil'))
-      <div class="alert alert-info alert-dismissible fade show" role="alert">
-          <strong>Laporan Pengaduan di disposisikan ke Pengadu</strong>
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    @endif  
         <div class="row mb-2">
           <div class="col-sm-6 mb-3">
             <h1 class="m-0">Laporan Masuk</h1>
@@ -171,7 +158,7 @@
                                                                         @csrf
                                                                         @method('put')
                                                                             <div class="form-group">
-                                                                                <textarea class="form-control" rows="3" name="tanggapan" placeholder="Beri tanggapan pengaduan..."></textarea>
+                                                                                <textarea class="form-control" rows="3" name="tanggapan" id="id_tanggapan" placeholder="Beri tanggapan pengaduan..."></textarea>
                                                                             </div>
                                                                         </div>
                                                                     </div>

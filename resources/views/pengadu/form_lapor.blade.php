@@ -16,19 +16,6 @@
 
 <div class="col-md-12">
 
-@if(Session::has('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>Laporan Pengaduan Berhasil dikirim!</strong> <br>Anda dapat Menunggu Validasi dan Tindak Lanjut dari Admin Instansi.
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-@endif
-
-@if(Session::has('error'))
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>Laporan Pengaduan Gagal dikirim!</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-@endif
 <div class="card card-dark">
               <div class="card-header">
                 <h3 class="card-title">Form Pengaduan</h3>
@@ -287,6 +274,5 @@
         }
     });
 </script>
-
 
 @endsection

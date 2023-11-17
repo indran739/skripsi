@@ -51,6 +51,7 @@
     @yield('container')
     @yield('section')
 </div>
+@include('sweetalert::alert')
 <!-- jQuery -->
 <script src="{{asset('/')}}plugins/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
