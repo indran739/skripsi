@@ -162,7 +162,7 @@ public function searchLaporanSelesai(Request $request)
 
     public function view_laporan_selesai() {
         $iduser = Auth::user()->id;
-        $laporans = Pengaduan::where('id_user_fk', $iduser)->where('status_selesai','Y')->orderBy('tanggal_lapor', 'desc')->paginate(7);
+        $laporans = Pengaduan::where('id_user_fk', $iduser)->where('status_selesai','Y')->orderBy('tanggal_lapor', 'desc')->get();
     
         return view('pengadu.laporan_selesai', [
             'laporans' => $laporans,
@@ -436,12 +436,14 @@ public function store_pengaduan(Request $request)
             $laporan->validasi_laporan = 'P';
             $laporan->disposisi_opd = 'P';
             $laporan->tanggal_lapor = Carbon::now();
+            $laporan->tanggal_disposisi = NULL;
     
         } elseif ($laporan->disposisi_opd == 'N' && $laporan->id_opd_fk !== $request->id_opd_fk) { //laporan di alihkan ke OPD lain.
             $laporan->id_opd_fk = $request->id_opd_fk;
             $laporan->disposisi_opd = 'P';
             $laporan->validasi_laporan = 'P';
             $laporan->tanggal_lapor = Carbon::now();
+            $laporan->tanggal_disposisi = NULL;
         }
         
             // Menghandle unggah lampiran dan gambar
@@ -474,7 +476,7 @@ public function store_pengaduan(Request $request)
 
         // Menyimpan perubahan ke database
         if ($laporan->save()) {
-            return redirect('/laporanterkirim')->with('edited', 'Laporan berhasil diperbarui!');
+            return redirect('/laporanterkirim')->with('success', 'Laporan berhasil diperbarui!');
         } else {
             return redirect()->back()->with('error', 'Gagal memperbarui laporan. Silakan coba lagi.');
         }
@@ -523,12 +525,15 @@ public function update_pengaduan_invalid(Request $request, $id_pengaduan)
         $laporan->id_opd_fk = $request->id_opd_fk;
         $laporan->validasi_laporan = 'P';
         $laporan->tanggal_disposisi = Carbon::now();
+        $laporan->tanggal_validasi = NULL;
 
-    } elseif ($laporan->disposisi_opd == 'Y' && $laporan->validasi_laporan == 'N' && $laporan->id_opd_fk !== $request->id_opd_fk) {
+    } elseif ($laporan->disposisi_opd == 'Y' && $laporan->validasi_laporan == 'N' && $laporan->id_opd_fk !== $request->id_opd_fk) { //dialihkan ke OPD lain.
         $laporan->id_opd_fk = $request->id_opd_fk;
         $laporan->disposisi_opd = 'P';
         $laporan->validasi_laporan = 'P';
         $laporan->tanggal_lapor = Carbon::now();
+        $laporan->tanggal_disposisi = NULL;
+        $laporan->tanggal_validasi = NULL;
     }
     
         // Menghandle unggah lampiran dan gambar

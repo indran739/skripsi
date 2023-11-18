@@ -34,7 +34,7 @@
                             <tr>
                             <th>No</th>
                             <th>Isi Laporan</th>
-                            <th>Tanggal Lapor</th>
+                            <th>Tanggal Tindak</th>
                             <th>Tanggal Selesai</th>
                             <th>Kategori</th>
                             <th>OPD Tujuan</th>
@@ -45,13 +45,13 @@
                         <tbody id="bodyTable">
                     @if(count($laporans) > 0)
                         @php
-                            $no = ($laporans->currentPage() - 1) * $laporans->perPage() + 1;
+                            $count = 1
                         @endphp
                         @foreach($laporans as $laporan)
                             <tr>
-                            <td>{{ $no++ }}</td>
+                            <td>{{ $count++ }}</td>
                             <td>{{ Str::limit($laporan->isi_laporan, 50) }}</td>
-                            <td>{{ \Carbon\Carbon::parse($laporan->tanggal_lapor)->format('d F Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($laporan->tanggal_tindak)->format('d F Y') }}</td>
                             <td>{{ \Carbon\Carbon::parse($laporan->tgl_dinyatakan_selesai)->format('d F Y') }}</td>
                             <td>{{ $laporan->category->name }}</td>
                             <td>{{ $laporan->opd->name }}</td>
@@ -97,10 +97,7 @@
                         </tbody>
                         </table>
                     </div>
-                         <!-- Pagination Links -->
-                                <div class="container col-md-12 float-right mt-2 mb-3">
-                                    {{ $laporans->links('vendor.pagination.adminlte_sec') }}
-                                </div>
+                         
                             </div>
                     <!-- /.card-body -->
                     </div>
@@ -135,11 +132,17 @@ $(document).ready(function () {
                                     month: 'long',
                                     year: 'numeric'
                                 }) : '';
+                        var formattedTindakDate = result.tanggal_tindak ? new Date(result.tanggal_tindak).toLocaleDateString('en-GB', {
+                                    day: 'numeric',
+                                    month: 'long',
+                                    year: 'numeric'
+                                }) : '';
 
                         var rowNumber = index + 1; // Nomor urut, dimulai dari 1
                         var row = '<tr>';
                         row += '<td>' + rowNumber + '</td>';
                         row += '<td>' + (result.isi_laporan ? result.isi_laporan.substring(0, 50) : '') + '</td>';
+                        row += '<td>' + formattedTindakDate + '</td>';
                         row += '<td>' + formattedDate + '</td>';
                         row += '<td>' + result.category.name + '</td>';
                         row += '<td>' + result.opd.name + '</td>';

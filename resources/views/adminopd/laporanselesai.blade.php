@@ -82,7 +82,7 @@
                         <tbody id="bodyTable">
                     @if(count($laporans) > 0)
                         @php
-                            $no = ($laporans->currentPage() - 1) * $laporans->perPage() + 1;
+                            $no = 1
                         @endphp
                         @foreach($laporans as $laporan)
                             <tr>
@@ -170,10 +170,6 @@
                         </tbody>
                         </table>
                     </div>
-                         <!-- Pagination Links -->
-                                <div class="container col-md-12 float-right mt-2 mb-3">
-                                    {{ $laporans->links('vendor.pagination.adminlte_sec') }}
-                                </div>
                             </div>
                     <!-- /.card-body -->
                     </div>
@@ -285,7 +281,7 @@ $(document).ready(function () {
                         if (laporans.data.length > 0) {
                             $.each(laporans.data, function(index, laporan){
 
-                                var formattedDateCreated = laporan.tanggal_lapor ? new Date(laporan.tanggal_lapor).toLocaleDateString('en-GB', {
+                                var formattedDateCreated = laporan.tanggal_lapor ? new Date(laporan.tanggal_tindak).toLocaleDateString('en-GB', {
                                     day: 'numeric',
                                     month: 'long',
                                     year: 'numeric'

@@ -44,7 +44,7 @@
                     <div class="form-group row">
                         <label for="" class="col-sm-3 col-form-label">Nama Lengkap</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Nama Lengkap Anda" name="name"  value="{{ old('name') }}">
+                            <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Nama lengkap anda.." name="name"  value="{{ old('name') }}">
                             @error('name')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -55,7 +55,7 @@
                     <div class="form-group row">
                         <label for="" class="col-sm-3 col-form-label">Alamat</label>
                         <div class="col-sm-9">
-                            <textarea class="form-control @error('alamat') is-invalid @enderror" rows="3" placeholder="Ketik Alamat Anda.." name="alamat" value="{{ old('alamat') }}" required>Ketik Alamat Anda.. </textarea>
+                            <textarea class="form-control @error('alamat') is-invalid @enderror" rows="3" placeholder="Ketik alamat anda...jalan,RT,RW" name="alamat" value="{{ old('alamat') }}" required></textarea>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -93,7 +93,7 @@
                     <div class="form-group row">
                         <label for="" class="col-sm-3 col-form-label">Tempat Lahir</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control @error('tempat_lahir') is-invalid @enderror" placeholder="Ketik Tempat Lahir Anda" name="tempat_lahir" value="{{ old('tempat_lahir') }}">
+                            <input type="text" class="form-control @error('tempat_lahir') is-invalid @enderror" placeholder="Ketik tempat lahir anda.." name="tempat_lahir" value="{{ old('tempat_lahir') }}">
                             @error('tempat_lahir')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -219,6 +219,7 @@
                         <div class="col-sm-9">
                             <div class="custom-file" style="width: 50%;">
                                 <input type="file" class="custom-file-input @error('foto_wajah') is-invalid @enderror" id="customFile" name="foto_wajah" required autocomplete="foto_wajah">
+                                <p id="error-foto-wajah" class="d-flex justify-content-start mb-2 text-red mt-1 fw-bold" style="font-size:14px;">*ext. (jpg, jpeg)</p>
                                 @error('foto_wajah')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -233,6 +234,7 @@
                         <div class="col-sm-9">
                             <div class="custom-file" style="width: 50%;">
                                 <input type="file" class="custom-file-input @error('foto_ktp') is-invalid @enderror" id="customFile" name="foto_ktp" required autocomplete="foto_ktp">
+                                <p id="error-foto-ktp" class="d-flex justify-content-start mb-2 text-red mt-1 fw-bold" style="font-size:14px;">*ext. (jpg, jpeg)</p>
                                 <label class="custom-file-label" for="customFile">Choose File</label>
                             </div>
                         </div>
@@ -275,4 +277,37 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Ambil elemen-elemen input file
+        var fotoWajah = document.querySelector('input[name="foto_wajah"]');
+        var fotoKtp = document.querySelector('input[name="foto_ktp"]');
+
+        fotoWajah.addEventListener('change', function() {
+            validateFileExtension(this, 'jpg', 'jpeg', 'error-foto-wajah');
+        });
+
+        fotoKtp.addEventListener('change', function() {
+            validateFileExtension(this, 'jpg', 'jpeg', 'error-foto-ktp');
+        });
+
+        // Fungsi untuk memeriksa ekstensi file
+        function validateFileExtension(input, ...allowedExtensions) {
+            var fileName = input.value;
+            var fileExtension = fileName.split('.').pop().toLowerCase();
+            var errorElementId = allowedExtensions.pop(); // Ambil id elemen pesan kesalahan
+
+            // Periksa apakah ekstensi file diizinkan
+            if (allowedExtensions.indexOf(fileExtension) === -1) {
+                // Tampilkan pesan kesalahan
+                document.getElementById(errorElementId).innerText = 'File harus : ' + allowedExtensions.join(', ');
+                // Reset input file
+                input.value = '';
+            } else {
+                // Sembunyikan pesan kesalahan jika ekstensi valid
+                document.getElementById(errorElementId).innerText = '';
+            }
+        }
+    });
+</script>
   @endsection

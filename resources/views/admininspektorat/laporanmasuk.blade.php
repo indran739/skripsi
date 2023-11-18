@@ -240,7 +240,7 @@
                                             <tr>
                                             <th>No</th>
                                             <th>Isi Laporan</th>
-                                            <th>Tanggal Lapor</th>
+                                            <th>Tanggal Penolakan Disposisi</th>
                                             <th>Kategori</th>
                                             <th>OPD Tujuan</th>
                                             <th class="">Status</th>
@@ -256,7 +256,7 @@
                                             <tr>
                                             <td>{{ $no++ }}</td>
                                             <td>{{ Str::limit($laporan->isi_laporan, 20) }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($laporan->tanggal_lapor)->format('d F Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($laporan->tanggal_disposisi)->format('d F Y') }}</td>
                                             <td>{{ $laporan->category->name }}</td>
                                             <td>{{ $laporan->opd->name }}</td>
                                             
@@ -497,6 +497,7 @@ $(document).ready(function () {
         if (selectedOpd === '-------- Filter OPD --------') {
             // Muat ulang data seperti pada halaman awal
             window.location.href = '/laporanmasuk'; // Ganti dengan URL halaman awal Anda
+            
         } else {
 
         $.ajax({

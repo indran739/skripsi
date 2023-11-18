@@ -319,7 +319,7 @@ $data = $jumlahPengaduanPerBulan->values();
         $idOpd = Auth::user()->id_opd_fk;
         $opd =  Opd::select('name')->where('id',$idOpd)->first();
 
-        $pengaduans = Pengaduan::where('disposisi_opd','Y')->where('id_opd_fk',$idOpd)->where('status_selesai', 'Y')->orderBy('created_at', 'desc')->paginate(7);
+        $pengaduans = Pengaduan::where('disposisi_opd','Y')->where('id_opd_fk',$idOpd)->where('status_selesai', 'Y')->orderBy('created_at', 'desc')->get();
         
         // foreach ($pengaduans as $item) 
         // {

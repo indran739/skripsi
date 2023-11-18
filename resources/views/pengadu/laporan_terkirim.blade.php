@@ -111,12 +111,10 @@
                                                     @endif
                                                 @endif
                                         @endif
-
-                                        <td class="d-flex justify-content-center" colspan="2">
+                                        <td style="text-align: center;" colspan="2">
                                             <button type="button"  class="btn bg-gradient-info mr-2" data-toggle="" data-target="">
                                                 <a href="/detailpengaduan/{{ $laporan->id }}" style="text-decoration: none; color:white;"><i class="fas fa-eye"></i></a>
                                             </button>
-
                                         </td>
                                         </tr>
                                     @endforeach
@@ -146,7 +144,7 @@
                                             <tr>
                                             <th>No</th>
                                             <th>Isi Laporan</th>
-                                            <th>Tanggal Lapor</th>
+                                            <th>Tanggal Penolakan Disposisi</th>
                                             <th>Kategori</th>
                                             <th>OPD Tujuan</th>
                                             <th class="">Status</th> 
@@ -162,7 +160,7 @@
                                             <tr>
                                             <td>{{ $no++ }}</td>
                                             <td>{{ Str::limit($laporan->isi_laporan, 20) }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($laporan->tanggal_lapor)->format('d F Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($laporan->tanggal_disposisi)->format('d F Y') }}</td>
                                             <td>{{ $laporan->category->name }}</td>
                                             <td>{{ $laporan->opd->name }}</td>
                                             
@@ -237,7 +235,7 @@
                                             <tr>
                                             <th>No</th>
                                             <th>Isi Laporan</th>
-                                            <th>Tanggal Lapor</th>
+                                            <th>Tanggal Disposisi</th>
                                             <th>Kategori</th>
                                             <th>OPD Tujuan</th>
                                             <th class="">Status</th>
@@ -253,7 +251,7 @@
                                             <tr>
                                             <td>{{ $no++ }}</td>
                                             <td>{{ Str::limit($laporan->isi_laporan, 20) }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($laporan->tanggal_lapor)->format('d F Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($laporan->tanggal_disposisi)->format('d F Y') }}</td>
                                             <td>{{ $laporan->category->name }}</td>
                                             <td>{{ $laporan->opd->name }}</td>
                                             
@@ -326,7 +324,7 @@
                                             <tr>
                                             <th>No</th>
                                             <th>Isi Laporan</th>
-                                            <th>Tanggal Lapor</th>
+                                            <th>Tanggal Penolakan Validasi</th>
                                             <th>Kategori</th>
                                             <th>OPD Tujuan</th>
                                             <th class="">Status</th>
@@ -342,7 +340,7 @@
                                             <tr>
                                             <td>{{ $no++ }}</td>
                                             <td>{{ Str::limit($laporan->isi_laporan, 20) }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($laporan->tanggal_lapor)->format('d F Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($laporan->tanggal_validasi)->format('d F Y') }}</td>
                                             <td>{{ $laporan->category->name }}</td>
                                             <td>{{ $laporan->opd->name }}</td>
                                             
@@ -418,7 +416,7 @@
                                             <tr>
                                             <th>No</th>
                                             <th>Isi Laporan</th>
-                                            <th>Tanggal Lapor</th>
+                                            <th>Tanggal Validasi</th>
                                             <th>Kategori</th>
                                             <th>OPD Tujuan</th>
                                             <th class="">Status</th>
@@ -434,7 +432,7 @@
                                             <tr>
                                             <td>{{ $no++ }}</td>
                                             <td>{{ Str::limit($laporan->isi_laporan, 20) }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($laporan->tanggal_lapor)->format('d F Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($laporan->tanggal_validasi)->format('d F Y') }}</td>
                                             <td>{{ $laporan->category->name }}</td>
                                             <td>{{ $laporan->opd->name }}</td>
                                             
@@ -507,7 +505,8 @@
                                             <tr>
                                             <th>No</th>
                                             <th>Isi Laporan</th>
-                                            <th>Tanggal Lapor</th>
+                                            <th>Tanggal Tindak</th>
+                                            <th>Tanggal Estimasi Selesai</th>
                                             <th>Kategori</th>
                                             <th>OPD Tujuan</th>
                                             <th class="">Status</th>
@@ -523,7 +522,8 @@
                                             <tr>
                                             <td>{{ $no++ }}</td>
                                             <td>{{ Str::limit($laporan->isi_laporan, 20) }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($laporan->tanggal_lapor)->format('d F Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($laporan->tanggal_tindak)->format('d F Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($laporan->tanggal_selesai)->format('d F Y') }}</td>
                                             <td>{{ $laporan->category->name }}</td>
                                             <td>{{ $laporan->opd->name }}</td>
                                             

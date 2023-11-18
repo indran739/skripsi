@@ -3,7 +3,7 @@
     @auth
         @if (auth()->user()->verification == 'P')
             <div class="container">
-                <h6 class="fw-bold mt-4">Akun anda masih dalam proses verifikasi dan sedang dilakukan check untuk validasi data anda</h6>
+                <h6 class="fw-bold mt-4">Akun anda masih dalam proses verifikasi dan sedang dilakukan check untuk validasi data</h6>
                 <br>
                 <br>
                 <br>
@@ -307,9 +307,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-footer">
-                                    <button type="submit" class="btn btn-success">Submit</button>
-                                    <button class="btn btn-info float-right"><a href="/halamanpending" style="color:white;">Kembali</a></button>
+                                <div class="card-footer d-flex justify-content-center">
+                                    <button type="submit" class="btn btn-default text-white btn-block" style="width: 40%;background-color:#4030A3;">Submit</button>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="custom-tabs-four-messages" role="tabpanel" aria-labelledby="custom-tabs-four-messages-tab">

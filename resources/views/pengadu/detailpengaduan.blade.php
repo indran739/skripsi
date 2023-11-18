@@ -250,20 +250,40 @@
                                     <dt class="col-sm-5 mb-3">OPD Tujuan</dt>
                                     <dd class="col-sm-7 mb-3"> <span>:</span> {{ $laporan->opd->name }}</dd>
                                     <dt class="col-sm-5 mb-3">Tanggal Kejadian</dt>
-                                    <dd class="col-sm-7 mb-3"> <span>:</span> {{ \Carbon\Carbon::parse($laporan->tanggal_kejadian)->format('d F Y') }}</dd>
+                                    <dd class="col-sm-7 mb-3"> <span>:</span> {{ \Carbon\Carbon::parse($laporan->tanggal_kejadian)->format('d F Y, H:i')  }}</dd>
                                     <dt class="col-sm-5 mb-3">Tanggal Lapor</dt>
-                                    <dd class="col-sm-7 mb-3"> <span>:</span> {{ \Carbon\Carbon::parse($laporan->tanggal_lapor)->format('d F Y') }}</dd>
+                                    <dd class="col-sm-7 mb-3"> <span>:</span> {{ \Carbon\Carbon::parse($laporan->tanggal_lapor)->format('d F Y, H:i')  }}</dd>
+                                    @if($laporan->disposisi_opd == 'P')
+                                    <dt class="col-sm-5 mb-3">Tanggal Disposisi</dt>
+                                    <dd class="col-sm-7 mb-3"> <span>:</span> - </dd>
+                                    @elseif($laporan->disposisi_opd == 'Y')
+                                    <dt class="col-sm-5 mb-3">Tanggal Disposisi</dt>
+                                    <dd class="col-sm-7 mb-3"> <span>:</span> {{ \Carbon\Carbon::parse($laporan->tanggal_disposisi)->format('d F Y, H:i') }}</dd>
+                                    @elseif($laporan->disposisi_opd == 'N')
+                                    <dt class="col-sm-5 mb-3">Tanggal Penolakan Disposisi</dt>
+                                    <dd class="col-sm-7 mb-3"> <span>:</span> {{ \Carbon\Carbon::parse($laporan->tanggal_disposisi)->format('d F Y, H:i')  }}</dd>
+                                    @endif
+                                    @if($laporan->validasi_laporan == 'P')
+                                    <dt class="col-sm-5 mb-3">Tanggal Validasi</dt>
+                                    <dd class="col-sm-7 mb-3"> <span>:</span> - </dd>
+                                    @elseif($laporan->validasi_laporan == 'Y')
+                                    <dt class="col-sm-5 mb-3">Tanggal Validasi</dt>
+                                    <dd class="col-sm-7 mb-3"> <span>:</span> {{ \Carbon\Carbon::parse($laporan->tanggal_validasi)->format('d F Y, H:i')  }}</dd>
+                                    @elseif($laporan->validasi_laporan == 'N')
+                                    <dt class="col-sm-5 mb-3">Tanggal Penolakan Validasi</dt>
+                                    <dd class="col-sm-7 mb-3"> <span>:</span> {{ \Carbon\Carbon::parse($laporan->tanggal_validasi)->format('d F Y, H:i')  }}</dd>
+                                    @endif
                                     <dt class="col-sm-5 mb-3">Tanggal Tindak Lanjut</dt>
                                     @if($laporan->tanggal_tindak === NULL)
                                     <dd class="col-sm-7 mb-3"> <span>:</span> - </dd>
                                     @else
-                                    <dd class="col-sm-5 mb-3"> <span>:</span> {{ \Carbon\Carbon::parse($laporan->tanggal_tindak)->format('d F Y') }}</dd>
+                                    <dd class="col-sm-5 mb-3"> <span>:</span> {{ \Carbon\Carbon::parse($laporan->tanggal_tindak)->format('d F Y, H:i') }}</dd>
                                     @endif
                                     <dt class="col-sm-5 mb-3">Tanggal Estimasi Selesai</dt>
                                     @if($laporan->tanggal_selesai === NULL)
                                     <dd class="col-sm-5 mb-3"> <span>:</span> - </dd>
                                     @else
-                                    <dd class="col-sm-7 mb-3"> <span>:</span> {{ \Carbon\Carbon::parse($laporan->tanggal_selesai)->format('d F Y') }}</dd>
+                                    <dd class="col-sm-7 mb-3"> <span>:</span> {{ \Carbon\Carbon::parse($laporan->tanggal_selesai)->format('d F Y, H:i') }}</dd>
                                     @endif
                                     <dt class="col-sm-5 mb-3">Tanggal dinyatakan Selesai</dt>
                                     @if($laporan->tanggal_selesai === NULL && $laporan->status_selesai === NULL)
@@ -271,8 +291,8 @@
                                     @elseif($laporan->tanggal_selesai && $laporan->status_selesai === NULL)
                                     <dd class="col-sm-5 mb-3"> <span>:</span> - </dd>
                                     @elseif($laporan->tanggal_selesai && $laporan->status_selesai == 'Y')
-                                        <dd class="col-sm-7 mb-3"> <span>:</span> {{ \Carbon\Carbon::parse($laporan->tgl_dinyatakan_selesai)->format('d F Y') }} </dd>
-                                        @endif
+                                        <dd class="col-sm-7 mb-3"> <span>:</span> {{ \Carbon\Carbon::parse($laporan->tgl_dinyatakan_selesai)->format('d F Y, H:i') }} </dd>
+                                    @endif
                                     <dt class="col-sm-5 mb-2">Isi Laporan :</dt>
                                     <dd>{{ $laporan->isi_laporan }}</dd>
                                     <dt class="col-sm-5 mt-3">Progress Bar</dt>

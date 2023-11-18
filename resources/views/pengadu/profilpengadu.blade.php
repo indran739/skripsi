@@ -55,6 +55,8 @@
                                 <dd class="col-sm-8 mb-3"> <span>:</span> {{ auth()->user()->jenis_kelamin }} </dd>
                                 <dt class="col-sm-4 mb-3">Agama </dt>
                                 <dd class="col-sm-8 mb-3"> <span>:</span> {{ auth()->user()->agama }} </dd>
+                                <dt class="col-sm-4 mb-3">Email </dt>
+                                <dd class="col-sm-8 mb-3"> <span>:</span> {{ auth()->user()->email }} </dd>
                                 <dt class="col-sm-4 mb-3">No. Handphone </dt>
                                 <dd class="col-sm-8 mb-3"> <span>:</span> {{ auth()->user()->no_hp }} </dd>
                                 <dt class="col-sm-4 mb-3">Pekerjaan </dt>
@@ -87,7 +89,7 @@
                     <div class="form-group row">
                         <label for="" class="col-sm-3 col-form-label">Nama Lengkap</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" placeholder="" name="name" value="{{ auth()->user()->name }}">
+                            <input type="text" class="form-control" placeholder="" name="name" value="{{ auth()->user()->name }}" disabled>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -108,7 +110,7 @@
                             <input type="text" class="form-control" style="width: 25%;" placeholder="" name="no_hp" value="{{ auth()->user()->no_hp }}">
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <!-- <div class="form-group row">
                         <label for="" class="col-sm-3 col-form-label">Foto Wajah</label>
                         <div class="col-sm-9">
                             <div class="custom-file" style="width: 40%;">
@@ -116,7 +118,7 @@
                                 <label class="custom-file-label" for="customFile">Choose File</label>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- <div class="form-group row">
                         <label for="" class="col-sm-3 col-form-label">Foto KTP</label>
                         <div class="col-sm-9">

@@ -449,7 +449,7 @@ class Admin extends Controller
 
         $idOpd= Auth::user()->id_opd_fk;
         $opd =  Opd::select('name')->where('id',$idOpd)->first();
-        $laporans = Pengaduan::where('status_selesai', 'Y')->orderBy('tanggal_lapor', 'desc')->paginate(10);
+        $laporans = Pengaduan::where('status_selesai', 'Y')->orderBy('tanggal_lapor', 'desc')->get();
 
         return view('admininspektorat.laporanselesai', [
             'opd' => $opd,
@@ -470,6 +470,26 @@ class Admin extends Controller
             ->orderBy('tanggal_lapor', 'desc')
             ->get();
         return response()->json(['results' => $results]);
+    }
+
+    public function filterLaporanSelesai(Request $request) 
+    {
+        $idOpd = $request->input('id_opd_fk');
+        $idCategory = $request->input('id_category_fk');
+
+        // Lakukan filter data berdasarkan $idOpd dan $idCategory
+        $filteredLaporans = Pengaduan::with(['category', 'opd']) // Memuat relasi category dan opd
+            ->where('status_selesai', 'Y')
+            ->when($idOpd, function ($query) use ($idOpd) {
+                return $query->where('id_opd_fk', $idOpd);
+            })
+            ->when($idCategory, function ($query) use ($idCategory) {
+                return $query->where('id_category_fk', $idCategory);
+            })
+            ->orderBy('tanggal_lapor', 'desc')
+            ->paginate(7);
+
+        return response()->json(['laporans' => $filteredLaporans]); // Pastikan mengirimkan 'laporans' ke frontend
     }
 
 
@@ -582,7 +602,7 @@ class Admin extends Controller
             $disposisi->save();
 
             if($request->tanggapan == NULL){
-                return redirect('/laporanmasuk')->with('success', 'Data berhasil diperbarui');
+                return redirect('/laporanmasuk')->with('success', 'Laporan Berhasil didisposisikan');
             }
             else{
                 $tanggapan = new Tanggapan();
@@ -590,7 +610,7 @@ class Admin extends Controller
                 $tanggapan->id_pengaduan_fk = $id;
                 $tanggapan->tanggapan = $request->tanggapan;
                 $tanggapan->save();
-                return redirect('/laporanmasuk')->with('success', 'Data berhasil diperbarui');
+                return redirect('/laporanmasuk')->with('success', 'Laporan Berhasil didisposisikan');
             }
 
         }else if($request->disposisi_opd == 'N'){
@@ -604,7 +624,7 @@ class Admin extends Controller
             $disposisi->save();
 
             if($request->tanggapan == NULL){
-                return redirect('/laporanmasuk')->with('berhasil', 'Data berhasil diperbarui');
+                return redirect('/laporanmasuk')->with('success', 'Laporan berhasil ditolak');
             }
 
             else{
@@ -614,7 +634,7 @@ class Admin extends Controller
                 $tanggapan->tanggapan = $request->tanggapan;
                 $tanggapan->save();
     
-                return redirect('/laporanmasuk')->with('berhasil', 'Data berhasil diperbarui');
+                return redirect('/laporanmasuk')->with('success', 'Laporan berhasil ditolak');
             }
              
         }else {
