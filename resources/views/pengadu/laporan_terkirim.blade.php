@@ -510,6 +510,7 @@
                                             <th>Kategori</th>
                                             <th>OPD Tujuan</th>
                                             <th class="">Status</th>
+                                            <th class="">Keterangan</th>
                                             <th style="text-align: center">Aksi</th>
                                             </tr>
                                         </thead>
@@ -562,6 +563,38 @@
                                                         @endif
                                                     @endif
                                             @endif
+                                            
+                                            <td>
+                                                @php
+                                                    $sekarang = \Carbon\Carbon::now();
+                                                    $tanggalTindak = \Carbon\Carbon::parse($laporan->tanggal_tindak);
+                                                    $tanggalSelesai = \Carbon\Carbon::parse($laporan->tanggal_selesai);
+
+                                                    $selisihTindak = $sekarang->diff($tanggalTindak); // Hitung selisih waktu hingga tindakan
+                                                    $selisihSelesai = $sekarang->diff($tanggalSelesai); // Hitung selisih waktu hingga selesai
+
+                                                    $hariTindak = $selisihTindak->days; // Dapatkan jumlah hari hingga tindakan
+                                                    $jamTindak = $selisihTindak->h; // Dapatkan jumlah jam hingga tindakan
+                                                    $menitTindak = $selisihTindak->i; // Dapatkan jumlah menit hingga tindakan
+
+                                                    $hariSelesai = $selisihSelesai->days; // Dapatkan jumlah hari hingga selesai
+                                                    $jamSelesai = $selisihSelesai->h; // Dapatkan jumlah jam hingga selesai
+                                                    $menitSelesai = $selisihSelesai->i; // Dapatkan jumlah menit hingga selesai
+
+                                                    $hariTerlambat = $tanggalSelesai->isPast() ? $tanggalSelesai->diffInDays($sekarang) : 0; // Hitung jumlah hari terlambat
+                                                @endphp
+
+                                                @if($sekarang <= $tanggalTindak)
+                                                    <div class=""><span class="badge badge-warning text-dark">Menunggu Jadwal Ditindak</span></div>
+                                                    Counter: {{ $hariTindak }} hari, {{ $jamTindak }} jam, {{ $menitTindak }} menit lagi
+                                                @elseif($sekarang >= $tanggalTindak && $sekarang < $tanggalSelesai)
+                                                    <div class=""><span class="badge badge-secondary text-white">Sedang Ditindak</span></div>
+                                                    Counter: {{ $hariSelesai }} hari, {{ $jamSelesai }} jam, {{ $menitSelesai }} menit lagi
+                                                @elseif($sekarang > $tanggalSelesai)
+                                                    <div class=""><span class="badge badge-danger text-white">Melewati Tanggal Estimasi</span></div>
+                                                    Counter: {{ $hariTerlambat }} hari melewati tanggal estimasi selesai
+                                                @endif
+                                            </td>
 
                                             <td style="text-align: center;" colspan="2">
                                                 <button type="button"  class="btn bg-gradient-info" data-toggle="" data-target="">

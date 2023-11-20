@@ -339,9 +339,6 @@
                     </div>
                     <div class="tab-pane fade" id="custom-tabs-four-invalid" role="tabpanel" aria-labelledby="custom-tabs-four-invalid-tab">
                         <div class="row">
-                                    <div class="col-12">
-
-                                    </div>
                                     <!-- /.card-header -->
                                     <div class="card-body table-responsive p-0">
                                         <table class="table table-hover text-nowrap">
@@ -424,8 +421,6 @@
                         </div>
                     <div class="tab-pane fade" id="custom-tabs-four-tindak" role="tabpanel" aria-labelledby="custom-tabs-four-tindak-tab">
                     <div class="row">
-                                    <div class="col-12">
-                                    </div>
                                     <!-- /.card-header -->
                                     <div class="card-body table-responsive p-0">
                                         <table class="table table-hover text-nowrap">
@@ -489,15 +484,39 @@
                                                         @endif
                                                     @endif
                                             @endif
+
                                             <td>
-                                                @if(\Carbon\Carbon::now() <= \Carbon\Carbon::parse($laporan->tanggal_tindak))
+                                                @php
+                                                    $sekarang = \Carbon\Carbon::now();
+                                                    $tanggalTindak = \Carbon\Carbon::parse($laporan->tanggal_tindak);
+                                                    $tanggalSelesai = \Carbon\Carbon::parse($laporan->tanggal_selesai);
+
+                                                    $selisihTindak = $sekarang->diff($tanggalTindak); // Hitung selisih waktu hingga tindakan
+                                                    $selisihSelesai = $sekarang->diff($tanggalSelesai); // Hitung selisih waktu hingga selesai
+
+                                                    $hariTindak = $selisihTindak->days; // Dapatkan jumlah hari hingga tindakan
+                                                    $jamTindak = $selisihTindak->h; // Dapatkan jumlah jam hingga tindakan
+                                                    $menitTindak = $selisihTindak->i; // Dapatkan jumlah menit hingga tindakan
+
+                                                    $hariSelesai = $selisihSelesai->days; // Dapatkan jumlah hari hingga selesai
+                                                    $jamSelesai = $selisihSelesai->h; // Dapatkan jumlah jam hingga selesai
+                                                    $menitSelesai = $selisihSelesai->i; // Dapatkan jumlah menit hingga selesai
+
+                                                    $hariTerlambat = $tanggalSelesai->isPast() ? $tanggalSelesai->diffInDays($sekarang) : 0; // Hitung jumlah hari terlambat
+                                                @endphp
+
+                                                @if($sekarang <= $tanggalTindak)
                                                     <div class=""><span class="badge badge-warning text-dark">Menunggu Jadwal Ditindak</span></div>
-                                                @elseif(\Carbon\Carbon::now() >= \Carbon\Carbon::parse($laporan->tanggal_tindak) && \Carbon\Carbon::now() < \Carbon\Carbon::parse($laporan->tanggal_selesai))
+                                                    Counter: {{ $hariTindak }} hari, {{ $jamTindak }} jam, {{ $menitTindak }} menit lagi
+                                                @elseif($sekarang >= $tanggalTindak && $sekarang < $tanggalSelesai)
                                                     <div class=""><span class="badge badge-secondary text-white">Sedang Ditindak</span></div>
-                                                @elseif(\Carbon\Carbon::now() > \Carbon\Carbon::parse($laporan->tanggal_selesai))
+                                                    Counter: {{ $hariSelesai }} hari, {{ $jamSelesai }} jam, {{ $menitSelesai }} menit lagi
+                                                @elseif($sekarang > $tanggalSelesai)
                                                     <div class=""><span class="badge badge-danger text-white">Melewati Tanggal Estimasi</span></div>
+                                                    Counter: {{ $hariTerlambat }} hari melewati tanggal estimasi selesai
                                                 @endif
                                             </td>
+
                                             <td style="text-align: center;" colspan="2">
                                                 <button type="button"  class="btn bg-gradient-info mr-2" data-toggle="" data-target="">
                                                     <a href="/detailpengaduanopd/{{ $laporan->id }}" style="text-decoration: none; color:white;"><i class="fas fa-eye"></i></a>

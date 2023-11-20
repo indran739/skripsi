@@ -123,6 +123,14 @@ class Admin extends Controller
 //<---------------------------------------------------------------Rata rata waktu----------------------------------------------------------------------------->//
 
             $opdAverages = [];
+            
+            // function convertToDaysHoursMinutes($hours) {
+            //     $days = floor($hours / 24);
+            //     $remainingHours = $hours % 24;
+            //     $minutes = round(($remainingHours - floor($remainingHours)) * 60);
+            
+            //     return "{$days} hari, " . floor($remainingHours) . " jam, {$minutes} menit";
+            // }
 
             foreach ($opds as $opd) {
                 // $completedPengaduan = Pengaduan::where('status_selesai', 'Y')->where('id_opd_fk', $opd->id)->get();
@@ -161,6 +169,17 @@ class Admin extends Controller
                     $totalWaktuRespon += $selisihValidasi;// Rata-rata waktu respon disposisi dan validasi
                     $jumlahPengaduan++;
                 }
+
+                // // Menghitung rata-rata waktu respon
+                // $rataRataWaktuRespon = ($jumlahPengaduan > 0) ? $totalWaktuRespon / $jumlahPengaduan : 0;
+                // $rataRataWaktuRespon = convertToDaysHoursMinutes($rataRataWaktuRespon);
+
+                // // Menghitung rata-rata waktu penyelesaian
+                // $averageDuration = ($completedCount > 0) ? ($totalDuration / $completedCount) : 0;
+                // $averageDuration = convertToDaysHoursMinutes($averageDuration);
+
+                // $totalDuration = convertToDaysHoursMinutes($totalDuration);
+                // $totalWaktuRespon = convertToDaysHoursMinutes($totalWaktuRespon);
 
                 // Menghitung rata-rata waktu respon
                 $rataRataWaktuRespon = $jumlahPengaduan > 0 ? $totalWaktuRespon / $jumlahPengaduan : 0;
@@ -202,6 +221,7 @@ class Admin extends Controller
             ->orderByDesc('tanggal_lapor')
             ->limit(3)
             ->get();
+            
 //<---------------------------------------------------------------End Rata rata waktu----------------------------------------------------------------------------->//
         return view('admininspektorat.dashboard', [
             'count_pengadu' => $count_users,
