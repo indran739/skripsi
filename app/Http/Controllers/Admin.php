@@ -622,7 +622,7 @@ class Admin extends Controller
             $disposisi->save();
 
             if($request->tanggapan == NULL){
-                return redirect('/laporanmasuk')->with('success', 'Laporan Berhasil didisposisikan');
+                return redirect('/laporanmasuk')->with('success', 'Laporan Berhasil terdisposisi');
             }
             else{
                 $tanggapan = new Tanggapan();
@@ -630,7 +630,7 @@ class Admin extends Controller
                 $tanggapan->id_pengaduan_fk = $id;
                 $tanggapan->tanggapan = $request->tanggapan;
                 $tanggapan->save();
-                return redirect('/laporanmasuk')->with('success', 'Laporan Berhasil didisposisikan');
+                return redirect('/laporanmasuk')->with('success', 'Laporan Berhasil terdisposisi');
             }
 
         }else if($request->disposisi_opd == 'N'){
@@ -673,7 +673,7 @@ class Admin extends Controller
         ]);
 
         Category::create($validatedData);
-        return redirect('/kategori')->with('success', 'Data berhasil disimpan');
+        return redirect('/kategori')->with('success', 'Berhasil menambah kategori');
     }
     
     public function edit_kategori(Request $request, $id_categories)
@@ -681,7 +681,7 @@ class Admin extends Controller
         $kategori = Category::find($id_categories);
         $kategori->name = $request->name;
         $kategori->save();
-        return redirect('/kategori')->with('berhasil', 'Data berhasil disimpan');
+        return redirect('/kategori')->with('success', 'Berhasil mengedit kategori');
     }
 
     public function hapus_kategori($id_categories)
@@ -693,7 +693,7 @@ class Admin extends Controller
     $kategori->delete();
 
     // Redirect dengan pesan sukses
-    return redirect()->back()->with('hapus', 'Data berhasil dihapus');
+    return redirect()->back()->with('success', 'Berhasil menghapus kategori');
     }
 
     public function verifikasi_akun(Request $request, $id_user)
@@ -705,7 +705,7 @@ class Admin extends Controller
             $user->verification = $request->verification; 
 
             $user->save();
-            return redirect('/userpengadu')->with('success', 'Data berhasil diperbarui');
+            return redirect('/userpengadu')->with('success', 'User berhasil terverifikasi');
 
         }else if($request->verification == 'N'){
 
@@ -718,7 +718,7 @@ class Admin extends Controller
             $tanggapanAdmin->tanggapan = $request->tanggapan_admin;
             $tanggapanAdmin->save();
 
-            return redirect('/userpengadu')->with('berhasil', 'Data berhasil diperbarui');
+            return redirect('/userpengadu')->with('success', 'Berhasil menolak akun user');
             
         }else {
 
@@ -741,7 +741,7 @@ class Admin extends Controller
         $validatedData['id_user_fk'] = auth()->user()->id;
 
         Tanggapan::create($validatedData);
-        return redirect()->back()->with('tanggapi', 'Data berhasil disimpan');
+        return redirect()->back()->with('success', 'Berhasil menambah tanggapan');
     }
     
     public function edittanggapan(Request $request, $id_tanggapan)
@@ -751,7 +751,7 @@ class Admin extends Controller
         $edittanggapan->tanggapan = $request->tanggapan;
         $edittanggapan->save();
 
-        return redirect()->back()->with('edittanggapans', 'Data berhasil disimpan');
+        return redirect()->back()->with('success', 'Berhasil mengedit tanggapan');
     }
 
     public function hapustanggapan($id_tanggapan)
@@ -763,7 +763,7 @@ class Admin extends Controller
     $tanggapan->delete();
 
     // Redirect dengan pesan sukses
-    return redirect()->back()->with('hapustanggapans', 'Data berhasil dihapus');
+    return redirect()->back()->with('success', 'Berhasil menghapus tanggapan');
 }
 
 public function tambah_admin(Request $request)
@@ -799,7 +799,7 @@ public function tambah_admin(Request $request)
         ]);
 
         // Redirect dengan pesan sukses
-        return redirect()->back()->with('success', 'Data berhasil disimpan');
+        return redirect()->back()->with('success', 'Berhasil menambah akun');
     } catch (\Exception $e) {
         // Tangani kesalahan jika penyimpanan data gagal
         return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.');
@@ -811,7 +811,7 @@ public function suspend_akun(Request $request, $id_user)
     $user = User::find($id_user);
     $user->verification = $request->verification;
     $user->save();
-    return redirect('/userpengadu')->with('suspended', 'Data berhasil diperbarui');
+    return redirect('/userpengadu')->with('success', 'Berhasil menangguhkan akun');
 }
 
 public function delete_user($id_user)
@@ -821,7 +821,7 @@ public function delete_user($id_user)
 
     $user->delete();
 
-    return redirect()->back()->with('hapus', 'Data berhasil dihapus');
+    return redirect()->back()->with('success', 'Berhasil menghapus akun');
 }
 
 public function update_user_admin(Request $request, $id)
@@ -841,7 +841,7 @@ public function update_user_admin(Request $request, $id)
     
     $user->save();
 
-    return redirect()->back()->with('updated', 'Data berhasil diperbarui');
+    return redirect()->back()->with('success', 'Berhasil mengedit user');
 }
 
 }

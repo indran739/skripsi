@@ -2,48 +2,7 @@
 @section('container')
 <div class="content-header">
     <div class="container-fluid">
-    @if(Session::has('success'))
-      <div class="alert alert-success alert-dismissible fade show" role="alert">
-          <strong>Laporan Pengaduan Sudah Tervalidasi</strong>
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-      @endif
-
-      @if(Session::has('berhasil'))
-      <div class="alert alert-info alert-dismissible fade show" role="alert">
-          <strong>Laporan Pengaduan tidak divalidasi atau ditolak</strong>
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-      @endif
-       
-      @if(Session::has('tindak'))
-      <div class="alert alert-success alert-dismissible mt-3 fade show" role="alert">
-          <strong>Pengaduan ditindak lanjuti</strong>
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-      @endif
-
-      @if(Session::has('tidaktindak'))
-      <div class="alert alert-danger alert-dismissible mt-3 fade show" role="alert">
-          <strong>Pengaduan tidak ditindak lanjuti</strong>
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-      @endif
-
-      @if(Session::has('selesai'))
-      <div class="alert alert-success alert-dismissible fade show" role="alert">
-          <strong>Laporan Pengaduan Sudah dinyatakan selesai</strong>
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-      @endif
-
-      @if(Session::has('tidakselesai'))
-      <div class="alert alert-info alert-dismissible fade show" role="alert">
-          <strong>Laporan Pengaduan dinyatakan belum selesai</strong>
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-      @endif
-
+        
       @if(Session::has('tanggapi'))
       <div class="alert alert-success alert-dismissible fade show" role="alert">
           <strong>Tanggapan telah ditambahkan</strong>
@@ -276,29 +235,30 @@
                                                             <!-- form start -->
                                                       <div class="card-body">
                                                           <input type="hidden" class="form-control" value="{{ $laporan->id }}" name="id" id="exampleInputEmail1">
-                                                        <div class="form-group">
-                                                            <label class="d-flex justify-content-start" for="tanggal_tindak">Tanggal Tindak</label>
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control" id="tanggal_tindak" name="tanggal_tindak" placeholder="Pilih Tanggal" required />
-                                                                <div class="input-group-append">
-                                                                    <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                                                          
+
+                                                          <div class="form-group">
+                                                                <label class="d-flex justify-content-start" for="tanggal_selesai">Tanggal dan Waktu Tindak</label>
+                                                                <div class="input-group" style="width: 100%;">
+                                                                        <input type="text" class="form-control" id="tanggal_tindak" name="tanggal_tindak" placeholder="Pilih tanggal dan waktu" required />
+                                                                            <div class="input-group-prepend">
+                                                                                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                                                            </div>
+                                                                            <p class="d-flex justify-content-start mb-2 text-red mt-1 fw-bold" style="font-size:14px;">*tanggal dan waktu yang sudah ditetapkan tidak dapat diubah</p>
                                                                 </div>
                                                             </div>
-                                                            <small class="form-text text-muted d-flex justify-content-start text-red fw-bold">*tanggal yang sudah ditetapkan tidak dapat diubah</small>
-                                                        </div>
 
-                                                        <div class="form-group mt-3">
-                                                            <label class="d-flex justify-content-start" for="inputField2">Tanggal Estimasi Selesai</label>
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control" id="tanggal_selesai" name="tanggal_selesai" placeholder="Pilih Tanggal" required />
-                                                                <div class="input-group-append">
-                                                                    <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                                                            <div class="form-group mt-3">
+                                                                <label class="d-flex justify-content-start" for="tanggal_selesai">Tanggal dan Waktu Estimasi Selesai</label>
+                                                                <div class="input-group" style="width: 100%;">
+                                                                        <input type="text" class="form-control" id="tanggal_selesai" name="tanggal_selesai" placeholder="Pilih tanggal dan waktu" required />
+                                                                            <div class="input-group-prepend">
+                                                                                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                                                            </div>
+                                                                            <p class="d-flex justify-content-start mb-2 text-red mt-1 fw-bold" style="font-size:14px;">*tanggal dan waktu yang sudah ditetapkan tidak dapat diubah</p>
                                                                 </div>
                                                             </div>
-                                                            <small class="form-text text-muted d-flex justify-content-start text-red fw-bold">*tanggal yang sudah ditetapkan tidak dapat diubah</small>
-                                                        </div>
-
-                                                        
+                                                     
                                                         <div class="form-group mt-3">
                                                             <label class="d-flex justify-content-start" for="inputField2">Beri Tanggapan</label>
                                                             <div class="input-group">
@@ -577,31 +537,49 @@
                     </div>
 
         <!-- /.content-header -->
+ <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var tanggalTindak = flatpickr('#tanggal_tindak', {
+            enableTime: true,
+            dateFormat: 'Y-m-d H:i',
+            minDate: 'today',
+            time_24hr: true,
+            theme: 'dark',
+            onClose: function (selectedDates) {
+                var selectedTindakDate = selectedDates[0];
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    var tanggalTindak = flatpickr('#tanggal_tindak', {
-        dateFormat: 'Y-m-d',  // Format tanggal sesuai kebutuhan Anda
-        minDate: 'today',      // Batasi tanggal kejadian tidak lebih awal dari hari ini
-        theme: 'dark',         // Ganti dengan tema lain jika diinginkan
-        onClose: function(selectedDates) {
-            // Mengambil tanggal yang telah dipilih pada input tanggal tindak
-            var selectedTindakDate = selectedDates[0];
+                // Aktifkan tanggal selesai untuk tanggal tindak yang sudah dipilih
+                tanggalSelesai.set('minDate', selectedTindakDate);
 
-            // Aktifkan dan nonaktifkan tanggal selesai berdasarkan tanggal tindak
-            tanggalSelesai.set('disable', [
-                function(date) {
-                    return date < selectedTindakDate; // Gunakan '<' agar tanggal selesai bisa sama dengan tanggal tindak
-                }
-            ]);
-        }
+                // // Aktifkan waktu estimasi selesai untuk tanggal tindak yang sudah dipilih
+                // tanggalSelesai.set('minTime', selectedTindakDate.getHours() + ":" + selectedTindakDate.getMinutes());
+            }
+        });
+
+        var tanggalSelesai = flatpickr('#tanggal_selesai', {
+            enableTime: true,
+            dateFormat: 'Y-m-d H:i',
+            minDate: 'today',
+            time_24hr: true,
+            theme: 'dark',
+            onClose: function (selectedDates) {
+                var selectedSelesaiDate = selectedDates[0];
+
+                // Aktifkan tanggal tindak untuk tanggal selesai yang sudah dipilih
+                tanggalTindak.set('maxDate', selectedSelesaiDate);
+
+                // Aktifkan waktu tindak untuk tanggal selesai yang sudah dipilih
+                tanggalTindak.set('maxTime', selectedSelesaiDate.getHours() + ":" + selectedSelesaiDate.getMinutes());
+            }
+        });
     });
-
-    var tanggalSelesai = flatpickr('#tanggal_selesai', {
-        dateFormat: 'Y-m-d',  // Format tanggal sesuai kebutuhan Anda
-        minDate: 'today',      // Batasi tanggal kejadian tidak lebih awal dari hari ini
-        theme: 'dark' // Ganti dengan tema lain jika diinginkan
-    });
-});
 </script>
+
+
+
+
+
+
+
+
 @endsection

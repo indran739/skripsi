@@ -436,7 +436,7 @@ $data = $jumlahPengaduanPerBulan->values();
         $proses_tindak->save();
 
         if($request->tanggapan == NULL){
-            return redirect('/laporanterdisposisiopd')->with('tindak', 'Data berhasil diperbarui');
+            return redirect('/laporanterdisposisiopd')->with('success', 'Laporan Berhasil ditindak');
         }
         else{
             $tanggapan = new Tanggapan();
@@ -444,7 +444,7 @@ $data = $jumlahPengaduanPerBulan->values();
             $tanggapan->id_pengaduan_fk = $id;
             $tanggapan->tanggapan = $request->tanggapan;
             $tanggapan->save();
-            return redirect('/laporanterdisposisiopd')->with('tindak', 'Data berhasil diperbarui');
+            return redirect('/laporanterdisposisiopd')->with('success', 'Laporan Berhasil ditindak');
         }
 
     }
@@ -464,7 +464,7 @@ $data = $jumlahPengaduanPerBulan->values();
             $validasi->save();
 
             if($request->tanggapan == NULL){
-                return redirect('/laporanterdisposisiopd')->with('success', 'Data berhasil diperbarui');
+                return redirect('/laporanterdisposisiopd')->with('success', 'Berhasil validasi laporan');
             }
             else{
                 $tanggapan = new Tanggapan();
@@ -472,7 +472,7 @@ $data = $jumlahPengaduanPerBulan->values();
                 $tanggapan->id_pengaduan_fk = $id;
                 $tanggapan->tanggapan = $request->tanggapan;
                 $tanggapan->save();
-                return redirect('/laporanterdisposisiopd')->with('success', 'Data berhasil diperbarui');
+                return redirect('/laporanterdisposisiopd')->with('success', 'Berhasil validasi laporan');
             }
 
 
@@ -487,7 +487,7 @@ $data = $jumlahPengaduanPerBulan->values();
             $validasi->save();
             
             if($request->tanggapan == NULL){
-                return redirect('/laporanterdisposisiopd')->with('berhasil', 'Data berhasil diperbarui');
+                return redirect('/laporanterdisposisiopd')->with('success', 'Berhasil menolak laporan');
             }
             else{
                 $tanggapan = new Tanggapan();
@@ -495,7 +495,7 @@ $data = $jumlahPengaduanPerBulan->values();
                 $tanggapan->id_pengaduan_fk = $id;
                 $tanggapan->tanggapan = $request->tanggapan;
                 $tanggapan->save();
-                return redirect('/laporanterdisposisiopd')->with('berhasil', 'Data berhasil diperbarui');
+                return redirect('/laporanterdisposisiopd')->with('success', 'Berhasil menolak laporan');
             }
 
         }else {
@@ -523,7 +523,7 @@ $data = $jumlahPengaduanPerBulan->values();
 
 
             if($request->tanggapan == NULL){
-                return redirect('/laporanselesaiopd')->with('selesai', 'Data berhasil diperbarui');
+                return redirect('/laporanselesaiopd')->with('success', 'Berhasil update status');
             }
             else{
                 $tanggapan = new Tanggapan();
@@ -531,7 +531,7 @@ $data = $jumlahPengaduanPerBulan->values();
                 $tanggapan->id_pengaduan_fk = $id_pengaduan;
                 $tanggapan->tanggapan = $request->tanggapan;
                 $tanggapan->save();
-                return redirect('/laporanselesaiopd')->with('selesai', 'Data berhasil diperbarui');
+                return redirect('/laporanselesaiopd')->with('success', 'Berhasil update status');
             }
             
             // }else if($request->status_selesai == 'P' && $pengaduan->proses_tindak == "Y" && $pengaduan->validasi_laporan == "Y" ){
@@ -561,7 +561,7 @@ $data = $jumlahPengaduanPerBulan->values();
         $validatedData['id_user_fk'] = auth()->user()->id;
 
         Tanggapan::create($validatedData);
-        return redirect()->back()->with('success', 'Data berhasil disimpan');
+        return redirect()->back()->with('success', 'Berhasil menambah tanggapan');
     }
 
     public function edittanggapanopd(Request $request, $id_tanggapan)
@@ -571,7 +571,7 @@ $data = $jumlahPengaduanPerBulan->values();
         $edittanggapan->tanggapan = $request->tanggapan;
         $edittanggapan->save();
 
-        return redirect()->back()->with('updatetanggapans', 'Data berhasil disimpan');
+        return redirect()->back()->with('success', 'Berhasil mengedit tanggapan');
     }
 
     public function hapustanggapanopd($id_tanggapan)
@@ -583,7 +583,7 @@ $data = $jumlahPengaduanPerBulan->values();
     $tanggapan->delete();
 
     // Redirect dengan pesan sukses
-    return redirect()->back()->with('deletetanggapans', 'Data berhasil dihapus');
+    return redirect()->back()->with('success', 'Berhasil menghapus tanggapan');
 }
 
 public function updatekategorilaporanselesai(Request $request, $id)
@@ -592,6 +592,6 @@ public function updatekategorilaporanselesai(Request $request, $id)
     $laporan->id_category_fk = $request->id_category_fk;
     $laporan->save();
 
-    return redirect()->back()->with('updatedcategories', 'Data berhasil disimpan');
+    return redirect()->back()->with('success', 'Berhasil mengedit kategori');
 }
 }

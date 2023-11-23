@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SIPEMAS | Admin OPD</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.9/flatpickr.min.css"> 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
    <!-- Select2 -->
   <link rel="stylesheet" href="{{asset('/')}}plugins/select2/css/select2.min.css">
@@ -98,7 +98,9 @@
 <script src="{{asset('/')}}plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="{{asset('/')}}plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <!-- Load flatpickr.js dari AdminLTE 3.1 -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.9/flatpickr.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <!-- Select2 -->
 <script src="{{asset('/')}}plugins/select2/js/select2.full.min.js"></script>
 <script src="{{asset('/')}}plugins/filterizr/jquery.filterizr.min.js"></script>
