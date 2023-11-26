@@ -1,21 +1,5 @@
 @extends('layouts.main_third')   
 @section('container')
-<style>
-    @keyframes blink {
-        0%, 20%, 50%, 80%, 100% {
-            transform: scaleY(1);
-        }
-        40%, 60% {
-            transform: scaleY(0);
-        }
-    }
-
-    .blink {
-        display: inline-block;
-        animation: blink 1s infinite;
-    }
-</style>
-
 <div class="container" style="margin-top:230px; margin-bottom:100px;" >
   <div class="row">
     <div class="col d-flex justify-content-center">
@@ -77,8 +61,8 @@
                       <div class="input-group-text">
                           <span class="fas fa-lock"></span>
                       </div>
-                      <div class="input-group-text" onclick="togglePasswordVisibility()">
-                          <span class="fas fa-eye blink" id="eyeIcon"></span>
+                      <div class="input-group-text">
+                          <i class="fas fa-eye" onclick="togglePasswordVisibility()"></i>
                       </div>
                   </div>
               </div>
@@ -125,15 +109,18 @@
 <script>
     function togglePasswordVisibility() {
         var passwordInput = document.getElementById('passwordInput');
-        var eyeIcon = document.getElementById('eyeIcon');
-        
+        var eyeIcon = document.querySelector('.input-group-append .input-group-text i');
+
         if (passwordInput.type === 'password') {
             passwordInput.type = 'text';
-            eyeIcon.classList.add('blink');
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
         } else {
             passwordInput.type = 'password';
-            eyeIcon.classList.remove('blink');
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
         }
     }
 </script>
+
 @endsection
