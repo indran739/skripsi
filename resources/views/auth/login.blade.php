@@ -1,5 +1,21 @@
 @extends('layouts.main_third')   
 @section('container')
+<style>
+    @keyframes blink {
+        0%, 20%, 50%, 80%, 100% {
+            transform: scaleY(1);
+        }
+        40%, 60% {
+            transform: scaleY(0);
+        }
+    }
+
+    .blink {
+        display: inline-block;
+        animation: blink 1s infinite;
+    }
+</style>
+
 <div class="container" style="margin-top:230px; margin-bottom:100px;" >
   <div class="row">
     <div class="col d-flex justify-content-center">
@@ -55,14 +71,17 @@
                   <h7><i class="fas fa-brake-warning"></i>Password Tidak Boleh Kosong!</h7>
                 </div>
               @enderror
-            <div class="input-group mb-3">
-              <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="Password" name="password">
-              <div class="input-group-append">
-                <div class="input-group-text">
-                  <span class="fas fa-lock"></span>
-                </div>
+              <div class="input-group mb-3">
+                  <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="Password" name="password" id="passwordInput">
+                  <div class="input-group-append">
+                      <div class="input-group-text">
+                          <span class="fas fa-lock"></span>
+                      </div>
+                      <div class="input-group-text" onclick="togglePasswordVisibility()">
+                          <span class="fas fa-eye blink" id="eyeIcon"></span>
+                      </div>
+                  </div>
               </div>
-            </div>
               <p class="mb-0">
                 Belum punya akun? <a href="/daftar" class="text-center">Daftar</u></a>
               </p>
@@ -103,4 +122,18 @@
   </div>
 </div>
 
+<script>
+    function togglePasswordVisibility() {
+        var passwordInput = document.getElementById('passwordInput');
+        var eyeIcon = document.getElementById('eyeIcon');
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.classList.add('blink');
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.classList.remove('blink');
+        }
+    }
+</script>
 @endsection
