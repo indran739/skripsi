@@ -80,12 +80,19 @@ class PDFController extends Controller
         $rentang = $request->input('rentang'); // Mendapatkan nilai rentang waktu dari formulir
         $status = $request->input('status');
 
+        $selectedYear = $rentang;
         // Menghitung tanggal awal berdasarkan rentang waktu yang dipilih
         $tanggalAwal = now()->subMonths($rentang);
 
         if($status == 'S'){
             $data = Pengaduan::where('status_selesai',NULL)
             ->where('created_at', '>=', $tanggalAwal)
+            ->get();
+
+        }elseif($status == 'S' && $rentang == '2022')
+        {
+            $data = Pengaduan::where('status_selesai',NULL)
+            ->whereYear('created_at', $rentang)
             ->get();
 
         }elseif($status == 'P')

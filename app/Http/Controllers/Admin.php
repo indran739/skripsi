@@ -844,4 +844,18 @@ public function update_user_admin(Request $request, $id)
     return redirect()->back()->with('success', 'Berhasil mengedit user');
 }
 
+public function edit_password_pengadu(Request $request, $id)
+{
+    $user = User::find($id);
+
+    if ($request->has('password')) {
+        $user->password = bcrypt($request->password);
+    }
+    
+    $user->save();
+
+    return redirect()->back()->with('success', 'Berhasil mengedit password');
+}
+
+
 }

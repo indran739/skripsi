@@ -19,33 +19,7 @@
 </style>
 <div class="content-header">
     <div class="container-fluid">
-            @if (Session::has('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Akun sudah diverifikasi</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
 
-            @if (Session::has('berhasil'))
-                <div class="alert alert-info alert-dismissible fade show" role="alert">
-                    <strong>Akun sudah ditolak</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
-
-            @if (Session::has('suspended'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Akun sudah ditangguhkan</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
-
-            @if(Session::has('hapus'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Akun User berhasil dihapus</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
 
             <div class="row mb-2">
                 <div class="col-sm-6 mb-3">
@@ -519,7 +493,7 @@
                                         <td><div class=""><span class="badge badge-danger">Tidak Terverifikasi</span></div></td>
                                         @endif
                 
-                                        <td style="text-align: center;" colspan="2">
+                                        <td colspan="2">
                                             <button type="button" class="btn bg-gradient-info" data-toggle="modal" data-target="#modal-lg__{{ $u->id }}">
                                                 <i class="fas fa-eye"></i>
                                             </button>
@@ -622,6 +596,53 @@
                                                 <!-- /.modal-dialog -->
                                             </div>
                                             <!-- /.modal -->  
+                                            <button type="button" class="btn bg-gradient-warning ml-2" data-toggle="modal" data-target="#modal-edit__{{ $u->id }}">
+                                                <i class="fas fa-lock-open"></i>
+                                            </button>
+                                            <div class="modal fade" id="modal-edit__{{ $u->id }}">
+                                                        <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                            <!-- <h4 class="modal-title">Default Modal</h4> -->
+                                                            <h4 class="modal-title">Edit Password</h4>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                            <form method="post" action="/editpasspengadu/{{ $u->id }}">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                <div class="form-group row">
+                                                                <label for="" class="col-sm-3 col-form-label">NIK</label>
+                                                                <div class="col-sm-9">
+                                                                    <input type="text" class="form-control" disabled placeholder="" style="width: 70%;" name="nik" value="{{$u->nik}}">
+                                                                </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-sm-3 col-form-label">Nama Lengkap</label>
+                                                                    <div class="col-sm-9">
+                                                                        <input type="text" class="form-control" disabled placeholder="" style="width: 70%;" name="name" value="{{ $u->name }}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                <label for="" class="col-sm-3 col-form-label">Password</label>
+                                                                <div class="col-sm-9">
+                                                                    <input type="password" class="form-control"  style="width: 40%;" name="password" id="exampleInputPassword1" placeholder="*************">
+                                                                </div>
+                                                            </div>
+                                                            </div>
+                                                            <div class="modal-footer justify-content-center">
+                                                                <button type="button" class="btn btn-danger mr-5" data-dismiss="modal">Batal</button>
+                                                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                                            </div>
+                                                            </form>
+                                                        </div>
+                                                        <!-- /.modal-content -->
+                                                        </div>
+                                                        <!-- /.modal-dialog -->
+                                                    </div>
+                                                    <!-- /.modal -->
                                             <button type="button"  class=" ml-2 btn bg-gradient-danger" data-toggle="modal" data-target="#modal-suspend__{{ $u->id }}">
                                                 <a style="text-decoration: none; color:white;"><i class="fas fa-power-off"></i></a>
                                             </button>
