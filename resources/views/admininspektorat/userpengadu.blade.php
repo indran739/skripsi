@@ -20,7 +20,6 @@
 <div class="content-header">
     <div class="container-fluid">
 
-
             <div class="row mb-2">
                 <div class="col-sm-6 mb-3">
                     <h1 class="m-0">User Pengadu</h1>
@@ -494,6 +493,8 @@
                                         @endif
                 
                                         <td colspan="2">
+                                        <div class="d-flex justify-content-center">
+
                                             <button type="button" class="btn bg-gradient-info" data-toggle="modal" data-target="#modal-lg__{{ $u->id }}">
                                                 <i class="fas fa-eye"></i>
                                             </button>
@@ -673,6 +674,7 @@
                                                         <!-- /.modal-dialog -->
                                                     </div>
                                                     <!-- /.modal -->
+                                        </div>
                                         </td>
                                         </tr>
                                     @endforeach
@@ -735,7 +737,8 @@
                                             <td><div class=""><span class="badge badge-danger">Suspended</span></div></td>
                                             @endif
                     
-                                            <td style="text-align: center;" colspan="2">
+                                            <td colspan="2">
+                                            <div class="d-flex justify-content-center">
                                                 <button type="button" class="btn bg-gradient-info" data-toggle="modal" data-target="#modal-lg__{{ $u->id }}">
                                                     <i class="fas fa-eye"></i>
                                                 </button>
@@ -866,6 +869,7 @@
                                                             <!-- /.modal-dialog -->
                                                         </div>
                                                         <!-- /.modal -->
+                                            </div>
                                             </td>
                                             </tr>
                                         @endforeach

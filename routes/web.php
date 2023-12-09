@@ -162,6 +162,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/search-laporan-selesai', [Pengadu::class, 'searchLaporanSelesai']);
         Route::post('/like', [Pengadu::class, 'like']);
         Route::delete('/unlike', [Pengadu::class, 'unlike']);
+        Route::put('ubahpassword/{id_user}', [Pengadu::class, 'ubah_password']);
+        Route::post('/validasi-password', [Pengadu::class, 'validatePassword']);
 
         // Route::get('/berandapengadu/likes', [DashboardController::class, 'view_likes']);
         // Route::post('/like', [DashboardController::class, 'like']);

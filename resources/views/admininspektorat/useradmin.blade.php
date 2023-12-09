@@ -346,7 +346,7 @@
                                                             <!-- /.modal-dialog -->
                                                         </div>
                                                         <!-- /.modal -->
-                                            </div>
+                                        </div>
                                         </td>
                                         </tr>
                                     @endforeach

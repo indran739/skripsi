@@ -386,7 +386,7 @@ $data = $jumlahPengaduanPerBulan->values();
                 return $query->where('id_category_fk', $idCategory);
             })
             ->orderBy('created_at', 'desc')
-            ->paginate(7);
+            ->paginate(20);
 
         return response()->json(['laporans' => $filteredLaporans]); // Pastikan mengirimkan 'laporans' ke frontend
     }

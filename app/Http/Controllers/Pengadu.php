@@ -595,5 +595,24 @@ public function unlike(Request $request)
 }
 
 
+public function ubah_password(Request $request, $id)
+{
+    // Validasi input
+    $request->validate([
+        'password' => 'required|string|min:8|confirmed',
+    ]);
+
+    // Temukan user berdasarkan ID
+    $user = User::find($id);
+
+    // Perbarui password
+    $user->password = Hash::make($request->input('password'));
+    $user->save();
+
+    // Redirect dengan pesan sukses
+    return redirect()->back()->with('success', 'Password berhasil diperbarui');
+}
+
+
 }
 

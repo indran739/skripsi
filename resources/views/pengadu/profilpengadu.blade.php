@@ -5,12 +5,6 @@
         <div class="row mb-2">
           <div class="col-sm-6 mb-3">
             <h1 class="m-0">Profile User</h1>
-            @if(Session::has('success'))
-                <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-                    <strong>Profile telah diperbarui!</strong> harap periksa kembali data anda.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -29,7 +23,9 @@
                   <li class="nav-item">
                     <a class="nav-link" style="color: black;text-decoration: none;" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#custom-tabs-four-profile" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false"><i class="fas fa-edit mr-2"></i>Edit Profile</a>
                   </li>
-                  
+                  <li class="nav-item">
+                    <a class="nav-link" style="color: black;text-decoration: none;" id="custom-tabs-four-pass-tab" data-toggle="pill" href="#custom-tabs-four-pass" role="tab" aria-controls="custom-tabs-four-pass" aria-selected="false"><i class="fas fa-lock mr-2"></i>Ubah Password</a>
+                  </li>
                 </ul>
               </div>
               <div class="card-body">
@@ -130,19 +126,49 @@
                     </div> -->
                     <div class="card-footer">
                         <button type="submit" class="btn btn-success">Submit</button>
-                        <button class="btn btn-info float-right"><a href="/profile" style="color:white;">Kembali</a></button>
                     </div>
+                    </form>
                 </div>
-                  <div class="tab-pane fade" id="custom-tabs-four-messages" role="tabpanel" aria-labelledby="custom-tabs-four-messages-tab">
-                     
-                  </div>
-                  @endauth
+                <div class="tab-pane fade" id="custom-tabs-four-pass" role="tabpanel" aria-labelledby="custom-tabs-four-pass-tab">
+                <form id="changePasswordForm" method="post" action="/ubahpassword/{{ auth()->user()->id }}" enctype="multipart/form-data" >
+                    @csrf
+                    @method('put')
+                    @auth
+                    <div class="form-group row">
+                        <label for="" class="col-sm-3 col-form-label">Password Baru</label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" style="width: 45%;" placeholder="*********" name="password" value="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="" class="col-sm-3 col-form-label">Password Baru (ulangi)</label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" style="width: 45%;" placeholder="*********" name="password_confirmation" value="">
+                        </div>
+                    </div>
+                    <!-- Catatan Password -->
+                    <div class="row mb-3">
+                        <div class="col-sm-12">
+                            <small class="text-muted">
+                                <strong>Catatan:</strong>  
+                                <li>Password minimal 8 karakter.</li>
+                                <li>Gunakan password yang unik dan sulit ditebak oleh pengguna lain, tetapi cukup mudah Anda ingat.</li>
+                            </small>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                    @endauth
                 </form>
+                </div>
+                  @endauth
                 </div>
               </div>
               <!-- /.card -->
             </div>
           </div>
         </div>  
+
 @endsection
 

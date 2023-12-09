@@ -292,10 +292,9 @@ $(document).ready(function () {
                                     month: 'long',
                                     year: 'numeric'
                                 }) : '';
-
                                 // Bangun baris tabel
                                 tableBody += '<tr>' +
-                                    '<td>' + ((laporans.current_page - 1) * laporans.per_page + index + 1) + '</td>' +
+                                    '<td>' + (index + 1) + '</td>' + // Nomor urut
                                     '<td>' + (laporan.isi_laporan ? laporan.isi_laporan.substring(0, 50) : '') + '</td>' +
                                     '<td>' + formattedDateCreated + '</td>' +
                                     '<td>' + formattedDateUpdated + '</td>' +
